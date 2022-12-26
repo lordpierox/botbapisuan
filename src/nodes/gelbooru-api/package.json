@@ -1,0 +1,34 @@
+{
+  "dependencies": {
+    "request": "^2.88.2"
+  },
+  "name": "gelbooru-api",
+  "description": "Unofficial NodeJS wrapper for gelbooru.com",
+  "version": "1.0.1",
+  "main": "index.js",
+  "directories": {
+    "example": "examples"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/slpkbt/gelbooru-api.git"
+  },
+  "keywords": [
+    "gelbooru",
+    "anime",
+    "anime",
+    "api",
+    "wrapper",
+    "danbooru"
+  ],
+  "author": "slpkbt",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/slpkbt/gelbooru-api/issues"
+  },
+  "homepage": "https://github.com/slpkbt/gelbooru-api#readme"
+}
