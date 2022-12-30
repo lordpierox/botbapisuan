@@ -21,7 +21,8 @@ module.exports = {
             let imgurl;
         try{
         if (client.channel.type === 'DM') return;
-        if (client.author == 'bot') return;
+        if (client.author.bot) return;
+        console.log(client.author)
         }catch(error){
             console.log(error);
         }

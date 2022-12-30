@@ -91,12 +91,16 @@ module.exports = {
 			.addComponents(
 				new ButtonBuilder()
 					.setCustomId('prev')
-					.setEmoji('◀️')
+					.setEmoji('1058459675592511498')
 					.setStyle(ButtonStyle.Primary),
 				new ButtonBuilder()
 					.setCustomId('next')
-					.setEmoji('▶️')
+					.setEmoji('1058459696090062988')
 					.setStyle(ButtonStyle.Primary),
+                    new ButtonBuilder()
+					.setCustomId('exit')
+					.setEmoji('1058459713899081809')
+					.setStyle(ButtonStyle.Danger),
 		);
 
 
@@ -123,6 +127,7 @@ module.exports = {
         const collector = await response.createMessageComponentCollector();
 		
 		collector.on('collect', async i => {
+            try{
 			if(i.customId === 'next') {
 				if (i.user.id !== interaction.user.id){
 					return await i.reply({content: `Solo ${interaction.user.tag} puede usar el comando`, ephemeral:true});
@@ -141,6 +146,7 @@ module.exports = {
                 }
                 if(buttonstatus == 2){
                     return await i.update({ embeds: [embed2], components: [button] })
+                    
                     
                 }
                 if(buttonstatus == 3){
@@ -187,6 +193,18 @@ module.exports = {
                 }
 
 			}
+         
+            if(i.customId === 'exit') {
+				if (i.user.id !== interaction.user.id){
+					return await i.reply({content: `Solo ${interaction.user.tag} puede usar el comando`, ephemeral:true});
+				}
+
+                return await i.message.delete();
+
+            }
+        }catch(error){
+            console.log(error);
+        }
 
 		})
     },
