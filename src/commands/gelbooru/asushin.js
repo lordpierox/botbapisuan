@@ -17,7 +17,7 @@ module.exports = {
     async execute(interaction, client)  {
         var linkId = "";
         var date1;
-        let tags="-nagisa_kaworu ikari_shinji asuka_langley_souryuu -rating:explicit -rating:questionable -futanari -yaoi -bisexual_male -2boys -multiple_boys -pegging -yuri -2girls -multiple_girls -netorare -nude sort:random";
+        let tags="-ayanami_rei -nagisa_kaworu ikari_shinji asuka_langley_souryuu -rating:explicit -rating:questionable -futanari -yaoi -bisexual_male -2boys -multiple_boys -pegging -yuri -2girls -multiple_girls -netorare -nude sort:random";
         let linkImg = "";
         if(interaction.channel.nsfw){ 
             tags = "-nagisa_kaworu ikari_shinji asuka_langley_souryuu -rating:explicit -rating:questionable -futanari -yaoi -bisexual_male -2boys -multiple_boys -pegging -yuri -2girls -multiple_girls -netorare -nude sort:random -ayanami_rei -solo -violence -domestic_violence -katsuragi_misato -suzuhara_sakura ";
