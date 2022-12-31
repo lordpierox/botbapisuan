@@ -38,11 +38,7 @@ module.exports = {
         }else{
 
         if(interaction.channel.nsfw){ 
-<<<<<<< Updated upstream
-            tags = "-nagisa_kaworu ikari_shinji asuka_langley_souryuu rating:explicit -rating:questionable -futanari -yaoi -bisexual_male -2boys -multiple_boys -pegging -yuri -2girls -multiple_girls -netorare -nude sort:random -ayanami_rei -solo -violence -domestic_violence -katsuragi_misato -suzuhara_sakura ";
-=======
             tags = "-nagisa_kaworu ikari_shinji asuka_langley_souryuu rating:explicit -rating:questionable -futanari -yaoi -bisexual_male -2boys -multiple_boys -pegging -yuri -2girls -multiple_girls -netorare -nude -ayanami_rei -solo -violence -domestic_violence -katsuragi_misato -suzuhara_sakura ";
->>>>>>> Stashed changes
             //interaction.reply({content: "Este comando sólo se puede utilizar en los canales marcados como nsfw.", ephemeral:true}); 
             //return; 
         }
