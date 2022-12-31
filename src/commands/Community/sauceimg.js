@@ -33,8 +33,8 @@ module.exports = {
                 const results = await sagiriclient(salsa);
                 const arara = new EmbedBuilder()
                     .setColor('#DC143C')
-                    .setTitle(`Link: ${results[0].url}`)
-                    .setDescription(`similarity: ${results[0].raw.header.similarity}`)
+                    .setTitle(`SAUCE`)
+                    .setDescription(`Link: ${results[0].url}\nsimilarity: ${results[0].raw.header.similarity}`)
                     .setURL(results[0].raw.data.url)
                     .setThumbnail(interaction.user.displayAvatarURL())
                     /*.addFields({

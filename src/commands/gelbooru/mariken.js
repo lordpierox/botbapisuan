@@ -1,14 +1,30 @@
 const Gelbooru  = require('gelbooru-api')
 const { SlashCommandBuilder } = require('@discordjs/builders')
-const { EmbedBuilder, Client } = require('discord.js')
+const { EmbedBuilder, Client, ActionRowBuilder, ButtonBuilder, ButtonStyle, Events } = require('discord.js')
+const ArrayList = require('arraylist');
+
+function lista(id, date, link) {
+    this.id = id;
+    this.date = date;
+    this.link = link;
+  }
 
 module.exports = {
 
     data:new SlashCommandBuilder()
     .setName('mariken')
-    .setDescription('Imagen casual mariken'),
+    .setDescription('Imagen casual mariken')
+    .addStringOption(option => option
+        .setName('sort')
+        .setDescription('sort')
+        .setRequired(true)
+        .addChoices(
+                    { name: 'Random', value: 'sort:random' },
+                    { name: 'Score', value: 'sort:score' },
+                    { name: 'newest', value: 'sort:id:desc' },
+                    { name: 'oldest', value: 'sort:id:asc' },
+                )),
     async execute(interaction, client)  {
-
         var linkId = "";
         let tags="makinami_mari_illustrious aida_kensuke -ikari_shinji -asuka_langley_souryuu  -rating:questionable -rating:explicit sort:random";
         let date1;
@@ -19,37 +35,150 @@ module.exports = {
             //interaction.reply({content: "Este comando sólo se puede utilizar en los canales marcados como nsfw.", ephemeral:true}); 
             //return; 
         }
-
-       GelbooruClient = new Gelbooru(tags);
-
+        let response;
+        await interaction.deferReply();
+        
+        let sort = interaction.options.getString('sort');
+        tags = tags + " " + sort; 
+        
+        GelbooruClient = new Gelbooru(tags);
+/*
         try {
-            await GelbooruClient.getRandomPost(tags, 10, 0).then(post => { // get random post
-                  linkId = (""+post.id); // print post id
-                  linkImg = (""+post.file_url);
-                   date1 = new Date(""+post.created_at);
-                   
+         await GelbooruClient.getRandomPost(tags, 10, 0).then(post => { // get random post
+               linkId = (""+post.id); // print post id
+               linkImg = (""+post.file_url);
+                date1 = new Date(""+post.created_at);
+                
+            }); 
+ 
+         
+        }catch(error) {
+            console.log(error);
+          }
+*/
+          let listaGel = new ArrayList();
+          try {
+            await GelbooruClient.getPosts(tags, 50, 0).then(post => { // get random post
+                console.log("length: "+ post.length)
+                for(i = 0; i <= (post.length-1); i++){
+               
+                   listaGel.add(new lista(post[i].id,new Date(""+post[i].created_at),post[i].file_url))
+                    console.log(i);
+                }
                }); 
     
             
            }catch(error) {
                console.log(error);
              }
+             
+
+    //await interaction.deferReply()
+
+    
+
+    //interaction.followUp({ embeds: [imgasushin] })
+
+    const button = new ActionRowBuilder()
+    .addComponents(
+        new ButtonBuilder()
+            .setCustomId('prev')
+            .setEmoji('1058459675592511498')
+            .setStyle(ButtonStyle.Primary),
+        new ButtonBuilder()
+            .setCustomId('next')
+            .setEmoji('1058459696090062988')
+            .setStyle(ButtonStyle.Primary),
+            new ButtonBuilder()
+            .setCustomId('exit')
+            .setEmoji('1058459713899081809')
+            .setStyle(ButtonStyle.Danger),
+);
+
+let buttonstatus = 0;
+let maxStatus = (listaGel.length - 1) ;
 
 
+let imgasushin = new EmbedBuilder()
+          .setTitle("MARIKEN")
+         .setColor("Random")
+         .setTimestamp(listaGel.get(0).date)
+         .setDescription("https://gelbooru.com/index.php?page=post&s=view&id="+listaGel.get(0).id)
+         .setThumbnail("https://media.giphy.com/media/EZkJwYPagmJqvG0mEi/giphy.gif")
+         .setImage(listaGel.get(0).link)
+         .setFooter({ text:(buttonstatus + 1) + "/" + (maxStatus + 1)})
+
+       
+  
+            response = await interaction.followUp({ embeds: [imgasushin], components: [button]});
+  
+
+        
 
 
-             await interaction.deferReply()
+        const collector = await response.createMessageComponentCollector();
 
-             let imgmarishin = new EmbedBuilder()
-                   .setTitle("MARIKEN")
-                  .setColor("Random")
-                  .setTimestamp(date1)
-                  .setDescription("https://gelbooru.com/index.php?page=post&s=view&id="+linkId)
-                  .setThumbnail("https://makesweet.com/f/4/7/c/47c7abf5-07af-4978-9751-3f37716ee319.gif")
-                  .setImage(linkImg)
-                  .setFooter({ text:"SukiBot"})
+		collector.on('collect', async i => {
+            try{
+			if(i.customId === 'next') {
+				if (i.user.id !== interaction.user.id){
+					return await i.reply({content: `Solo ${interaction.user.tag} puede usar el comando`, ephemeral:true});
+				}
+				
+                buttonstatus++;
+                if(buttonstatus > maxStatus){
+                    buttonstatus = 0;
+                }
+
+                let newEmbed = new EmbedBuilder()
+                .setTitle("MARIKEN")
+                .setColor("Random")
+                .setTimestamp(listaGel.get(buttonstatus).date)
+                .setDescription("https://gelbooru.com/index.php?page=post&s=view&id="+listaGel.get(buttonstatus).id)
+                .setThumbnail("https://media.giphy.com/media/EZkJwYPagmJqvG0mEi/giphy.gif")
+                .setImage(listaGel.get(buttonstatus).link)
+                .setFooter({ text:(buttonstatus + 1) + "/" + (maxStatus + 1)})
+
+                return await i.update({ embeds: [newEmbed], components: [button] })
+                
+			}
+
+			if(i.customId === 'prev') {
+				if (i.user.id !== interaction.user.id){
+					return await i.reply({content: `Solo ${interaction.user.tag} puede usar el comando`, ephemeral:true});
+				}
+				
+                buttonstatus--;
+                if(buttonstatus < 0){
+                    buttonstatus = maxStatus;
+                }
+               
+                let newEmbed = new EmbedBuilder()
+                .setTitle("MARIKEN")
+                .setColor("Random")
+                .setTimestamp(listaGel.get(buttonstatus).date)
+                .setDescription("https://gelbooru.com/index.php?page=post&s=view&id="+listaGel.get(buttonstatus).id)
+                .setThumbnail("https://media.giphy.com/media/EZkJwYPagmJqvG0mEi/giphy.gif")
+                .setImage(listaGel.get(buttonstatus).link)
+                .setFooter({ text:(buttonstatus + 1) + "/" + (maxStatus + 1)})
+
+                return await i.update({ embeds: [newEmbed], components: [button] })
+
+			}
          
-             interaction.followUp({ embeds: [imgmarishin] })
-         
-             },
-         }
+            if(i.customId === 'exit') {
+				if (i.user.id !== interaction.user.id){
+					return await i.reply({content: `Solo ${interaction.user.tag} puede usar el comando`, ephemeral:true});
+				}
+
+                return await i.message.delete();
+
+            }
+        }catch(error){
+            console.log(error);
+        }
+        })
+
+
+    },
+}

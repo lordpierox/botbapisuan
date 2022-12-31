@@ -13,18 +13,42 @@ module.exports = {
 
     data:new SlashCommandBuilder()
     .setName('asushin')
-    .setDescription('Imagen casual asushin'),
+    .setDescription('Imagen casual asushin')
+    .addStringOption(option => option
+        .setName('sort')
+        .setDescription('sort')
+        .setRequired(true)
+        .addChoices(
+                    { name: 'Random', value: 'sort:random' },
+                    { name: 'Score', value: 'sort:score' },
+                    { name: 'newest', value: 'sort:id:desc' },
+                    { name: 'oldest', value: 'sort:id:asc' },
+                )),
     async execute(interaction, client)  {
         var linkId = "";
         var date1;
-        let tags="-ayanami_rei -nagisa_kaworu ikari_shinji asuka_langley_souryuu -rating:explicit -rating:questionable -futanari -yaoi -bisexual_male -2boys -multiple_boys -pegging -yuri -2girls -multiple_girls -netorare -nude sort:random";
+        let tags="-nagisa_kaworu ikari_shinji asuka_langley_souryuu -rating:explicit -rating:questionable -futanari -yaoi -bisexual_male -2boys -multiple_boys -pegging -yuri -2girls -multiple_girls -netorare -nude 1boy 1girl";
         let linkImg = "";
+        let parentChannel;
+        if(interaction.channel.nsfw == null){
+            parentChannel = client.channels.cache.get(interaction.channel.parentId);
+            if(parentChannel.nsfw){
+                tags = "-nagisa_kaworu ikari_shinji asuka_langley_souryuu rating:explicit -rating:questionable -futanari -yaoi -bisexual_male -2boys -multiple_boys -pegging -yuri -2girls -multiple_girls -netorare -nude -ayanami_rei -solo -violence -domestic_violence -katsuragi_misato -suzuhara_sakura ";
+            }
+        }else{
+
         if(interaction.channel.nsfw){ 
+<<<<<<< Updated upstream
             tags = "-nagisa_kaworu ikari_shinji asuka_langley_souryuu rating:explicit -rating:questionable -futanari -yaoi -bisexual_male -2boys -multiple_boys -pegging -yuri -2girls -multiple_girls -netorare -nude sort:random -ayanami_rei -solo -violence -domestic_violence -katsuragi_misato -suzuhara_sakura ";
+=======
+            tags = "-nagisa_kaworu ikari_shinji asuka_langley_souryuu rating:explicit -rating:questionable -futanari -yaoi -bisexual_male -2boys -multiple_boys -pegging -yuri -2girls -multiple_girls -netorare -nude -ayanami_rei -solo -violence -domestic_violence -katsuragi_misato -suzuhara_sakura ";
+>>>>>>> Stashed changes
             //interaction.reply({content: "Este comando sólo se puede utilizar en los canales marcados como nsfw.", ephemeral:true}); 
             //return; 
         }
-        
+    }
+        let sort = interaction.options.getString('sort');
+        tags = tags + " " + sort; 
         
         GelbooruClient = new Gelbooru(tags);
 /*
@@ -43,7 +67,7 @@ module.exports = {
 */
           let listaGel = new ArrayList();
           try {
-            await GelbooruClient.getPosts(tags, 40, 0).then(post => { // get random post
+            await GelbooruClient.getPosts(tags, 50, 0).then(post => { // get random post
                 console.log("length: "+ post.length)
                 for(i = 0; i <= (post.length-1); i++){
                
@@ -56,7 +80,7 @@ module.exports = {
            }catch(error) {
                console.log(error);
              }
-             console.log(listaGel);
+             
 
     //await interaction.deferReply()
 
@@ -93,13 +117,10 @@ let imgasushin = new EmbedBuilder()
          .setImage(listaGel.get(0).link)
          .setFooter({ text:(buttonstatus + 1) + "/" + (maxStatus + 1)})
 
-let response;
-        //if(listaGel.length == 1){
-        //    response = await interaction.reply({ embeds: [imgasushin]});
-        //    return;
-        //}else{
+        let response;
+  
             response = await interaction.reply({ embeds: [imgasushin], components: [button]});
-       // }
+  
 
         
 

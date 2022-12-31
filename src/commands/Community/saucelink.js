@@ -11,7 +11,7 @@ module.exports = {
 
     data:new SlashCommandBuilder()
     .setName('saucelink')
-    .setDescription('Busca la imagen en sauceNAO)')
+    .setDescription('Busca la imagen en sauceNAO')
     .addStringOption(option => option
         .setName('sauce')
         .setDescription('link de la imagen')
@@ -33,8 +33,8 @@ module.exports = {
                 const results = await sagiriclient(img);
                 const arara = new EmbedBuilder()
                     .setColor('#DC143C')
-                    .setTitle(`Link: ${results[0].url}`)
-                    .setDescription(`similarity: ${results[0].raw.header.similarity}`)
+                    .setTitle(`SAUCE`)
+                    .setDescription(`Link: ${results[0].url}\nsimilarity: ${results[0].raw.header.similarity}`)
                     .setURL(results[0].raw.data.url)
                     .setThumbnail(interaction.user.displayAvatarURL())
                     /*.addFields({

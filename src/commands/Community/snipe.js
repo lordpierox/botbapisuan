@@ -5,8 +5,16 @@ const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('
 module.exports = {
     data:new SlashCommandBuilder()
     .setName('snipe')
-    .setDescription('Recupera los ultimos 5 mensajes eliminados'),
+    .setDescription('Recupera los ultimos 5 mensajes eliminados')
+    .addBooleanOption(option =>
+		option.setName('ephemeral')
+			.setDescription('Respuesta secreta')),
     async execute(interaction, client)  {
+
+        let ephemeral = interaction.options.getBoolean('ephemeral');
+        if(ephemeral == null){
+            ephemeral = false;
+        }
         let comsnipe = global.snipe.clone();
 
         let messArray = new ArrayList();
@@ -109,15 +117,15 @@ module.exports = {
         let response;
 
         if(messArray.length <= 0){
-            response = await interaction.reply({ embeds: [embed0]});
+            response = await interaction.reply({ embeds: [embed0],ephemeral: ephemeral});
             return;
         }
 
         if(messArray.length <= 1){
-             response = await interaction.reply({ embeds: [embed1]});
+             response = await interaction.reply({ embeds: [embed1],ephemeral: ephemeral});
             return;
         }else{
-             response = await interaction.reply({ embeds: [embed1], components: [button]});
+             response = await interaction.reply({ embeds: [embed1], components: [button],ephemeral: ephemeral});
         }
   
         //await interaction.reply({content:'channel:' + chan1 +'  user: '+ userfirst.username + ' message: '+ message1 ,ephemeral: false})
