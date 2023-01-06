@@ -55,120 +55,118 @@ module.exports = {
             await interaction.deferReply()
             tags = " "+ tags + " " + sort
 
-            tags = tags.replace(/ mpe/gi, 'mass_production_eva');
-            tags = tags.replace(/ eva01/gi, 'eva_01');
-            tags = tags.replace(/ eva02/gi, 'eva_02');
-            tags = tags.replace(/ eva03/gi, 'eva_03');
-            tags = tags.replace(/ eva03/gi, 'eva_08');
-            tags = tags.replace(/ eva04/gi, 'eva_01');
-            tags = tags.replace(/ eva05/gi, 'eva_02');
-            tags = tags.replace(/ eva06/gi, 'eva_03');
-            tags = tags.replace(/ eva08/gi, 'eva_08');
-            tags = tags.replace(/ eva09/gi, 'eva_01');
-            tags = tags.replace(/ eva13/gi, 'eva_13');
-            tags = tags.replace(/ lilith/gi, 'lilith_(evangelion)');
-            tags = tags.replace(/ rei_lilith/gi, 'lilith_(ayanami_rei)');
+            tags = tags.replace(/ mpe/gi, 'mass_production_eva ');
+            tags = tags.replace(/ eva01/gi, 'eva_01 ');
+            tags = tags.replace(/ eva02/gi, 'eva_02 ');
+            tags = tags.replace(/ eva03/gi, 'eva_03 ');
+            tags = tags.replace(/ eva04/gi, 'eva_04 ');
+            tags = tags.replace(/ eva05/gi, 'eva_05 ');
+            tags = tags.replace(/ eva06/gi, 'eva_06 ');
+            tags = tags.replace(/ eva08/gi, 'eva_08 ');
+            tags = tags.replace(/ eva09/gi, 'eva_09 ');
+            tags = tags.replace(/ eva13/gi, 'eva_13 ');
+            tags = tags.replace(/ lilith/gi, 'lilith_(evangelion) ');
+            tags = tags.replace(/ rei_lilith/gi, 'lilith_(ayanami_rei) ');
             
-            tags = tags.replace(/ shinji/gi, 'ikari_shinji');
-            tags = tags.replace(/ rei/gi, 'ayanami_rei');
-            tags = tags.replace(/ asuka/gi, 'asuka_langley_souryuu');
-            tags = tags.replace(/ toji/gi, 'suzuhara_touji');
-            tags = tags.replace(/ touji/gi, 'suzuhara_touji');
-            tags = tags.replace(/ mari/gi, 'makinami_mari_illustrious');
-            tags = tags.replace(/ kaworu/gi, 'nagisa_kaworu');
+            tags = tags.replace(/ shinji/gi, 'ikari_shinji ');
+            tags = tags.replace(/ rei/gi, 'ayanami_rei ');
+            tags = tags.replace(/ asuka/gi, 'asuka_langley_souryuu ');
+            tags = tags.replace(/ toji/gi, 'suzuhara_touji ');
+            tags = tags.replace(/ touji/gi, 'suzuhara_touji ');
+            tags = tags.replace(/ mari/gi, 'makinami_mari_illustrious ');
+            tags = tags.replace(/ kaworu/gi, 'nagisa_kaworu ');
 
-            tags = tags.replace(/ gendo/gi, 'ikari_gendou');
-            tags = tags.replace(/ fuyutsuki/gi, 'fuyutsuki_kouzou');
-            tags = tags.replace(/ misato/gi, 'katsuragi_misato');
-            tags = tags.replace(/ ritsuko/gi, 'akagi_ritsuko');
-            tags = tags.replace(/ kaji/gi, 'kaji_ryouji');
-            tags = tags.replace(/ hyuga/gi, 'hyuuga_makoto');
-            tags = tags.replace(/ hyuuga/gi, 'hyuuga_makoto');
-            tags = tags.replace(/ maya/gi, 'ibuki_maya');
-            tags = tags.replace(/ aoba/gi, 'aoba_shigeru');
+            tags = tags.replace(/ gendo/gi, 'ikari_gendou ');
+            tags = tags.replace(/ fuyutsuki/gi, 'fuyutsuki_kouzou ');
+            tags = tags.replace(/ misato/gi, 'katsuragi_misato ');
+            tags = tags.replace(/ ritsuko/gi, 'akagi_ritsuko ');
+            tags = tags.replace(/ kaji/gi, 'kaji_ryouji ');
+            tags = tags.replace(/ hyuga/gi, 'hyuuga_makoto ');
+            tags = tags.replace(/ hyuuga/gi, 'hyuuga_makoto ');
+            tags = tags.replace(/ maya/gi, 'ibuki_maya ');
+            tags = tags.replace(/ aoba/gi, 'aoba_shigeru ');
 
-            tags = tags.replace(/ kensuke/gi, 'aida_kensuke');
-            tags = tags.replace(/ hikari/gi, 'horaki_hikari');
+            tags = tags.replace(/ kensuke/gi, 'aida_kensuke ');
+            tags = tags.replace(/ hikari/gi, 'horaki_hikari ');
 
-            tags = tags.replace(/ naoko/gi, 'akagi_naoko');
-            tags = tags.replace(/ yui/gi, 'ikari_yui');
-            tags = tags.replace(/ kyoko/gi, 'soryu_kyouko_zeppelin');
-            tags = tags.replace(/ kyouko/gi, 'soryu_kyouko_zeppelin');
-            tags = tags.replace(/ keel/gi, 'keel_lorenz');
-            tags = tags.replace(/ lorenz/gi, 'keel_lorenz');
-            tags = tags.replace(/ penpen/gi, 'penpen');
-            tags = tags.replace(/ pen2/gi, 'penpen');
+            tags = tags.replace(/ naoko/gi, 'akagi_naoko ');
+            tags = tags.replace(/ yui/gi, 'ikari_yui ');
+            tags = tags.replace(/ kyoko/gi, 'soryu_kyouko_zeppelin ');
+            tags = tags.replace(/ kyouko/gi, 'soryu_kyouko_zeppelin ');
+            tags = tags.replace(/ keel/gi, 'keel_lorenz ');
+            tags = tags.replace(/ lorenz/gi, 'keel_lorenz ');
+            tags = tags.replace(/ penpen/gi, 'penpen ');
+            tags = tags.replace(/ pen2/gi, 'penpen ');
 
-            tags = tags.replace(/ sumire/gi, 'nagara_sumire');
-            tags = tags.replace(/ koji/gi, 'takao_kouji');
-            tags = tags.replace(/ kouji/gi, 'takao_kouji');
-            tags = tags.replace(/ hideki/gi, 'tama_hideki');
-            tags = tags.replace(/ midori/gi, 'kitakami_midori');
-            tags = tags.replace(/ sakura/gi, 'suzuhara_sakura');
+            tags = tags.replace(/ sumire/gi, 'nagara_sumire ');
+            tags = tags.replace(/ koji/gi, 'takao_kouji ');
+            tags = tags.replace(/ kouji/gi, 'takao_kouji ');
+            tags = tags.replace(/ hideki/gi, 'tama_hideki ');
+            tags = tags.replace(/ midori/gi, 'kitakami_midori ');
+            tags = tags.replace(/ sakura/gi, 'suzuhara_sakura ');
 
-            tags = tags.replace(/ kaede/gi, 'agano_kaede');
-            tags = tags.replace(/ satsuki/gi, 'ooi_satsuki');
-            tags = tags.replace(/ aoi/gi, 'mogami_aoi');
-            tags = tags.replace(/ mana/gi, 'kirishima_mana');
-            tags = tags.replace(/ mayumi/gi, 'yamagishi_mayumi');
+            tags = tags.replace(/ kaede/gi, 'agano_kaede ');
+            tags = tags.replace(/ satsuki/gi, 'ooi_satsuki ');
+            tags = tags.replace(/ aoi/gi, 'mogami_aoi ');
+            tags = tags.replace(/ mana/gi, 'kirishima_mana ');
+            tags = tags.replace(/ mayumi/gi, 'yamagishi_mayumi ');
 
             //TAGS DA ESCLUDERE
-            tags = tags.replace(/-mpe/gi, '-mass_production_eva');
-            tags = tags.replace(/-eva01/gi, '-eva_01');
-            tags = tags.replace(/-eva02/gi, '-eva_02');
-            tags = tags.replace(/-eva03/gi, '-eva_03');
-            tags = tags.replace(/-eva03/gi, '-eva_08');
-            tags = tags.replace(/-eva04/gi, '-eva_01');
-            tags = tags.replace(/-eva05/gi, '-eva_02');
-            tags = tags.replace(/-eva06/gi, '-eva_03');
-            tags = tags.replace(/-eva08/gi, '-eva_08');
-            tags = tags.replace(/-eva09/gi, '-eva_01');
-            tags = tags.replace(/-eva13/gi, '-eva_13');
-            tags = tags.replace(/-lilith/gi, '-lilith_(evangelion)');
-            tags = tags.replace(/-rei_lilith/gi, '-lilith_(ayanami_rei)');
+            tags = tags.replace(/-mpe/gi, '-mass_production_eva ');
+            tags = tags.replace(/-eva01/gi, '-eva_01 ');
+            tags = tags.replace(/-eva02/gi, '-eva_02 ');
+            tags = tags.replace(/-eva03/gi, '-eva_03 ');
+            tags = tags.replace(/-eva04/gi, '-eva_04 ');
+            tags = tags.replace(/-eva05/gi, '-eva_05 ');
+            tags = tags.replace(/-eva06/gi, '-eva_06 ');
+            tags = tags.replace(/-eva08/gi, '-eva_08 ');
+            tags = tags.replace(/-eva09/gi, '-eva_09 ');
+            tags = tags.replace(/-eva13/gi, '-eva_13 ');
+            tags = tags.replace(/-lilith/gi, '-lilith_(evangelion) ');
+            tags = tags.replace(/-rei_lilith/gi, '-lilith_(ayanami_rei) ');
             
-            tags = tags.replace(/-shinji/gi, '-ikari_shinji');
-            tags = tags.replace(/-rei/gi, '-ayanami_rei');
-            tags = tags.replace(/-asuka/gi, '-asuka_langley_souryuu');
-            tags = tags.replace(/-toji/gi, '-suzuhara_touji');
-            tags = tags.replace(/-touji/gi, '-suzuhara_touji');
-            tags = tags.replace(/-mari/gi, '-makinami_mari_illustrious');
-            tags = tags.replace(/-kaworu/gi, '-nagisa_kaworu');
+            tags = tags.replace(/-shinji/gi, '-ikari_shinji ');
+            tags = tags.replace(/-rei/gi, '-ayanami_rei ');
+            tags = tags.replace(/-asuka/gi, '-asuka_langley_souryuu ');
+            tags = tags.replace(/-toji/gi, '-suzuhara_touji ');
+            tags = tags.replace(/-touji/gi, '-suzuhara_touji ');
+            tags = tags.replace(/-mari/gi, '-makinami_mari_illustrious ');
+            tags = tags.replace(/-kaworu/gi, '-nagisa_kaworu ');
 
-            tags = tags.replace(/-gendo/gi, '-ikari_gendou');
-            tags = tags.replace(/-fuyutsuki/gi, '-fuyutsuki_kouzou');
-            tags = tags.replace(/-misato/gi, '-katsuragi_misato');
-            tags = tags.replace(/-ritsuko/gi, '-akagi_ritsuko');
-            tags = tags.replace(/-kaji/gi, '-kaji_ryouji');
-            tags = tags.replace(/-hyuga/gi, '-hyuuga_makoto');
-            tags = tags.replace(/-hyuuga/gi, '-hyuuga_makoto');
-            tags = tags.replace(/-maya/gi, '-ibuki_maya');
-            tags = tags.replace(/-aoba/gi, '-aoba_shigeru');
+            tags = tags.replace(/-gendo/gi, '-ikari_gendou ');
+            tags = tags.replace(/-fuyutsuki/gi, '-fuyutsuki_kouzou ');
+            tags = tags.replace(/-misato/gi, '-katsuragi_misato ');
+            tags = tags.replace(/-ritsuko/gi, '-akagi_ritsuko ');
+            tags = tags.replace(/-kaji/gi, '-kaji_ryouji ');
+            tags = tags.replace(/-hyuga/gi, '-hyuuga_makoto ');
+            tags = tags.replace(/-hyuuga/gi, '-hyuuga_makoto ');
+            tags = tags.replace(/-maya/gi, '-ibuki_maya ');
+            tags = tags.replace(/-aoba/gi, '-aoba_shigeru ');
 
-            tags = tags.replace(/-kensuke/gi, '-aida_kensuke');
-            tags = tags.replace(/-hikari/gi, '-horaki_hikari');
+            tags = tags.replace(/-kensuke/gi, '-aida_kensuke ');
+            tags = tags.replace(/-hikari/gi, '-horaki_hikari ');
 
-            tags = tags.replace(/-naoko/gi, '-akagi_naoko');
-            tags = tags.replace(/-yui/gi, '-ikari_yui');
-            tags = tags.replace(/-kyoko/gi, '-soryu_kyouko_zeppelin');
-            tags = tags.replace(/-kyouko/gi, '-soryu_kyouko_zeppelin');
-            tags = tags.replace(/-keel/gi, '-keel_lorenz');
-            tags = tags.replace(/-lorenz/gi, '-keel_lorenz');
-            tags = tags.replace(/-penpen/gi, '-penpen');
-            tags = tags.replace(/-pen2/gi, '-penpen');
+            tags = tags.replace(/-naoko/gi, '-akagi_naoko ');
+            tags = tags.replace(/-yui/gi, '-ikari_yui ');
+            tags = tags.replace(/-kyoko/gi, '-soryu_kyouko_zeppelin ');
+            tags = tags.replace(/-kyouko/gi, '-soryu_kyouko_zeppelin ');
+            tags = tags.replace(/-keel/gi, '-keel_lorenz ');
+            tags = tags.replace(/-lorenz/gi, '-keel_lorenz ');
+            tags = tags.replace(/-penpen/gi, '-penpen ');
+            tags = tags.replace(/-pen2/gi, '-penpen ');
 
-            tags = tags.replace(/-sumire/gi, '-nagara_sumire');
-            tags = tags.replace(/-koji/gi, '-takao_kouji');
-            tags = tags.replace(/-kouji/gi, '-takao_kouji');
-            tags = tags.replace(/-hideki/gi, '-tama_hideki');
-            tags = tags.replace(/-midori/gi, '-kitakami_midori');
-            tags = tags.replace(/-sakura/gi, '-suzuhara_sakura');
+            tags = tags.replace(/-sumire/gi, '-nagara_sumire ');
+            tags = tags.replace(/-koji/gi, '-takao_kouji ');
+            tags = tags.replace(/-kouji/gi, '-takao_kouji ');
+            tags = tags.replace(/-hideki/gi, '-tama_hideki ');
+            tags = tags.replace(/-midori/gi, '-kitakami_midori ');
+            tags = tags.replace(/-sakura/gi, '-suzuhara_sakura ');
 
-            tags = tags.replace(/-kaede/gi, '-agano_kaede');
-            tags = tags.replace(/-satsuki/gi, '-ooi_satsuki');
-            tags = tags.replace(/-aoi/gi, '-mogami_aoi');
-            tags = tags.replace(/-mana/gi, '-kirishima_mana');
-            tags = tags.replace(/-mayumi/gi, '-yamagishi_mayumi');
+            tags = tags.replace(/-kaede/gi, '-agano_kaede ');
+            tags = tags.replace(/-satsuki/gi, '-ooi_satsuki ');
+            tags = tags.replace(/-aoi/gi, '-mogami_aoi ');
+            tags = tags.replace(/-mana/gi, '-kirishima_mana ');
+            tags = tags.replace(/-mayumi/gi, '-yamagishi_mayumi ');
 
 
             tags = tags.replace(/-rating:general/gi, '');
@@ -192,29 +190,29 @@ module.exports = {
 
                     tags = tags + " " + rating;
 
-                    tags = tags.replace(/penis/gi, '-penis');
-                    tags = tags.replace(/completely_nude/gi, '-completely_nude');
-                    tags = tags.replace(/sex/gi, '-sex');
-                    tags = tags.replace(/futanari/gi, '-futanari');
+                    tags = tags.replace(/penis/gi, '-penis ');
+                    tags = tags.replace(/completely_nude/gi, '-completely_nude ');
+                    tags = tags.replace(/sex/gi, '-sex ');
+                    tags = tags.replace(/futanari/gi, '-futanari ');
 
   
-                    tags = tags.replace(/--penis/gi, '-penis');
-                    tags = tags.replace(/--completely_nude/gi, '-completely_nude');
-                    tags = tags.replace(/--sex/gi, '-sex');
-                    tags = tags.replace(/--futanari/gi, '-futanari');
+                    tags = tags.replace(/--penis/gi, '-penis ');
+                    tags = tags.replace(/--completely_nude/gi, '-completely_nude ');
+                    tags = tags.replace(/--sex/gi, '-sex ');
+                    tags = tags.replace(/--futanari/gi, '-futanari ');
 
                     if(!tags.includes('-penis')){
-                        tags = tags + " -penis"
+                        tags = tags + " -penis "
                     }
                     if(!tags.includes('-completely_nude')){
-                        tags = tags + " -completely_nude"
+                        tags = tags + " -completely_nude "
                     }
                     
                     if(!tags.includes('-sex')){
-                        tags = tags + " -sex"
+                        tags = tags + " -sex "
                     }
                     if(!tags.includes('-futanari')){
-                        tags = tags + " -futanari"
+                        tags = tags + " -futanari "
                     }
                    
                 }else{
@@ -230,29 +228,29 @@ module.exports = {
 
                     tags = tags + " " + rating;
 
-                    tags = tags.replace(/penis/gi, '-penis');
-                    tags = tags.replace(/completely_nude/gi, '-completely_nude');
-                    tags = tags.replace(/sex/gi, '-sex');
-                    tags = tags.replace(/futanari/gi, '-futanari');
+                    tags = tags.replace(/penis/gi, '-penis ');
+                    tags = tags.replace(/completely_nude/gi, '-completely_nude ');
+                    tags = tags.replace(/sex/gi, '-sex ');
+                    tags = tags.replace(/futanari/gi, '-futanari ');
 
   
-                    tags = tags.replace(/--penis/gi, '-penis');
-                    tags = tags.replace(/--completely_nude/gi, '-completely_nude');
-                    tags = tags.replace(/--sex/gi, '-sex');
-                    tags = tags.replace(/--futanari/gi, '-futanari');
+                    tags = tags.replace(/--penis/gi, '-penis ');
+                    tags = tags.replace(/--completely_nude/gi, '-completely_nude ');
+                    tags = tags.replace(/--sex/gi, '-sex ');
+                    tags = tags.replace(/--futanari/gi, '-futanari ');
 
                     if(!tags.includes('-penis')){
-                        tags = tags + " -penis"
+                        tags = tags + " -penis "
                     }
                     if(!tags.includes('-completely_nude')){
-                        tags = tags + " -completely_nude"
+                        tags = tags + " -completely_nude "
                     }
                     
                     if(!tags.includes('-sex')){
-                        tags = tags + " -sex"
+                        tags = tags + " -sex "
                     }
                     if(!tags.includes('-futanari')){
-                        tags = tags + " -futanari"
+                        tags = tags + " -futanari "
                     }
 
                 }else{
