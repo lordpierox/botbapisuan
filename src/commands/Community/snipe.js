@@ -68,7 +68,8 @@ module.exports = {
         .setDescription('' + messArray.get(1))
         .setThumbnail(userAvatar.get(1))
         .setImage(imgArray.get(1))
-        .setFooter({ text:'2 / ' + messArray.length});
+        .setFooter({ text:'2 / ' + messArray.length})
+        .setTimestamp(messDate.get(1));
 
         const embed3 = new EmbedBuilder()
         .setColor('Random')
@@ -76,7 +77,8 @@ module.exports = {
         .setDescription('' + messArray.get(2))
         .setThumbnail(userAvatar.get(2))
         .setImage(imgArray.get(2))
-        .setFooter({ text:'3 / ' + messArray.length});
+        .setFooter({ text:'3 / ' + messArray.length})
+        .setTimestamp(messDate.get(2));
 
         const embed4 = new EmbedBuilder()
         .setColor('Random')
@@ -84,7 +86,8 @@ module.exports = {
         .setDescription('' + messArray.get(3))
         .setThumbnail(userAvatar.get(3))
         .setImage(imgArray.get(3))
-        .setFooter({ text:'4 / ' + messArray.length});
+        .setFooter({ text:'4 / ' + messArray.length})
+        .setTimestamp(messDate.get(3));
 
         const embed5 = new EmbedBuilder()
         .setColor('Random')
@@ -92,7 +95,8 @@ module.exports = {
         .setDescription('' + messArray.get(4))
         .setThumbnail(userAvatar.get(4))
         .setImage(imgArray.get(4))
-        .setFooter({ text:'5 / ' + messArray.length});
+        .setFooter({ text:'5 / ' + messArray.length})
+        .setTimestamp(messDate.get(4));
 
 
         const button = new ActionRowBuilder()

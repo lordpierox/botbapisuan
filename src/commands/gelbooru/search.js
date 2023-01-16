@@ -13,7 +13,7 @@ module.exports = {
 
     data:new SlashCommandBuilder()
     .setName('search')
-    .setDescription('Imagen random de gelbooru)')
+    .setDescription('Imagen random de gelbooru')
     .addStringOption(option => option
         .setName('tags')
         .setDescription('tags example: asuka shinji -kaworu hug happy')
@@ -265,7 +265,7 @@ module.exports = {
         let listaGel = new ArrayList();
        GelbooruClient = new Gelbooru(tags);
 
-       console.log(tags)
+     
        try {
         await GelbooruClient.getPosts(tags, 50, 0).then(post => { // get random post
             

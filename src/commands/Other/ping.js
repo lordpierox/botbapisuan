@@ -6,8 +6,8 @@ module.exports = {
     .setName('ping')
     .setDescription('Pong! Muestra la latencia del bot.'),
     async execute(interaction, client) {
-
       await interaction.deferReply()
+      
          
         let ping = new EmbedBuilder()
          .setDescription(`:ping_pong: Pong! Latencia: **${client.ws.ping} ms**`)

@@ -57,11 +57,11 @@ module.exports = {
           let listaGel = new ArrayList();
           try {
             await GelbooruClient.getPosts(tags, 50, 0).then(post => { // get random post
-                console.log("length: "+ post.length)
+               
                 for(i = 0; i <= (post.length-1); i++){
                
                    listaGel.add(new lista(post[i].id,new Date(""+post[i].created_at),post[i].file_url))
-                    console.log(i);
+                 
                 }
                }); 
     
