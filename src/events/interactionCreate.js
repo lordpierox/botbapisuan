@@ -3,6 +3,9 @@ const { Interaction } = require("discord.js");
 module.exports = {
     name: 'interactionCreate',
     async execute(interaction, client) {
+        let date = new Date().toJSON();
+        console.log("("+interaction.user.username + ") ha usato (" + interaction.commandName + ") alle (" + date+").")
+        
         if (!interaction.isCommand()) return;
 
         const command = client.commands.get(interaction.commandName);

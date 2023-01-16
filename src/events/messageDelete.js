@@ -15,14 +15,10 @@ module.exports = {
     async execute(client, message, messageDelete) {
         try{
 
-       
-
-        
             let imgurl;
         try{
         if (client.channel.type === 'DM') return;
         if (client.author.bot) return;
-        console.log(client.author)
         }catch(error){
             console.log(error);
         }
@@ -44,6 +40,7 @@ module.exports = {
         if(client.content == ''){
             client.content = ' ';
         }
+        console.log("DELETED! User: " + client.author.username + ", Message: " + client.content);
         global.snipe.add(new snipeado(client.channel.id,client.author.id,client.content,imgurl,client.createdTimestamp))
         
         //global.snipe.add(client.channel.id, client.content);
