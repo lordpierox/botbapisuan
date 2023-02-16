@@ -47,7 +47,7 @@ module.exports = {
 
 
         await interaction.deferReply()
-        
+
         let sort = interaction.options.getString('sort');
         tags = tags + " " + sort; 
         
@@ -120,11 +120,8 @@ let imgasushin = new EmbedBuilder()
 
         let response;
   
-            response = await interaction.reply({ embeds: [imgasushin], components: [button]});
+        response = await interaction.followUp({ embeds: [imgasushin], components: [button]});
   
-
-        
-
 
         const collector = await response.createMessageComponentCollector();
 
