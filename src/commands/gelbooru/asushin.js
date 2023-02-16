@@ -43,6 +43,11 @@ module.exports = {
             //return; 
         }
     }
+
+
+
+        await interaction.deferReply()
+        
         let sort = interaction.options.getString('sort');
         tags = tags + " " + sort; 
         
@@ -78,7 +83,7 @@ module.exports = {
              }
              
 
-    //await interaction.deferReply()
+    
 
     
 

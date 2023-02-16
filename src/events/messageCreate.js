@@ -1,0 +1,30 @@
+const {Client, GatewayIntentBits, EmbedBuilder, PermissionsBitField, Permissions, MessageManager, Embed, Collection, ActivityType } = require('discord.js');
+
+//const fetch = require('node-fetch');
+//API_URL = 'https://api-inference.huggingface.co/models/r3dhummingbird/DialoGPT-medium-joshua';
+//API_URL = 'https://api-inference.huggingface.co/models/CompVis/stable-diffusion-v1-4';
+
+module.exports = {
+    name: 'messageCreate',
+    on: true,
+    async execute(client, message, messageCreate) {
+        if (client.type == 20 && client.channel.id == "1032780435425603614" && client.interaction.commandName == "bump") {
+            //console.log(client)
+            try{
+            const guild = await message.guilds.cache.get(client.guildId);
+      	    const member = await guild.members.cache.get(client.interaction.user.id);
+
+            
+            member.roles.add("1075621882591715419");
+            }catch(error){
+                console.log(error)
+            }
+            
+        }
+        
+
+
+       
+    
+    },
+};
