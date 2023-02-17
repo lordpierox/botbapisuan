@@ -16,6 +16,7 @@ module.exports = {
 
             
             member.roles.add("1075621882591715419");
+            setTimeout(() => member.roles.remove("1075621882591715419"), 10000);
             }catch(error){
                 console.log(error)
             }
