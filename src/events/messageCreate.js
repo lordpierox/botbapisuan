@@ -8,7 +8,7 @@ module.exports = {
     name: 'messageCreate',
     on: true,
     async execute(client, message, messageCreate) {
-        if (client.type == 20 && client.channel.id == "1032780435425603614" && client.interaction.commandName == "bump") {
+        if (client.type == 20 && client.channel.id == "1044118221881606224" && client.interaction.commandName == "top") {
             //console.log(client)
             try{
             console.log("bump detectado")
@@ -24,7 +24,7 @@ module.exports = {
 
             
             member.roles.add("1075621882591715419");
-            setTimeout(() => member.roles.remove("1075621882591715419"), 7000000);
+            setTimeout(() => member.roles.remove("1075621882591715419"), 8000);
             }catch(error){
                 console.log(error)
             }
