@@ -8,7 +8,7 @@ module.exports = {
     name: 'messageCreate',
     on: true,
     async execute(client, message, messageCreate) {
-        if (client.type == 20 && client.channel.id == "1032780435425603614" && client.interaction.commandName == "bump") {
+        if (client.type == 20 && client.channel.id == "1058231916601556992" && client.interaction.commandName == "animals cat") {
             //console.log(client)
             try{
             const guild = await message.guilds.cache.get(client.guildId);
