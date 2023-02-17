@@ -8,15 +8,22 @@ module.exports = {
     name: 'messageCreate',
     on: true,
     async execute(client, message, messageCreate) {
-        if (client.type == 20 && client.channel.id == "1058231916601556992" && client.interaction.commandName == "animals cat") {
+        if (client.type == 20 && client.channel.id == "1032780435425603614" && client.interaction.commandName == "bump") {
             //console.log(client)
             try{
+            var member;
             const guild = await message.guilds.cache.get(client.guildId);
-      	    const member = await guild.members.cache.get(client.interaction.user.id);
+      	    
+            await guild.members.cache.forEach(member => {
+
+                member.roles.remove("1075621882591715419");
+                });
+            
+            member = await guild.members.cache.get(client.interaction.user.id);
 
             
             member.roles.add("1075621882591715419");
-            setTimeout(() => member.roles.remove("1075621882591715419"), 10000);
+            setTimeout(() => member.roles.remove("1075621882591715419"), 7000000);
             }catch(error){
                 console.log(error)
             }
