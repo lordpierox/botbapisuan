@@ -21,10 +21,14 @@ module.exports = {
                 });
             
             member = await guild.members.cache.get(client.interaction.user.id);
+            if(member == null){
+                console.log("member null")
+            }{
 
+            }
             
             member.roles.add("1075621882591715419");
-            setTimeout(() => member.roles.remove("1075621882591715419"), 8000);
+            setTimeout(() => member.roles.remove("1075621882591715419"), 7200000);
             }catch(error){
                 console.log(error)
             }
