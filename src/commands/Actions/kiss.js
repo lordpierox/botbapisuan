@@ -27,7 +27,7 @@ module.exports = {
         answer = interaction.user.username + " le da un beso a " + theUser.username + "!";
 
         if(interaction.user.username === theUser.username){
-            answer = "Evaships le dispara a " + interaction.user.username;
+            answer = "Evaships le da un beso a " + interaction.user.username;
         }
     }
         console.log("numero di choice: "+ choice[ran]);

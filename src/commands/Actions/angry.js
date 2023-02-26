@@ -11,6 +11,8 @@ module.exports = {
         .setRequired(false)),
     async execute(interaction, client)  {
 
+    await interaction.deferReply()
+
     const choice = [
     "https://media.tenor.com/Y2NwuJ_RuZIAAAAC/shinji-ikari-shinji.gif",
     "https://media.tenor.com/OadWktdQXl0AAAAC/evangelion-angry.gif",
@@ -33,18 +35,17 @@ module.exports = {
     "https://64.media.tumblr.com/5a60e7665ea22814ebe591d1d5543065/tumblr_mnbsvuWMvr1qjhmoto1_500.gif",
     "https://64.media.tumblr.com/fa9126cef8d52a8e41c43cc598a48239/801cac7ecbd174c3-c4/s540x810/b52520b095a0e488a3fdd25a1fc2b0f54a12c286.gif",
     "https://media.tenor.com/GYD_DkhKadkAAAAC/asuka.gif"];
-    var ran = Math.floor(Math.random()*choice.length);;
-    await interaction.deferReply()
 
-    var answer = " esta enfadado!";
+    var ran = Math.floor(Math.random()*choice.length);;
+    var answer = " está enfadado!";
+   
     if(interaction.options.getUser('user') !== null){
         var theUser = await interaction.options.getUser('user');
         answer = " quiere desatar su ira contra " + theUser.username + "!";
         if(interaction.user.username === theUser.username){
-            answer = " quiere desatar su ira contra " + theUser.username + "! (esta crazy)";
+            answer = " quiere desatar su ira contra " + theUser.username + "! (está crazy)";
         }
     }
-        console.log("numero di choice: "+ choice[ran]);
     let angry = new EmbedBuilder()
          
          .setDescription(interaction.user.username + answer)

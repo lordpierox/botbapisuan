@@ -19,7 +19,7 @@ module.exports = {
     var ran = Math.floor(Math.random()*choice.length);;
     await interaction.deferReply()
 
-    var answer = interaction.user.username + " esta aplaudiendo!";
+    var answer = interaction.user.username + " está aplaudiendo!";
     if(interaction.options.getUser('user') !== null){
         var theUser = await interaction.options.getUser('user');
         answer = interaction.user.username + " le aplaude a " + theUser.username + "!";

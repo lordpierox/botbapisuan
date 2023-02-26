@@ -22,7 +22,7 @@ module.exports = {
     var ran = Math.floor(Math.random()*choice.length);;
     await interaction.deferReply()
 
-    var answer = " esta comiendo.";
+    var answer = " está comiendo.";
     
         console.log("numero di choice: "+ choice[ran]);
     let blush = new EmbedBuilder()
