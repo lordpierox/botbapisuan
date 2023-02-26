@@ -8,7 +8,7 @@ module.exports = {
     name: 'messageCreate',
     on: true,
     async execute(client, message, messageCreate) {
-        if (client.type == 20 && client.channel.id == "1032780435425603614" && client.interaction.commandName == "asushin") {
+        if (client.type == 20 && client.channel.id == "1032780435425603614" && client.interaction.commandName == "bump") {
             //console.log(client)
             try{
                 console.log("bump detectado")
