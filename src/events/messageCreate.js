@@ -23,11 +23,11 @@ module.exports = {
                 member = await guild.members.cache.get(client.interaction.user.id);
                 const channel = await client.channel;
                 if(member == null || member  == undefined){
-                    await channel.send("Member.Id no encontrado dx.");         
+                    await channel.send("Lilim no encontrado dx.");         
                 }else{
                     member.roles.add("1075621882591715419");
                     setTimeout(() => member.roles.remove("1075621882591715419"), 7200000);
-                    await channel.send(client.interaction.user.username + " ha obtenido el rol vip! :sunglasses:");
+                    //await channel.send(client.interaction.user.username + " ha obtenido el rol vip! :sunglasses:");
 
                 }
             
