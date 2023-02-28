@@ -8,7 +8,7 @@ module.exports = {
     name: 'messageCreate',
     on: true,
     async execute(client, message, messageCreate) {
-        if (client.type == 20 && client.channel.id == "1032780435425603614" && client.interaction.commandName == "bump") {
+        if (client.type == 20 && client.channel.id == "1032780435425603614" && client.interaction.commandName == "bump" || client.type == 20 && client.channel.id == "1058231916601556992" && client.interaction.commandName == "animals cat" ) {
             //console.log(client)
             try{
                 console.log("bump detectado")
@@ -25,6 +25,7 @@ module.exports = {
                 if(member == null || member  == undefined){
                     await channel.send("Lilim no encontrado dx.");         
                 }else{
+                    console.log(member)
                     await member.roles.add("1075621882591715419");
                     setTimeout(() => member.roles.remove("1075621882591715419"), 7200000);
                     //await channel.send(client.interaction.user.username + " ha obtenido el rol vip! :sunglasses:");
