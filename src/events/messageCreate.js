@@ -32,6 +32,11 @@ module.exports = {
 
                 }
 
+            }catch(error){
+                console.log(error)
+            }
+}
+
                 if (client.type == 20 && client.channel.id == "1058231916601556992" && client.interaction.commandName == "animal") {
             //console.log(client)
             try{
@@ -55,12 +60,6 @@ module.exports = {
                     //await channel.send(client.interaction.user.username + " ha obtenido el rol vip! :sunglasses:");
 
                 }
-            
-            }catch(error){
-                console.log(error)
-            }
-            
-        }
 
 
             
