@@ -8,68 +8,39 @@ module.exports = {
     name: 'messageCreate',
     on: true,
     async execute(client, message, messageCreate) {
-        if (client.type == 20 && client.channel.id == "1032780435425603614" && client.interaction.commandName == "bump") {
-            //console.log(client)
-            try{
-                console.log("bump detectado")
-                var member;
-                const guild = await message.guilds.cache.get(client.guildId);
+        try{
+            if (client.type == 20 && client.channel.id == "1032780435425603614" && client.interaction.commandName == "bump") {
+                //console.log(client)
+               
+                    console.log("bump detectado")
+                    var member;
+                    const guild = await message.guilds.cache.get(client.guildId);
+                    
+                    await guild.members.cache.forEach(member => {
+    
+                        member.roles.remove("1075621882591715419");
+                        });
+                    
+                    member = await guild.members.cache.get(client.interaction.user.id);
+                    const channel = await client.channel;
+                    if(member == null || member  == undefined){
+                        await channel.send("Lilim no encontrado dx.");         
+                    }else{
+                        console.log(member)
+                        setTimeout(() => member.roles.add("1075621882591715419"), 8000);
+                        setTimeout(() => member.roles.remove("1075621882591715419"), 7200000);
+                        //await channel.send(client.interaction.user.username + " ha obtenido el rol vip! :sunglasses:");
+    
+                    }
+    
                 
-                await guild.members.cache.forEach(member => {
-
-                    member.roles.remove("1075621882591715419");
-                    });
-                
-                member = await guild.members.cache.get(client.interaction.user.id);
-                const channel = await client.channel;
-                if(member == null || member  == undefined){
-                    await channel.send("Lilim no encontrado dx.");         
-                }else{
-                    console.log(member)
-                    await member.roles.add("1075621882591715419");
-                    setTimeout(() => member.roles.remove("1075621882591715419"), 7200000);
-                    //await channel.send(client.interaction.user.username + " ha obtenido el rol vip! :sunglasses:");
-
                 }
-
-            }catch(error){
-                console.log(error)
-            }
-}
-
-                if (client.type == 20 && client.channel.id == "1058231916601556992" && client.interaction.commandName == "animal") {
-            //console.log(client)
-            try{
-                console.log("bump detectado")
-                var member;
-                const guild = await message.guilds.cache.get(client.guildId);
-                
-                await guild.members.cache.forEach(member => {
-
-                    member.roles.remove("1075621882591715419");
-                    });
-                
-                member = await guild.members.cache.get(client.interaction.user.id);
-                const channel = await client.channel;
-                if(member == null || member  == undefined){
-                    await channel.send("Lilim no encontrado dx.");         
-                }else{
-                    console.log(member)
-                    await member.roles.add("1075621882591715419");
-                    setTimeout(() => member.roles.remove("1075621882591715419"), 7200000);
-                    //await channel.send(client.interaction.user.username + " ha obtenido el rol vip! :sunglasses:");
-
-                }
-
+    
 
             
-            }catch(error){
-                console.log(error)
-            }
-            
+        }catch(error){
+            console.log(error)
         }
-        
-
 
        
     
