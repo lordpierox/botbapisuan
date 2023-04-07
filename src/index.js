@@ -14,7 +14,8 @@ const commandFolders = fs.readdirSync("./src/commands");
 
 global.snipe = new ArrayList();
 global.snipe_user = new ArrayList();
-
+global.snipe_bot = new ArrayList();
+global.snipe_bot_user = new ArrayList();
 
 
 (async () => {

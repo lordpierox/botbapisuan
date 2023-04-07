@@ -8,6 +8,14 @@ function snipeado(chan, user, cont,url, date) {
     this.url = url;
     this.date = date;
   }
+  function snipeadobot(chan, user, cont,url, date, embed) {
+    this.chan = chan;
+    this.user = user;
+    this.cont = cont;
+    this.url = url;
+    this.date = date;
+    this.embed = embed;
+  }  
 
 module.exports = {
     name: 'messageDelete',
@@ -16,9 +24,12 @@ module.exports = {
         try{
 
             let imgurl;
+            let is_a_bot = false;
         try{
         if (client.channel.type === 'DM') return;
-        if (client.author.bot) return;
+        if (client.author.bot){
+            is_a_bot = true;
+        };
         }catch(error){
             console.log(error);
         }
@@ -40,13 +51,15 @@ module.exports = {
         if(client.content == ''){
             client.content = ' ';
         }
+        if(is_a_bot){
+            console.log("DELETED! User: " + client.author.username + ", Message: " + client.content);
+            global.snipe_bot.add(new snipeadobot(client.channel.id,client.author.id,client.content,imgurl,client.createdTimestamp,client.embeds))
+        
+        }else{
         console.log("DELETED! User: " + client.author.username + ", Message: " + client.content);
         global.snipe.add(new snipeado(client.channel.id,client.author.id,client.content,imgurl,client.createdTimestamp))
-        
-        //global.snipe.add(client.channel.id, client.content);
-        //global.snipe_user.add(client.channel.id, client.author.id);
-        
-
+        }
+        console.log()
     }catch(error){
         console.log(error);
     }
