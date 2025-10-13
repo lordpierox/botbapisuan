@@ -1,29 +1,37 @@
 const { SlashCommandBuilder, AttachmentBuilder } = require('discord.js');
-const { DIG } = require('discord-image-generation');
+const axios = require('axios');
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName('trigger')
-        .setDescription('Crea una imagen triggered')
-        .addUserOption(option => option
-            .setName('usuario')
-            .setDescription('Usuario a triggear')
-            .setRequired(false)),
+        .setName('triggered')
+        .setDescription('Genera un GIF triggered')
+        .addUserOption(option => 
+            option.setName('utente')
+                .setDescription('Utente da triggerare')
+                .setRequired(false)),
     
-    async execute(interaction, client) {
+    async execute(interaction) {
         await interaction.deferReply();
         
-        const user = interaction.options.getUser('usuario') || interaction.user;
+        const user = interaction.options.getUser('utente') || interaction.user;
         const avatar = user.displayAvatarURL({ extension: 'png', size: 512 });
         
+        const url = `https://api.popcat.xyz/triggered?image=${encodeURIComponent(avatar)}`;
+        
         try {
-            const img = await new DIG.Triggered().getImage(avatar);
-            const attachment = new AttachmentBuilder(img, { name: 'triggered.gif' });
+            const response = await axios.get(url, { 
+                responseType: 'arraybuffer',
+                timeout: 10000
+            });
             
-            await interaction.followUp({ files: [attachment] });
+            const attachment = new AttachmentBuilder(Buffer.from(response.data), { 
+                name: 'triggered.gif' 
+            });
+            
+            await interaction.editReply({ files: [attachment] });
         } catch (error) {
             console.error(error);
-            await interaction.followUp('Error al generar la imagen!');
+            await interaction.editReply('Errore nel generare l\'immagine');
         }
     }
 };

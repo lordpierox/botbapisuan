@@ -1,29 +1,34 @@
-const ArrayList = require('arraylist');
-const { Client, GatewayIntentBits, EmbedBuilder, PermissionsBitField, Permissions, MessageManager, Embed, Collection, ActivityType } = require(`discord.js`);
+const { Client, GatewayIntentBits, Collection } = require('discord.js');
 const fs = require('fs');
-const client = new Client({ intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent] }); 
+require('dotenv').config();
+
+const client = new Client({ 
+    intents: [
+        GatewayIntentBits.Guilds, 
+        GatewayIntentBits.GuildMessages, 
+        GatewayIntentBits.MessageContent
+    ] 
+});
 
 client.commands = new Collection();
 
-require('dotenv').config();
+// Inizializza gli array globali per snipe (senza ArrayList)
+if (!global.snipe) global.snipe = [];
+if (!global.snipe_user) global.snipe_user = [];
+if (!global.snipe_bot) global.snipe_bot = [];
+if (!global.snipe_bot_user) global.snipe_bot_user = [];
 
 const functions = fs.readdirSync("./src/functions").filter(file => file.endsWith(".js"));
 const eventFiles = fs.readdirSync("./src/events").filter(file => file.endsWith(".js"));
 const commandFolders = fs.readdirSync("./src/commands");
 
-
-global.snipe = new ArrayList();
-global.snipe_user = new ArrayList();
-global.snipe_bot = new ArrayList();
-global.snipe_bot_user = new ArrayList();
-
-
 (async () => {
-    for (file of functions) {
+    for (const file of functions) {
         require(`./functions/${file}`)(client);
     }
+
     client.handleEvents(eventFiles, "./src/events");
     client.handleCommands(commandFolders, "./src/commands");
-    client.login(process.env.token)
-})();
 
+    client.login(process.env.token);
+})();
