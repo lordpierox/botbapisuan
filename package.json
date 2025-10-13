@@ -12,8 +12,7 @@
   "dependencies": {
     "discord.js": "^14.14.1",
     "dotenv": "^16.0.3",
-    "gelbooru-api": "^0.4.7",
-    "arraylist": "^0.1.0",
+    "booru": "^2.6.3",
     "sagiri": "^3.1.1",
     "discord-image-generation": "^1.4.25"
   }
