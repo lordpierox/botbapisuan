@@ -3,12 +3,12 @@ const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('snipebot')
-        .setDescription('Mostra l\'ultimo messaggio di bot cancellato'),
+        .setDescription('Muestra el último mensaje eliminado de un bot en el canal actual'),
 
     async execute(interaction, client) {
         if (!global.snipe_bot || global.snipe_bot.length === 0) {
             await interaction.reply({ 
-                content: 'Non ci sono messaggi bot da snipare', 
+                content: 'No hay mensajes eliminados para mostrar', 
                 ephemeral: true 
             });
             return;
@@ -19,7 +19,7 @@ module.exports = {
         
         if (channelSnipes.length === 0) {
             await interaction.reply({ 
-                content: 'Non ci sono messaggi bot cancellati in questo canale', 
+                content: 'No hay mensajes eliminados para mostrar en este canal', 
                 ephemeral: true 
             });
             return;
@@ -34,7 +34,7 @@ module.exports = {
                 name: user.username, 
                 iconURL: user.displayAvatarURL() 
             })
-            .setDescription(lastSnipe.cont || 'Nessun contenuto testuale')
+            .setDescription(lastSnipe.cont || 'Ningun contenido')
             .setTimestamp(lastSnipe.date)
             .setFooter({ text: `Sniped by ${interaction.user.username}` });
 

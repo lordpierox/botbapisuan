@@ -204,6 +204,6 @@ class Gelbooru {
         })
     }
 
-}
+} 
 
 module.exports = Gelbooru;

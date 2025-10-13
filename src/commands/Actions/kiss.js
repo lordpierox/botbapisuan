@@ -3,7 +3,7 @@ const { EmbedBuilder } = require('discord.js')
 
 module.exports = {
     data:new SlashCommandBuilder()
-    .setName('kiss')
+    .setName('acto kiss besar')
     .setDescription('Reaccion')
     .addUserOption(option => option
         .setName('user')
@@ -21,7 +21,7 @@ module.exports = {
     var ran = Math.floor(Math.random()*choice.length);;
     await interaction.deferReply()
 
-    var answer = "Evaships le da un beso a " + interaction.user.username;
+    var answer = "SukiBaka le da un beso a " + interaction.user.username;
     if(interaction.options.getUser('user') !== null){
         var theUser = await interaction.options.getUser('user');
         answer = interaction.user.username + " le da un beso a " + theUser.username + "!";

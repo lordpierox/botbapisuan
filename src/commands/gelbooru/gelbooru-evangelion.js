@@ -6,8 +6,8 @@ module.exports = {
         .setName('gelbooru-evangelion')
         .setDescription('Cerca immagini Evangelion su Gelbooru')
         .addStringOption(option => option
-            .setName('pairing')
-            .setDescription('Scegli la pairing/personaggio')
+            .setName('Tags')
+            .setDescription('Selecciona los tags')
             .setRequired(true)
             .addChoices(
                 { name: 'Asushin (Asuka x Shinji)', value: 'asushin' },
@@ -22,13 +22,13 @@ module.exports = {
             ))
         .addStringOption(option => option
             .setName('sort')
-            .setDescription('Ordinamento')
+            .setDescription('Ordenar por')
             .setRequired(true)
             .addChoices(
                 { name: 'Random', value: 'sort:random' },
-                { name: 'Score', value: 'sort:score' },
-                { name: 'Più recenti', value: 'sort:id:desc' },
-                { name: 'Più vecchi', value: 'sort:id:asc' }
+                { name: 'Calificacion', value: 'sort:score' },
+                { name: 'Mas Recientes', value: 'sort:id:desc' },
+                { name: 'Mas Viejos', value: 'sort:id:asc' }
             )),
 
     async execute(interaction, client) {
@@ -63,7 +63,7 @@ module.exports = {
         // Controlla NSFW per comandi NSFW
         if (pairing.startsWith('nsfw_')) {
             if (!interaction.channel.nsfw && !(interaction.channel.parent && interaction.channel.parent.nsfw)) {
-                await interaction.editReply('Questo comando può essere usato solo in canali NSFW');
+                await interaction.editReply('Este comando solo se puede usar en canales NSFW');
                 return;
             }
         }
@@ -72,7 +72,7 @@ module.exports = {
         const posts = await searchGelbooru(tags, 50);
 
         if (!posts || posts.length === 0) {
-            await interaction.editReply('Nessuna immagine trovata per questa pairing');
+            await interaction.editReply('No se encontraron resultados para los tags proporcionados.');
             return;
         }
 
@@ -113,7 +113,7 @@ module.exports = {
         collector.on('collect', async i => {
             if (i.user.id !== interaction.user.id) {
                 return await i.reply({ 
-                    content: `Solo ${interaction.user.tag} può usare questi bottoni`, 
+                    content: `Solo ${interaction.user.tag} Puede Usar Estos Botones`, 
                     flags: 64
                 });
             }

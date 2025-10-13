@@ -4,7 +4,7 @@ const { searchGelbooru } = require('../../utils/gelbooru');
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('search')
-        .setDescription('Cerca immagini su Gelbooru')
+        .setDescription('Busca imágenes en Gelbooru')
         .addStringOption(option => option
             .setName('tags')
             .setDescription('Tags (es: asuka shinji -kaworu hug happy)')
@@ -14,8 +14,8 @@ module.exports = {
             .setDescription('Rating')
             .setRequired(true)
             .addChoices(
-                { name: 'SFW (general e sensitive)', value: '-rating:explicit -rating:questionable' },
-                { name: 'NSFW (questionable e explicit)', value: '-rating:general -rating:sensitive' },
+                { name: 'SFW (general y sensitive)', value: '-rating:explicit -rating:questionable' },
+                { name: 'NSFW (questionable y explicit)', value: '-rating:general -rating:sensitive' },
                 { name: 'General', value: 'rating:general' },
                 { name: 'Sensitive', value: 'rating:sensitive' },
                 { name: 'Questionable', value: 'rating:questionable' },
@@ -28,8 +28,8 @@ module.exports = {
             .addChoices(
                 { name: 'Random', value: 'sort:random' },
                 { name: 'Score', value: 'sort:score' },
-                { name: 'Più recenti', value: 'sort:id:desc' },
-                { name: 'Più vecchi', value: 'sort:id:asc' }
+                { name: 'Mas Recientes', value: 'sort:id:desc' },
+                { name: 'Mas Viejos', value: 'sort:id:asc' }
             )),
 
     async execute(interaction, client) {
@@ -75,7 +75,7 @@ module.exports = {
             if (rating === '-rating:general -rating:sensitive' || 
                 rating === 'rating:questionable' || 
                 rating === 'rating:explicit') {
-                await interaction.editReply('Questo comando può essere usato solo in canali NSFW');
+                await interaction.editReply('Este comando solo se puede usar en canales NSFW');
                 return;
             }
             tags += ' -penis -completely_nude -sex -futanari -breasts -nipples -nude';
@@ -128,7 +128,7 @@ module.exports = {
         collector.on('collect', async i => {
             if (i.user.id !== interaction.user.id) {
                 return await i.reply({ 
-                    content: `Solo ${interaction.user.tag} può usare questi bottoni`, 
+                    content: `Solo ${interaction.user.tag} Puede Usar Estos Botones`, 
                     flags: 64 // ephemeral
                 });
             }

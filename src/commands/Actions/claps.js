@@ -3,7 +3,7 @@ const { EmbedBuilder } = require('discord.js')
 
 module.exports = {
     data:new SlashCommandBuilder()
-    .setName('claps')
+    .setName('acto claps aplaudir')
     .setDescription('Reaccion')
     .addUserOption(option => option
         .setName('user')

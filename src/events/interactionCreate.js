@@ -14,10 +14,10 @@ module.exports = {
         try {
             await command.execute(interaction, client);
         } catch (error) {
-            console.error('Errore durante esecuzione comando:', error);
+            console.error('NOOOOOOO el gato pateo el modem:', error);
             
             const errorMessage = {
-                content: 'Si è verificato un errore durante l\'esecuzione del comando!',
+                content: 'En efecto, el gato pateo el modem .',
                 flags: 64 // ephemeral
             };
             
@@ -30,7 +30,7 @@ module.exports = {
                     await interaction.reply(errorMessage);
                 }
             } catch (replyError) {
-                console.error('Impossibile inviare messaggio di errore:', replyError.message);
+                console.error('Estan hackeando mi head:', replyError.message);
             }
         }
     },

@@ -7,10 +7,10 @@ const sagiriclient = sagiri("a10473b382ec6bd5a8187816dfc48b3226a4a96b");
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('sauceimg')
-        .setDescription('Cerca l\'immagine su SauceNAO')
+        .setDescription('Buscar la imagen en SauceNAO')
         .addAttachmentOption(option => option
             .setName('sauce')
-            .setDescription('Immagine da cercare')
+            .setDescription('Imagen a buscar')
             .setRequired(true)),
 
     async execute(interaction, client) {
@@ -19,7 +19,7 @@ module.exports = {
 
         if (!interaction.channel.nsfw) {
             await interaction.reply({
-                content: "Questo comando può essere usato solo in canali NSFW.",
+                content: "Este Comando solo se puede usar en canales NSFW",
                 ephemeral: true
             });
             return;
@@ -32,7 +32,7 @@ module.exports = {
             
             if (!results || results.length === 0) {
                 await interaction.followUp({
-                    content: "Nessun risultato trovato",
+                    content: "No se encontraron resultados",
                     ephemeral: true
                 });
                 return;
@@ -51,7 +51,7 @@ module.exports = {
         } catch (e) {
             console.error(e);
             await interaction.followUp({
-                content: "Errore nella ricerca dell'immagine",
+                content: "Error al buscar la imagen",
                 ephemeral: true
             });
         }
