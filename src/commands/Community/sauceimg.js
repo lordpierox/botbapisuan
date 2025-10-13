@@ -1,95 +1,59 @@
-const sagiri = require('sagiri')
-const { SlashCommandBuilder } = require('@discordjs/builders')
-const { EmbedBuilder, Client } = require('discord.js')
+const sagiri = require('sagiri');
+const { SlashCommandBuilder } = require('discord.js');
+const { EmbedBuilder } = require('discord.js');
 
 const sagiriclient = sagiri("a10473b382ec6bd5a8187816dfc48b3226a4a96b");
-const nhentai = require('nhentai');
-
-const extractUrls = require("extract-urls");
 
 module.exports = {
+    data: new SlashCommandBuilder()
+        .setName('sauceimg')
+        .setDescription('Cerca l\'immagine su SauceNAO')
+        .addAttachmentOption(option => option
+            .setName('sauce')
+            .setDescription('Immagine da cercare')
+            .setRequired(true)),
 
-    data:new SlashCommandBuilder()
-    .setName('sauceimg')
-    .setDescription('Busca la imagen en sauceNAO')
-    .addAttachmentOption(option => option
-        .setName('sauce')
-        .setDescription('imagen')
-        .setRequired(true)),
-    async execute(interaction, client)  {
-        
-        let img = interaction.options.getAttachment("sauce");
-        let salsa = img.url;
-        if(!interaction.channel.nsfw){ 
-            interaction.reply({content: "Este comando sólo se puede utilizar en los canales marcados como nsfw.", ephemeral:true}); 
-            return; 
+    async execute(interaction, client) {
+        const img = interaction.options.getAttachment("sauce");
+        const salsa = img.url;
+
+        if (!interaction.channel.nsfw) {
+            await interaction.reply({
+                content: "Questo comando può essere usato solo in canali NSFW.",
+                ephemeral: true
+            });
+            return;
         }
-       
 
-        //img.forEach(async Attachment => {
-            try {
-                await interaction.deferReply();
-                
-                const results = await sagiriclient(salsa);
-                const arara = new EmbedBuilder()
-                    .setColor('#DC143C')
-                    .setTitle(`SAUCE`)
-                    .setDescription(`Link: ${results[0].url}\nsimilarity: ${results[0].raw.header.similarity}`)
-                    .setURL(results[0].raw.data.url)
-                    .setThumbnail(interaction.user.displayAvatarURL())
-                    /*.addFields({
-                        name: 'Source',
-                        value: `${results[0].raw.data.source}`
-                    }, {
-                        name: '\u200B',
-                        value: '\u200B'
-                    }, {
-                        name: 'Similarity',
-                        value: `${results[0].raw.header.similarity}`,
-                        inline: true
-                    }, {
-                        name: 'Part/EP',
-                        value: `${results[0].raw.data.part}`,
-                        inline: true
-                    }, {
-                        name: '\u200B',
-                        value: '\u200B'
-                    }, {
-                        name: 'Release',
-                        value: `${results[0].raw.data.year}`,
-                        inline: true
-                    }, {
-                        name: 'Time Stamp',
-                        value: `${results[0].raw.data.est_time}`,
-                        inline: true
-                    }, )*/
-                    .setImage(results[0].raw.header.thumbnail)
-                    //.setFooter('Requested by: suki');
-                    interaction.followUp({ embeds: [arara] })
-            } catch (e) {
-                interaction.followUp({content: "Error", ephemeral:true}); 
-                console.log(e);
-                return; 
-
-            }
-        //})
-/*
-            try{
-             await interaction.deferReply()
+        try {
+            await interaction.deferReply();
             
-             let imgasurei = new EmbedBuilder()
-                   .setTitle("SAUCE")
-                  .setColor("Random")
-                  .setDescription("COSAAA")
-                  //.setImage()
-                  .setFooter({ text:"SukiBot"})
-         
-             interaction.followUp({ embeds: [imgasurei] })
-            }catch(error) {
-                console.log(error);
-                interaction.followUp({content: "Error", ephemeral:true}); 
-                 return; 
-              }*/
-             },
+            const results = await sagiriclient(salsa);
+            
+            if (!results || results.length === 0) {
+                await interaction.followUp({
+                    content: "Nessun risultato trovato",
+                    ephemeral: true
+                });
+                return;
+            }
 
-         }
+            const embed = new EmbedBuilder()
+                .setColor('#DC143C')
+                .setTitle('SAUCE')
+                .setDescription(`Link: ${results[0].url}\nSimilarity: ${results[0].raw.header.similarity}%`)
+                .setURL(results[0].url)
+                .setThumbnail(interaction.user.displayAvatarURL())
+                .setImage(results[0].raw.header.thumbnail);
+
+            await interaction.followUp({ embeds: [embed] });
+            
+        } catch (e) {
+            console.error(e);
+            await interaction.followUp({
+                content: "Errore nella ricerca dell'immagine",
+                ephemeral: true
+            });
+        }
+    },
+};
