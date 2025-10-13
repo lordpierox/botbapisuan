@@ -1,0 +1,5 @@
+type: web
+name: discordbot
+build:
+  command: npm install && npm start
+run_command: node src/index.js
