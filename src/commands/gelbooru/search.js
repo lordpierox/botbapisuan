@@ -33,8 +33,14 @@ module.exports = {
             )),
 
     async execute(interaction, client) {
-        // ✅ PRIMA COSA: Defer subito!
-        await interaction.deferReply();
+        // ✅ Defer subito con gestione errori
+        try {
+            await interaction.deferReply();
+        } catch (error) {
+            console.error('Defer failed (interaction expired):', error.message);
+            // Se deferReply fallisce, l'interazione è già scaduta
+            return;
+        }
 
         let tags = interaction.options.getString('tags');
         const rating = interaction.options.getString('rating');
