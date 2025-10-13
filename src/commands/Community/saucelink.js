@@ -2,7 +2,7 @@ const sagiri = require('sagiri')
 const { SlashCommandBuilder } = require('@discordjs/builders')
 const { EmbedBuilder, Client } = require('discord.js')
 
-const sagiriclient = sagiri("a10473b382ec6bd5a8187816dfc48b3226a4a96b");
+const sagiriclient = sagiri(process.env.SAGIRI_API_KEY);
 const nhentai = require('nhentai');
 
 const extractUrls = require("extract-urls");
