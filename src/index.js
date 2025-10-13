@@ -12,7 +12,7 @@ const client = new Client({
 
 client.commands = new Collection();
 
-// Inizializza gli array globali per snipe (senza ArrayList)
+// Inizializza array globali SENZA ArrayList
 if (!global.snipe) global.snipe = [];
 if (!global.snipe_user) global.snipe_user = [];
 if (!global.snipe_bot) global.snipe_bot = [];

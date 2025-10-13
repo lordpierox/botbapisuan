@@ -21,14 +21,14 @@ function SnipeadoBot(chan, user, cont, url, date, embed) {
 module.exports = {
     name: 'messageDelete',
     on: true,
-    async execute(client, message, messageDelete) {
+    async execute(client, message) {
         try {
             let imgurl;
             let is_a_bot = false;
 
             try {
-                if (client.channel.type === 'DM') return;
-                if (client.author.bot) {
+                if (client.channel?.type === 'DM') return;
+                if (client.author?.bot) {
                     is_a_bot = true;
                 }
             } catch (error) {
@@ -36,39 +36,40 @@ module.exports = {
             }
 
             try {
-                if (client.attachments.first()?.contentType === 'image/jpeg' || 
-                    client.attachments.first()?.contentType === 'image/png') {
-                    imgurl = client.attachments.first().url;
+                const attachment = client.attachments?.first();
+                if (attachment?.contentType === 'image/jpeg' || 
+                    attachment?.contentType === 'image/png') {
+                    imgurl = attachment.url;
                 }
             } catch (error) {
                 // Nessun attachment
             }
 
-            if (client.content === '') {
-                client.content = ' ';
-            }
+            let content = client.content || ' ';
 
             if (is_a_bot) {
-                console.log("DELETED! User: " + client.author.username + ", Message: " + client.content);
+                console.log("DELETED BOT! User: " + client.author.username + ", Message: " + content);
+                
                 global.snipe_bot.push(new SnipeadoBot(
                     client.channel.id,
                     client.author.id,
-                    client.content,
+                    content,
                     imgurl,
                     client.createdTimestamp,
                     client.embeds
                 ));
                 
-                // Mantieni solo gli ultimi 50 messaggi
+                // Mantieni solo gli ultimi 50 messaggi bot
                 if (global.snipe_bot.length > 50) {
                     global.snipe_bot.shift();
                 }
             } else {
-                console.log("DELETED! User: " + client.author.username + ", Message: " + client.content);
+                console.log("DELETED! User: " + client.author.username + ", Message: " + content);
+                
                 global.snipe.push(new Snipeado(
                     client.channel.id,
                     client.author.id,
-                    client.content,
+                    content,
                     imgurl,
                     client.createdTimestamp
                 ));
