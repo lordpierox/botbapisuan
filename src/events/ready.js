@@ -6,7 +6,7 @@ module.exports = {
         console.log('Ready!');
 
         client.user.setPresence({
-            activities: [{ name: "Feliz Jueves! | /info" ,
+            activities: [{ name: "Dominio Total del Mundo! | /info" ,
             type: ActivityType.Competing}],
             status: 'dnd',
           });
