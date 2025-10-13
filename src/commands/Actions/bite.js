@@ -28,7 +28,7 @@ module.exports = {
 
 
         console.log("numero di choice: "+ choice[ran]);
-    let bite = new EmbedBuilder()
+    let kiss = new EmbedBuilder()
          
          .setDescription(answer)
          .setColor("Random")
@@ -36,6 +36,6 @@ module.exports = {
          .setImage(choice[ran])
          .setFooter({ text:"SukiBot"});
         
-    interaction.followUp({ embeds: [bite] })
+    interaction.followUp({ embeds: [kiss] })
     },
 }
