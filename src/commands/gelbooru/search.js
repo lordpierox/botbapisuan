@@ -33,20 +33,33 @@ module.exports = {
             )),
 
     async execute(interaction, client) {
+        // ✅ PRIMA COSA: Defer subito!
         await interaction.deferReply();
 
         let tags = interaction.options.getString('tags');
-        let rating = interaction.options.getString('rating');
-        let sort = interaction.options.getString('sort');
+        const rating = interaction.options.getString('rating');
+        const sort = interaction.options.getString('sort');
 
         // Sostituzioni caratteri Evangelion
         tags = ` ${tags} ${sort}`;
+        tags = tags.replace(/ mpe/gi, ' mass_production_eva ');
         tags = tags.replace(/ shinji/gi, ' ikari_shinji ');
         tags = tags.replace(/ rei/gi, ' ayanami_rei ');
         tags = tags.replace(/ asuka/gi, ' asuka_langley_souryuu ');
         tags = tags.replace(/ kaworu/gi, ' nagisa_kaworu ');
         tags = tags.replace(/ misato/gi, ' katsuragi_misato ');
-        // ... aggiungi tutte le altre sostituzioni
+        tags = tags.replace(/ mari/gi, ' makinami_mari_illustrious ');
+        tags = tags.replace(/ gendo/gi, ' ikari_gendo ');
+        tags = tags.replace(/ yui/gi, ' ikari_yui ');
+        tags = tags.replace(/ ritsuko/gi, ' akagi_ritsuko ');
+        tags = tags.replace(/ maya/gi, ' ibuki_maya ');
+        tags = tags.replace(/ kaji/gi, ' kaji_ryouji ');
+        tags = tags.replace(/ kensuke/gi, ' aida_kensuke ');
+        tags = tags.replace(/ toji/gi, ' suzuhara_touji ');
+        tags = tags.replace(/ hikari/gi, ' horaki_hikari ');
+        tags = tags.replace(/ pen2/gi, ' pen_pen ');
+        tags = tags.replace(/ pen-pen/gi, ' pen_pen ');
+        tags = tags.replace(/ penpen/gi, ' pen_pen ');
 
         // Controlla NSFW
         const isNsfw = interaction.channel.nsfw || 
@@ -59,7 +72,7 @@ module.exports = {
                 await interaction.editReply('Questo comando può essere usato solo in canali NSFW');
                 return;
             }
-            tags += ' -penis -completely_nude -sex -futanari';
+            tags += ' -penis -completely_nude -sex -futanari -breasts -nipples -nude';
         }
 
         tags += ` ${rating}`;
@@ -110,7 +123,7 @@ module.exports = {
             if (i.user.id !== interaction.user.id) {
                 return await i.reply({ 
                     content: `Solo ${interaction.user.tag} può usare questi bottoni`, 
-                    ephemeral: true 
+                    flags: 64 // ephemeral
                 });
             }
 

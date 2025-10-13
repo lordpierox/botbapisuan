@@ -32,6 +32,9 @@ module.exports = {
             )),
 
     async execute(interaction, client) {
+        // ✅ PRIMA COSA: Defer subito!
+        await interaction.deferReply();
+        
         const pairing = interaction.options.getString('pairing');
         const sort = interaction.options.getString('sort');
 
@@ -53,15 +56,10 @@ module.exports = {
         // Controlla NSFW per comandi NSFW
         if (pairing.startsWith('nsfw_')) {
             if (!interaction.channel.nsfw && !(interaction.channel.parent && interaction.channel.parent.nsfw)) {
-                await interaction.reply({ 
-                    content: 'Questo comando può essere usato solo in canali NSFW', 
-                    ephemeral: true 
-                });
+                await interaction.editReply('Questo comando può essere usato solo in canali NSFW');
                 return;
             }
         }
-
-        await interaction.deferReply();
 
         // Cerca su Gelbooru
         const posts = await searchGelbooru(tags, 50);
@@ -109,7 +107,7 @@ module.exports = {
             if (i.user.id !== interaction.user.id) {
                 return await i.reply({ 
                     content: `Solo ${interaction.user.tag} può usare questi bottoni`, 
-                    ephemeral: true 
+                    flags: 64 // ephemeral
                 });
             }
 
