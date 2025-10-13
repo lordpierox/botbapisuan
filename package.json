@@ -1,5 +1,5 @@
 {
-  "name": "suki-baka-bot",
+  "name": "discordbot",
   "version": "1.0.0",
   "description": "",
   "main": "src/index.js",
@@ -13,9 +13,8 @@
     "discord.js": "^14.14.1",
     "dotenv": "^16.0.3",
     "gelbooru-api": "^0.4.7",
-    "arraylist": "^1.1.0",
+    "arraylist": "^0.1.0",
     "sagiri": "^3.1.1",
-    "discord-image-generation": "^1.4.25",
-    "sharp": "^0.33.0"
+    "discord-image-generation": "^1.4.25"
   }
 }
