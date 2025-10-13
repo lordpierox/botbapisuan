@@ -32,8 +32,15 @@ module.exports = {
             )),
 
     async execute(interaction, client) {
-        // ✅ PRIMA COSA: Defer subito!
-        await interaction.deferReply();
+        // ✅ Defer subito con gestione errori
+        try {
+            await interaction.deferReply();
+        } catch (error) {
+            console.error('Defer failed (interaction expired):', error.message);
+            // Se deferReply fallisce, l'interazione è già scaduta
+            // Non possiamo fare nulla, usciamo
+            return;
+        }
         
         const pairing = interaction.options.getString('pairing');
         const sort = interaction.options.getString('sort');
@@ -107,7 +114,7 @@ module.exports = {
             if (i.user.id !== interaction.user.id) {
                 return await i.reply({ 
                     content: `Solo ${interaction.user.tag} può usare questi bottoni`, 
-                    flags: 64 // ephemeral
+                    flags: 64
                 });
             }
 
