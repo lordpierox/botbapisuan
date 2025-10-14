@@ -44,7 +44,7 @@ module.exports = {
                 // Asignar avatar persistente al usuario
                 const userId = message.author.id;
                 if (!room.users.has(userId)) {
-                    const { getRandomAvatar } = require('/../commands/community/telefono');
+                    const { getRandomAvatar } = require('../commands/Community/telefono');
                     room.users.set(userId, {
                         avatar: getRandomAvatar(),
                         nickname: message.member?.displayName || message.author.username
@@ -52,7 +52,7 @@ module.exports = {
                 }
 
                 const userData = room.users.get(userId);
-                const { censorNick, censorServer, getAvatarAttachment } = require('/../commands/community/telefono');
+                const { censorNick, censorServer, getAvatarAttachment } = require('../commands/Community/telefono');
                 const censoredNick = censorNick(userData.nickname);
                 const censoredServer = censorServer(message.guild.name);
 
@@ -98,7 +98,7 @@ module.exports = {
 
                     // Actualizar actividad
                     room.lastActivity = Date.now();
-                    const { startInactivityTimer } = require('/../commands/community/telefono');
+                    const { startInactivityTimer } = require('../commands/Community/telefono');
                     startInactivityTimer(roomId, client);
 
                 } catch (error) {
