@@ -3,22 +3,22 @@ const { Client, GatewayIntentBits, EmbedBuilder, PermissionsBitField, Permission
 module.exports = {
     name: 'messageCreate',
     on: true,
-    async execute(message, client) {  // ✅ ORDEN CORRECTO: message primero, luego client
+    async execute(message, client) {
         try {
             // ============================================
-            // LÓGICA BUMP (Tu código existente)
+            // LÓGICA BUMP
             // ============================================
             if (message.type == 20 && message.channel.id == "1032780435425603614" && message.interaction?.commandName == "bump") {
                 console.log("bump detectado");
                 var member;
-                const guild = message.guild;  // ✅ message.guild, no message.guilds.cache.get()
+                const guild = message.guild;
                 
                 await guild.members.cache.forEach(m => {
                     m.roles.remove("1075621882591715419").catch(() => {});
                 });
                 
                 member = await guild.members.cache.get(message.interaction.user.id);
-                const channel = message.channel;  // ✅ message.channel directo
+                const channel = message.channel;
                 
                 if (!member) {
                     await channel.send("Lilim no encontrado dx.");
@@ -30,29 +30,45 @@ module.exports = {
             }
 
             // ============================================
-            // SISTEMA DE TELÉFONO - Relay de Mensajes
+            // SISTEMA DE TELÉFONO - Relay de Mensajes GRUPALES
             // ============================================
-            if (global.phoneSystem && global.phoneSystem.activeConnections.has(message.channel.id)) {
-                // Ignorar mensajes del bot
-                if (message.author.bot) return;
+            if (message.author.bot) return;
 
-                const connection = global.phoneSystem.activeConnections.get(message.channel.id);
-                const partnerChannelId = connection.partnerId;
+            const guildId = message.guild?.id;
+            if (guildId && global.phoneSystem && global.phoneSystem.guildRooms.has(guildId)) {
+                const roomId = global.phoneSystem.guildRooms.get(guildId);
+                const room = global.phoneSystem.activeRooms.get(roomId);
+
+                if (!room) return;
+
+                // Asignar avatar persistente al usuario
+                const userId = message.author.id;
+                if (!room.users.has(userId)) {
+                    const { getRandomAvatar } = require('../commands/community/telefono');
+                    room.users.set(userId, {
+                        avatar: getRandomAvatar(),
+                        nickname: message.member?.displayName || message.author.username
+                    });
+                }
+
+                const userData = room.users.get(userId);
+                const { censorNick, censorServer, getAvatarAttachment } = require('../commands/community/telefono');
+                const censoredNick = censorNick(userData.nickname);
+                const censoredServer = censorServer(message.guild.name);
 
                 try {
-                    const partnerChannel = await client.channels.fetch(partnerChannelId);
-
-                    // Crear embed con el mensaje
+                    // Crear embed
                     const messageEmbed = new EmbedBuilder()
                         .setAuthor({ 
-                            name: `Anónimo`, 
-                            iconURL: message.author.displayAvatarURL() 
+                            name: `${censoredNick} de ${censoredServer}`, 
+                            iconURL: userData.avatar
                         })
                         .setDescription(message.content || '*[mensaje vacío]*')
                         .setColor('Blue')
-                        .setTimestamp();
+                        .setTimestamp()
+                        .setThumbnail(userData.avatar);
 
-                    // Si tiene imágenes/archivos, añadirlos
+                    // Adjuntos del usuario
                     if (message.attachments.size > 0) {
                         const attachment = message.attachments.first();
                         if (attachment.contentType?.startsWith('image/')) {
@@ -60,16 +76,33 @@ module.exports = {
                         }
                     }
 
-                    await partnerChannel.send({ embeds: [messageEmbed] });
+                    // Preparar attachment del avatar
+                    const avatarAttachment = getAvatarAttachment(userData.avatar);
+                    const messageOptions = { embeds: [messageEmbed] };
+                    
+                    if (avatarAttachment) {
+                        messageOptions.files = [avatarAttachment];
+                    }
 
-                    // Actualizar timestamp de actividad y reiniciar timer
-                    connection.lastActivity = Date.now();
-                    const { startInactivityTimer } = require('/../commands/community/telefono');
-                    startInactivityTimer(message.channel.id, client);
-                    startInactivityTimer(partnerChannelId, client);
+                    // Enviar a TODOS los canales (excepto origen)
+                    for (const channelId of room.channels) {
+                        if (channelId === message.channel.id) continue;
+
+                        try {
+                            const channel = await client.channels.fetch(channelId);
+                            await channel.send(messageOptions);
+                        } catch (error) {
+                            console.error(`Error enviando a canal ${channelId}:`, error);
+                        }
+                    }
+
+                    // Actualizar actividad
+                    room.lastActivity = Date.now();
+                    const { startInactivityTimer } = require('../commands/community/telefono');
+                    startInactivityTimer(roomId, client);
 
                 } catch (error) {
-                    console.error('Error enviando mensaje telefónico:', error);
+                    console.error('Error en sistema telefónico:', error);
                 }
             }
 

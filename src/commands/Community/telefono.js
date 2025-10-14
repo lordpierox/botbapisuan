@@ -1,9 +1,48 @@
-const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder, AttachmentBuilder } = require('discord.js');
+const fs = require('fs');
+const path = require('path');
 
+// ============================================
+// CARGAR AVATARES DESDE CARPETA LOCAL
+// ============================================
+const PHONE_AVATARS_PATH = path.join(__dirname, '../../assets/img/phone');
+let AVATAR_FILES = [];
+
+try {
+    AVATAR_FILES = fs.readdirSync(PHONE_AVATARS_PATH)
+        .filter(file => {
+            const ext = path.extname(file).toLowerCase();
+            return ['.png', '.jpg', '.jpeg', '.gif', '.webp'].includes(ext);
+        })
+        .map(file => path.join(PHONE_AVATARS_PATH, file));
+
+    console.log(`📞 Sistema telefónico: ${AVATAR_FILES.length} avatares cargados desde ${PHONE_AVATARS_PATH}`);
+    
+    if (AVATAR_FILES.length === 0) {
+        console.warn('⚠️ No se encontraron imágenes en la carpeta de avatares. Usando fallback URLs.');
+        AVATAR_FILES = [
+            'https://i.imgur.com/4M34hi2.png',
+            'https://i.imgur.com/OvKQQrM.png',
+            'https://i.imgur.com/7D4Hc8Q.png',
+            'https://i.imgur.com/x9aDKSb.png',
+            'https://i.imgur.com/8Q7Yx4V.png',
+        ];
+    }
+} catch (error) {
+    console.error('❌ Error cargando avatares:', error);
+    AVATAR_FILES = [
+        'https://i.imgur.com/4M34hi2.png',
+        'https://i.imgur.com/OvKQQrM.png',
+        'https://i.imgur.com/7D4Hc8Q.png',
+    ];
+}
+
+// Sistema global
 if (!global.phoneSystem) {
     global.phoneSystem = {
         waitingQueue: [],
-        activeConnections: new Map(),
+        activeRooms: new Map(),
+        guildRooms: new Map(),
     };
 }
 
@@ -14,7 +53,7 @@ module.exports = {
         .addSubcommand(subcommand =>
             subcommand
                 .setName('llamar')
-                .setDescription('Inicia una llamada con otro servidor'))
+                .setDescription('Inicia una llamada con otros servidores'))
         .addSubcommand(subcommand =>
             subcommand
                 .setName('colgar')
@@ -32,94 +71,121 @@ module.exports = {
 };
 
 // ============================================
+// FUNCIONES AUXILIARES
+// ============================================
+
+function censorNick(nickname) {
+    if (nickname.length <= 3) return nickname;
+    const visible = nickname.slice(0, 3);
+    const hidden = '*'.repeat(nickname.length - 3);
+    return visible + hidden;
+}
+
+function censorServer(serverName) {
+    if (serverName.length <= 5) return serverName;
+    const visible = serverName.slice(0, 5);
+    const hidden = '*'.repeat(serverName.length - 5);
+    return visible + hidden;
+}
+
+function getRandomAvatar() {
+    const randomFile = AVATAR_FILES[Math.floor(Math.random() * AVATAR_FILES.length)];
+    
+    if (randomFile.startsWith('http')) {
+        return randomFile;
+    }
+    
+    return `attachment://${path.basename(randomFile)}`;
+}
+
+function getAvatarAttachment(avatarPath) {
+    if (avatarPath.startsWith('http')) {
+        return null;
+    }
+    
+    const fileName = avatarPath.replace('attachment://', '');
+    const fullPath = AVATAR_FILES.find(f => path.basename(f) === fileName);
+    
+    if (!fullPath) return null;
+    
+    return new AttachmentBuilder(fullPath, { name: fileName });
+}
+
+function generateRoomId() {
+    return `room_${Date.now()}_${Math.random().toString(36).substring(7)}`;
+}
+
+// ============================================
 // SUBCOMANDO: /telefono llamar
 // ============================================
 async function handleLlamar(interaction, client) {
-    await interaction.deferReply();  // ✅ SIN ephemeral - público
+    await interaction.deferReply();
 
     const channelId = interaction.channelId;
-    const userId = interaction.user.id;
     const guildId = interaction.guildId;
+    const guild = interaction.guild;
 
-    // Verificar si ya está en llamada
-    if (global.phoneSystem.activeConnections.has(channelId)) {
+    // Verificar si este GUILD ya está en una llamada
+    if (global.phoneSystem.guildRooms.has(guildId)) {
         return await interaction.editReply({
-            content: '📞 **Ya hay una llamada activa en este canal.**\nUsa `/telefono colgar` para terminarla.'
+            content: '📞 **Este servidor ya está en una llamada activa.**\nUsa `/telefono colgar` para terminarla primero.'
         });
     }
 
     // Verificar si ya está en cola
     const alreadyWaiting = global.phoneSystem.waitingQueue.find(
-        entry => entry.channelId === channelId
+        entry => entry.guildId === guildId
     );
 
     if (alreadyWaiting) {
         return await interaction.editReply({
-            content: '⏳ **Ya estás esperando una llamada.**\nEspera a que alguien más use el comando.'
+            content: '⏳ **Este servidor ya está esperando una llamada.**'
         });
     }
 
-    // Buscar alguien en la cola (diferente servidor)
-    const availablePartner = global.phoneSystem.waitingQueue.find(
-        entry => entry.guildId !== guildId
-    );
+    // Buscar sala activa con espacio
+    let targetRoom = null;
 
-    if (availablePartner) {
-        // ¡Conexión encontrada!
-        global.phoneSystem.waitingQueue = global.phoneSystem.waitingQueue.filter(
-            entry => entry.channelId !== availablePartner.channelId
-        );
+    for (const [roomId, room] of global.phoneSystem.activeRooms) {
+        if (room.channels.size < 10) {
+            targetRoom = { roomId, room };
+            break;
+        }
+    }
 
-        // Establecer conexión bidireccional
-        const connection1 = {
-            partnerId: availablePartner.channelId,
-            lastActivity: Date.now(),
-            timeout: null
-        };
+    if (targetRoom) {
+        // UNIRSE A SALA EXISTENTE
+        const { roomId, room } = targetRoom;
 
-        const connection2 = {
-            partnerId: channelId,
-            lastActivity: Date.now(),
-            timeout: null
-        };
+        room.channels.add(channelId);
+        global.phoneSystem.guildRooms.set(guildId, roomId);
 
-        global.phoneSystem.activeConnections.set(channelId, connection1);
-        global.phoneSystem.activeConnections.set(availablePartner.channelId, connection2);
-
-        // Notificar ambos canales
-        const connectEmbed = new EmbedBuilder()
-            .setTitle('📞 ¡Llamada Conectada!')
-            .setDescription('Se ha establecido una conexión con otro servidor.\n\n**Escribe mensajes normales** y serán enviados al otro lado.\n\n🔴 La llamada se cerrará después de **3 minutos** sin mensajes.\n💬 Usa `/telefono colgar` para terminar la llamada.')
-            .setColor('Green')
+        const joinEmbed = new EmbedBuilder()
+            .setTitle('📞 ¡Nuevo Participante!')
+            .setDescription(`**${censorServer(guild.name)}** se ha unido a la llamada.\n\n👥 **Participantes:** ${room.channels.size} servidor(es) conectados.`)
+            .setColor('Blue')
             .setTimestamp();
 
-        try {
-            const channel1 = await client.channels.fetch(channelId);
-            const channel2 = await client.channels.fetch(availablePartner.channelId);
-
-            await channel1.send({ embeds: [connectEmbed] });
-            await channel2.send({ embeds: [connectEmbed] });
-
-            // ✅ Respuesta PÚBLICA (sin ephemeral)
-            await interaction.editReply({
-                content: `✅ **¡Llamada establecida con éxito!**\n${interaction.user} ha conectado con otro servidor.`
-            });
-
-            // Iniciar timeout de inactividad
-            startInactivityTimer(channelId, client);
-            startInactivityTimer(availablePartner.channelId, client);
-
-        } catch (error) {
-            console.error('Error estableciendo llamada:', error);
-            await interaction.editReply('❌ Error al conectar la llamada.');
+        for (const cId of room.channels) {
+            try {
+                const channel = await client.channels.fetch(cId);
+                await channel.send({ embeds: [joinEmbed] });
+            } catch (e) {}
         }
 
+        await interaction.editReply({
+            content: `✅ **¡Conectado a la llamada grupal!**\n${interaction.user} ha unido a **${guild.name}** a la conversación.\n\n👥 Ahora hay **${room.channels.size} servidores** conectados.`
+        });
+
+        startInactivityTimer(roomId, client);
+
     } else {
-        // Añadir a cola de espera
+        // CREAR NUEVA SALA Y ESPERAR
         const queueEntry = {
             channelId,
             guildId,
-            userId,
+            guildName: guild.name,
+            userId: interaction.user.id,
             timestamp: Date.now()
         };
 
@@ -127,37 +193,78 @@ async function handleLlamar(interaction, client) {
 
         const waitEmbed = new EmbedBuilder()
             .setTitle('📞 Esperando Llamada...')
-            .setDescription(`${interaction.user} está buscando una conexión...\n\n⏳ Esperando hasta **1 minuto** por otra persona.\n\nSi alguien en otro servidor usa \`/telefono llamar\`, la llamada se conectará automáticamente.`)
+            .setDescription(`${interaction.user} está buscando una conexión...\n\n⏳ Esperando hasta **3 minutos** por otra persona.\n\nSi alguien en otro servidor usa \`/telefono llamar\`, se establecerá la llamada.`)
             .setColor('Orange')
             .setTimestamp();
 
-        // ✅ Respuesta PÚBLICA
         await interaction.editReply({
             embeds: [waitEmbed]
         });
 
-        // Timeout de 1 minuto
-        setTimeout(() => {
+        // Timeout de 3 minutos
+        setTimeout(async () => {
             const stillWaiting = global.phoneSystem.waitingQueue.find(
-                entry => entry.channelId === channelId
+                entry => entry.guildId === guildId
             );
 
             if (stillWaiting) {
-                global.phoneSystem.waitingQueue = global.phoneSystem.waitingQueue.filter(
-                    entry => entry.channelId !== channelId
-                );
+                const waitingEntries = global.phoneSystem.waitingQueue.filter(e => e.guildId !== guildId);
 
-                const timeoutEmbed = new EmbedBuilder()
-                    .setTitle('⏱️ Tiempo Agotado')
-                    .setDescription('No se encontró a nadie disponible.\nIntenta de nuevo más tarde con `/telefono llamar`.')
-                    .setColor('Red')
-                    .setTimestamp();
+                if (waitingEntries.length > 0) {
+                    // Conectar con otros que esperan
+                    const roomId = generateRoomId();
+                    const newRoom = {
+                        channels: new Set([channelId]),
+                        users: new Map(),
+                        lastActivity: Date.now(),
+                        timeout: null
+                    };
 
-                client.channels.fetch(channelId).then(channel => {
-                    channel.send({ embeds: [timeoutEmbed] });
-                }).catch(() => {});
+                    for (const entry of waitingEntries) {
+                        newRoom.channels.add(entry.channelId);
+                        global.phoneSystem.guildRooms.set(entry.guildId, roomId);
+                    }
+
+                    newRoom.channels.add(channelId);
+                    global.phoneSystem.guildRooms.set(guildId, roomId);
+                    global.phoneSystem.activeRooms.set(roomId, newRoom);
+
+                    global.phoneSystem.waitingQueue = [];
+
+                    const connectEmbed = new EmbedBuilder()
+                        .setTitle('📞 ¡Llamada Conectada!')
+                        .setDescription(`Se ha establecido una conexión grupal con ${newRoom.channels.size} servidores.\n\n**Escribe mensajes normales** y serán enviados a todos.\n\n🔴 La llamada se cerrará después de **6 minutos** sin mensajes.\n💬 Usa \`/telefono colgar\` para salir.`)
+                        .setColor('Green')
+                        .setTimestamp();
+
+                    for (const cId of newRoom.channels) {
+                        try {
+                            const channel = await client.channels.fetch(cId);
+                            await channel.send({ embeds: [connectEmbed] });
+                        } catch (e) {}
+                    }
+
+                    startInactivityTimer(roomId, client);
+
+                } else {
+                    // Nadie más esperando
+                    global.phoneSystem.waitingQueue = global.phoneSystem.waitingQueue.filter(
+                        entry => entry.guildId !== guildId
+                    );
+
+                    const timeoutEmbed = new EmbedBuilder()
+                        .setTitle('⏱️ Tiempo Agotado')
+                        .setDescription('No se encontró a nadie disponible.\nIntenta de nuevo más tarde.')
+                        .setColor('Red')
+                        .setTimestamp();
+
+                    try {
+                        const channel = await client.channels.fetch(channelId);
+                        await channel.send({ embeds: [timeoutEmbed] });
+                    } catch (e) {}
+                }
             }
-        }, 60000); // 1 minuto
+        }, 180000); // 3 minutos
     }
 }
 
@@ -165,80 +272,109 @@ async function handleLlamar(interaction, client) {
 // SUBCOMANDO: /telefono colgar
 // ============================================
 async function handleColgar(interaction, client) {
-    await interaction.deferReply();  // ✅ SIN ephemeral - público
+    await interaction.deferReply();
 
+    const guildId = interaction.guildId;
     const channelId = interaction.channelId;
 
-    if (!global.phoneSystem.activeConnections.has(channelId)) {
+    if (!global.phoneSystem.guildRooms.has(guildId)) {
         return await interaction.editReply({
-            content: '❌ No hay ninguna llamada activa en este canal.'
+            content: '❌ Este servidor no está en ninguna llamada activa.'
         });
     }
 
-    await endCall(channelId, client, 'manual');
+    const roomId = global.phoneSystem.guildRooms.get(guildId);
+    const room = global.phoneSystem.activeRooms.get(roomId);
 
-    // ✅ Respuesta PÚBLICA
+    if (!room) {
+        global.phoneSystem.guildRooms.delete(guildId);
+        return await interaction.editReply({
+            content: '❌ Error: Sala no encontrada.'
+        });
+    }
+
+    room.channels.delete(channelId);
+    global.phoneSystem.guildRooms.delete(guildId);
+
+    const leaveEmbed = new EmbedBuilder()
+        .setTitle('👋 Servidor Desconectado')
+        .setDescription(`**${censorServer(interaction.guild.name)}** ha salido de la llamada.\n\n👥 Quedan **${room.channels.size} servidor(es)** conectados.`)
+        .setColor('Orange')
+        .setTimestamp();
+
+    for (const cId of room.channels) {
+        try {
+            const channel = await client.channels.fetch(cId);
+            await channel.send({ embeds: [leaveEmbed] });
+        } catch (e) {}
+    }
+
     await interaction.editReply({
-        content: `✅ **${interaction.user} ha finalizado la llamada.**`
+        content: `✅ **${interaction.user} ha desconectado a ${interaction.guild.name} de la llamada.**`
     });
+
+    if (room.channels.size === 0) {
+        if (room.timeout) clearTimeout(room.timeout);
+        global.phoneSystem.activeRooms.delete(roomId);
+    } else {
+        startInactivityTimer(roomId, client);
+    }
 }
 
 // ============================================
-// FUNCIONES AUXILIARES
+// TIMER DE INACTIVIDAD
 // ============================================
+function startInactivityTimer(roomId, client) {
+    const room = global.phoneSystem.activeRooms.get(roomId);
+    if (!room) return;
 
-function startInactivityTimer(channelId, client) {
-    const connection = global.phoneSystem.activeConnections.get(channelId);
-    if (!connection) return;
-
-    if (connection.timeout) {
-        clearTimeout(connection.timeout);
+    if (room.timeout) {
+        clearTimeout(room.timeout);
     }
 
-    connection.timeout = setTimeout(() => {
-        endCall(channelId, client, 'inactividad');
-    }, 180000); // 3 minutos
+    room.timeout = setTimeout(() => {
+        endCall(roomId, client, 'inactividad');
+    }, 360000); // 6 minutos
 }
 
-async function endCall(channelId, client, reason = 'manual') {
-    const connection = global.phoneSystem.activeConnections.get(channelId);
-    if (!connection) return;
+// ============================================
+// TERMINAR LLAMADA
+// ============================================
+async function endCall(roomId, client, reason = 'manual') {
+    const room = global.phoneSystem.activeRooms.get(roomId);
+    if (!room) return;
 
-    const partnerId = connection.partnerId;
+    if (room.timeout) clearTimeout(room.timeout);
 
-    // Limpiar timeouts
-    if (connection.timeout) clearTimeout(connection.timeout);
-    const partnerConnection = global.phoneSystem.activeConnections.get(partnerId);
-    if (partnerConnection && partnerConnection.timeout) {
-        clearTimeout(partnerConnection.timeout);
-    }
-
-    // Remover conexiones
-    global.phoneSystem.activeConnections.delete(channelId);
-    global.phoneSystem.activeConnections.delete(partnerId);
-
-    // Notificar ambos canales
     const endEmbed = new EmbedBuilder()
         .setTitle('📞 Llamada Terminada')
         .setDescription(
             reason === 'inactividad' 
-                ? '⏱️ La llamada se cerró por **inactividad** (3 minutos sin mensajes).'
+                ? '⏱️ La llamada se cerró por **inactividad** (6 minutos sin mensajes).'
                 : '👋 La llamada ha sido **finalizada**.'
         )
         .setColor('Red')
         .setTimestamp();
 
-    try {
-        const channel1 = await client.channels.fetch(channelId);
-        const channel2 = await client.channels.fetch(partnerId);
-
-        await channel1.send({ embeds: [endEmbed] });
-        await channel2.send({ embeds: [endEmbed] });
-    } catch (error) {
-        console.error('Error terminando llamada:', error);
+    for (const channelId of room.channels) {
+        try {
+            const channel = await client.channels.fetch(channelId);
+            await channel.send({ embeds: [endEmbed] });
+            
+            for (const [gId, rId] of global.phoneSystem.guildRooms) {
+                if (rId === roomId) {
+                    global.phoneSystem.guildRooms.delete(gId);
+                }
+            }
+        } catch (e) {}
     }
+
+    global.phoneSystem.activeRooms.delete(roomId);
 }
 
-// Exportar funciones para messageCreate.js
 module.exports.startInactivityTimer = startInactivityTimer;
 module.exports.endCall = endCall;
+module.exports.getRandomAvatar = getRandomAvatar;
+module.exports.getAvatarAttachment = getAvatarAttachment;
+module.exports.censorNick = censorNick;
+module.exports.censorServer = censorServer;
