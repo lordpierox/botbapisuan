@@ -75,44 +75,47 @@ module.exports = {
 // ============================================
 
 function censorNick(nickname) {
-    console.log('🔍 [CENSOR_NICK] Entrada original:', JSON.stringify(nickname));
-    console.log('🔍 [CENSOR_NICK] Longitud:', nickname?.length);
-    
     if (!nickname) return nickname;
     
-    const result = nickname.split(' ').map(word => {
-        if (word.length === 0) return word;
-        if (word.length <= 3) {
-            return '*'.repeat(word.length);
-        }
-        const visible = word.slice(0, 3);
-        const hidden = '*'.repeat(word.length - 3);
-        return visible + hidden;
-    }).join(' ');
+    // Si es muy corto, no censurar
+    if (nickname.length <= 3) return nickname;
     
-    console.log('🔍 [CENSOR_NICK] Resultado:', JSON.stringify(result));
+    let result = nickname.slice(0, 3); // Primeros 3 caracteres
+    
+    // Para el resto: mantener espacios, cambiar letras por *
+    for (let i = 3; i < nickname.length; i++) {
+        const char = nickname[i];
+        if (char === ' ') {
+            result += ' '; // Mantener espacios
+        } else {
+            result += '*'; // Cambiar letras por asteriscos
+        }
+    }
+    
     return result;
 }
 
 function censorServer(serverName) {
-    console.log('🔍 [CENSOR_SERVER] Entrada original:', JSON.stringify(serverName));
-    console.log('🔍 [CENSOR_SERVER] Longitud:', serverName?.length);
-    
     if (!serverName) return serverName;
     
-    const result = serverName.split(' ').map(word => {
-        if (word.length === 0) return word;
-        if (word.length <= 3) {
-            return '*'.repeat(word.length);
-        }
-        const visible = word.slice(0, 3);
-        const hidden = '*'.repeat(word.length - 3);
-        return visible + hidden;
-    }).join(' ');
+    // Si es muy corto, no censurar
+    if (serverName.length <= 3) return serverName;
     
-    console.log('🔍 [CENSOR_SERVER] Resultado:', JSON.stringify(result));
+    let result = serverName.slice(0, 3); // Primeros 3 caracteres
+    
+    // Para el resto: mantener espacios, cambiar letras por *
+    for (let i = 3; i < serverName.length; i++) {
+        const char = serverName[i];
+        if (char === ' ') {
+            result += ' '; // Mantener espacios
+        } else {
+            result += '*'; // Cambiar letras por asteriscos
+        }
+    }
+    
     return result;
 }
+
 
 
 function getRandomAvatar() {
