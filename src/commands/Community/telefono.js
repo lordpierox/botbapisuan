@@ -75,17 +75,25 @@ module.exports = {
 // ============================================
 
 function censorNick(nickname) {
-    if (nickname.length <= 3) return nickname;
-    const visible = nickname.slice(0, 3);
-    const hidden = '*'.repeat(nickname.length - 3);
-    return visible + hidden;
+    if (!nickname || nickname.length <= 3) return nickname;
+    
+    return nickname.split(' ').map(word => {
+        if (word.length <= 3) return word;
+        const visible = word.slice(0, 3);
+        const hidden = '*'.repeat(word.length - 3);
+        return visible + hidden;
+    }).join(' ');
 }
 
 function censorServer(serverName) {
-    if (serverName.length <= 5) return serverName;
-    const visible = serverName.slice(0, 5);
-    const hidden = '*'.repeat(serverName.length - 5);
-    return visible + hidden;
+    if (!serverName || serverName.length <= 3) return serverName;
+    
+    return serverName.split(' ').map(word => {
+        if (word.length <= 3) return word;
+        const visible = word.slice(0, 3);
+        const hidden = '*'.repeat(word.length - 3);
+        return visible + hidden;
+    }).join(' ');
 }
 
 function getRandomAvatar() {
@@ -177,7 +185,7 @@ async function handleLlamar(interaction, client) {
 
             const joinEmbed = new EmbedBuilder()
                 .setTitle('📞 ¡Nuevo Participante!')
-                .setDescription(`**${censorServer(guild.name)}** se ha unido a la llamada.\n\n👥 **Participantes:** ${room.channels.size} servidor(es) conectados.`)
+                .setDescription(`**Nick:** ${censorNick(interaction.user.displayName || interaction.user.username)}\n**Server:** ${censorServer(guild.name)}\n\n👥 **Participantes:** ${room.channels.size} servidor(es) conectados.`)
                 .setColor('Blue')
                 .setTimestamp();
 
