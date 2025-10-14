@@ -121,8 +121,6 @@ function generateRoomId() {
 async function handleLlamar(interaction, client) {
     try {
         console.log('📞 [TELEFONO] Comando llamar iniciado');
-        console.log('📞 [TELEFONO] Guild:', interaction.guild?.name);
-        console.log('📞 [TELEFONO] Channel:', interaction.channel?.name);
         
         await interaction.deferReply();
         console.log('📞 [TELEFONO] DeferReply exitoso');
@@ -131,11 +129,12 @@ async function handleLlamar(interaction, client) {
         const guildId = interaction.guildId;
         const guild = interaction.guild;
 
-        console.log('📞 [TELEFONO] IDs obtenidos:', { channelId, guildId });
+        console.log('📞 [TELEFONO] Guild:', guild.name);
+        console.log('📞 [TELEFONO] IDs:', { channelId, guildId });
 
         // Verificar si este GUILD ya está en una llamada
         if (global.phoneSystem.guildRooms.has(guildId)) {
-            console.log('📞 [TELEFONO] Guild ya está en llamada');
+            console.log('📞 [TELEFONO] Guild ya en llamada');
             return await interaction.editReply({
                 content: '📞 **Este servidor ya está en una llamada activa.**\nUsa `/telefono colgar` para terminarla primero.'
             });
@@ -147,7 +146,7 @@ async function handleLlamar(interaction, client) {
         );
 
         if (alreadyWaiting) {
-            console.log('📞 [TELEFONO] Guild ya está esperando');
+            console.log('📞 [TELEFONO] Guild ya esperando');
             return await interaction.editReply({
                 content: '⏳ **Este servidor ya está esperando una llamada.**'
             });
@@ -155,6 +154,7 @@ async function handleLlamar(interaction, client) {
 
         console.log('📞 [TELEFONO] Buscando salas activas...');
         console.log('📞 [TELEFONO] Salas disponibles:', global.phoneSystem.activeRooms.size);
+        console.log('📞 [TELEFONO] Cola actual:', global.phoneSystem.waitingQueue.length);
 
         // Buscar sala activa con espacio
         let targetRoom = null;
@@ -168,8 +168,8 @@ async function handleLlamar(interaction, client) {
         }
 
         if (targetRoom) {
+            // ✅ UNIRSE A SALA EXISTENTE
             console.log('📞 [TELEFONO] Uniéndose a sala existente');
-            // UNIRSE A SALA EXISTENTE
             const { roomId, room } = targetRoom;
 
             room.channels.add(channelId);
@@ -186,7 +186,7 @@ async function handleLlamar(interaction, client) {
                     const channel = await client.channels.fetch(cId);
                     await channel.send({ embeds: [joinEmbed] });
                 } catch (e) {
-                    console.error('📞 [TELEFONO] Error enviando a canal:', e);
+                    console.error('📞 [TELEFONO] Error enviando:', e);
                 }
             }
 
@@ -197,9 +197,59 @@ async function handleLlamar(interaction, client) {
             console.log('📞 [TELEFONO] Unión exitosa');
             startInactivityTimer(roomId, client);
 
+        } else if (global.phoneSystem.waitingQueue.length > 0) {
+            // ✅ HAY OTROS ESPERANDO - CONECTAR INMEDIATAMENTE
+            console.log('📞 [TELEFONO] Conectando con', global.phoneSystem.waitingQueue.length, 'en cola');
+
+            const roomId = generateRoomId();
+            const newRoom = {
+                channels: new Set([channelId]),
+                users: new Map(),
+                lastActivity: Date.now(),
+                timeout: null
+            };
+
+            // Añadir todos los de la cola
+            for (const entry of global.phoneSystem.waitingQueue) {
+                newRoom.channels.add(entry.channelId);
+                global.phoneSystem.guildRooms.set(entry.guildId, roomId);
+            }
+
+            // Añadir el actual
+            global.phoneSystem.guildRooms.set(guildId, roomId);
+            global.phoneSystem.activeRooms.set(roomId, newRoom);
+
+            // Limpiar cola
+            global.phoneSystem.waitingQueue = [];
+
+            console.log('📞 [TELEFONO] Sala creada con', newRoom.channels.size, 'canales');
+
+            // Notificar a todos
+            const connectEmbed = new EmbedBuilder()
+                .setTitle('📞 ¡Llamada Conectada!')
+                .setDescription(`Se ha establecido una conexión grupal con **${newRoom.channels.size} servidores**.\n\n**Escribe mensajes normales** y serán enviados a todos.\n\n🔴 La llamada se cerrará después de **6 minutos** sin mensajes.\n💬 Usa \`/telefono colgar\` para salir.`)
+                .setColor('Green')
+                .setTimestamp();
+
+            for (const cId of newRoom.channels) {
+                try {
+                    const channel = await client.channels.fetch(cId);
+                    await channel.send({ embeds: [connectEmbed] });
+                } catch (e) {
+                    console.error('📞 [TELEFONO] Error conectando:', e);
+                }
+            }
+
+            await interaction.editReply({
+                content: `✅ **¡Llamada conectada!**\n${interaction.user} ha conectado con **${newRoom.channels.size - 1} otro(s) servidor(es)**!`
+            });
+
+            startInactivityTimer(roomId, client);
+
         } else {
-            console.log('📞 [TELEFONO] Creando nueva sala / añadiendo a cola');
-            // CREAR NUEVA SALA Y ESPERAR
+            // ✅ NADIE ESPERANDO - AÑADIR A COLA
+            console.log('📞 [TELEFONO] Nadie esperando, añadiendo a cola');
+
             const queueEntry = {
                 channelId,
                 guildId,
@@ -209,11 +259,11 @@ async function handleLlamar(interaction, client) {
             };
 
             global.phoneSystem.waitingQueue.push(queueEntry);
-            console.log('📞 [TELEFONO] Añadido a cola. Total en cola:', global.phoneSystem.waitingQueue.length);
+            console.log('📞 [TELEFONO] Añadido a cola. Total:', global.phoneSystem.waitingQueue.length);
 
             const waitEmbed = new EmbedBuilder()
                 .setTitle('📞 Esperando Llamada...')
-                .setDescription(`${interaction.user} está buscando una conexión...\n\n⏳ Esperando hasta **3 minutos** por otra persona.\n\nSi alguien en otro servidor usa \`/telefono llamar\`, se establecerá la llamada.`)
+                .setDescription(`${interaction.user} está buscando una conexión...\n\n⏳ Esperando hasta **3 minutos** por otra persona.\n\nSi alguien en otro servidor usa \`/telefono llamar\`, la llamada se conectará **inmediatamente**.`)
                 .setColor('Orange')
                 .setTimestamp();
 
@@ -223,84 +273,35 @@ async function handleLlamar(interaction, client) {
 
             console.log('📞 [TELEFONO] Mensaje de espera enviado');
 
-            // Timeout de 3 minutos
-            setTimeout(async () => {
-                console.log('📞 [TELEFONO] Timeout de 3 minutos alcanzado');
+            // Timeout de 3 minutos para limpiar la cola
+            setTimeout(() => {
+                console.log('📞 [TELEFONO] Timeout alcanzado, verificando cola');
                 const stillWaiting = global.phoneSystem.waitingQueue.find(
                     entry => entry.guildId === guildId
                 );
 
                 if (stillWaiting) {
-                    console.log('📞 [TELEFONO] Guild sigue esperando. Procesando...');
-                    const waitingEntries = global.phoneSystem.waitingQueue.filter(e => e.guildId !== guildId);
+                    console.log('📞 [TELEFONO] Nadie se conectó, removiendo de cola');
+                    global.phoneSystem.waitingQueue = global.phoneSystem.waitingQueue.filter(
+                        entry => entry.guildId !== guildId
+                    );
 
-                    if (waitingEntries.length > 0) {
-                        console.log('📞 [TELEFONO] Conectando con', waitingEntries.length, 'otros en cola');
-                        // Conectar con otros que esperan
-                        const roomId = generateRoomId();
-                        const newRoom = {
-                            channels: new Set([channelId]),
-                            users: new Map(),
-                            lastActivity: Date.now(),
-                            timeout: null
-                        };
+                    const timeoutEmbed = new EmbedBuilder()
+                        .setTitle('⏱️ Tiempo Agotado')
+                        .setDescription('No se encontró a nadie disponible.\nIntenta de nuevo más tarde.')
+                        .setColor('Red')
+                        .setTimestamp();
 
-                        for (const entry of waitingEntries) {
-                            newRoom.channels.add(entry.channelId);
-                            global.phoneSystem.guildRooms.set(entry.guildId, roomId);
-                        }
-
-                        newRoom.channels.add(channelId);
-                        global.phoneSystem.guildRooms.set(guildId, roomId);
-                        global.phoneSystem.activeRooms.set(roomId, newRoom);
-
-                        global.phoneSystem.waitingQueue = [];
-
-                        const connectEmbed = new EmbedBuilder()
-                            .setTitle('📞 ¡Llamada Conectada!')
-                            .setDescription(`Se ha establecido una conexión grupal con ${newRoom.channels.size} servidores.\n\n**Escribe mensajes normales** y serán enviados a todos.\n\n🔴 La llamada se cerrará después de **6 minutos** sin mensajes.\n💬 Usa \`/telefono colgar\` para salir.`)
-                            .setColor('Green')
-                            .setTimestamp();
-
-                        for (const cId of newRoom.channels) {
-                            try {
-                                const channel = await client.channels.fetch(cId);
-                                await channel.send({ embeds: [connectEmbed] });
-                            } catch (e) {
-                                console.error('📞 [TELEFONO] Error conectando:', e);
-                            }
-                        }
-
-                        console.log('📞 [TELEFONO] Sala creada con', newRoom.channels.size, 'canales');
-                        startInactivityTimer(roomId, client);
-
-                    } else {
-                        console.log('📞 [TELEFONO] Nadie más esperando. Timeout.');
-                        // Nadie más esperando
-                        global.phoneSystem.waitingQueue = global.phoneSystem.waitingQueue.filter(
-                            entry => entry.guildId !== guildId
-                        );
-
-                        const timeoutEmbed = new EmbedBuilder()
-                            .setTitle('⏱️ Tiempo Agotado')
-                            .setDescription('No se encontró a nadie disponible.\nIntenta de nuevo más tarde.')
-                            .setColor('Red')
-                            .setTimestamp();
-
-                        try {
-                            const channel = await client.channels.fetch(channelId);
-                            await channel.send({ embeds: [timeoutEmbed] });
-                        } catch (e) {
-                            console.error('📞 [TELEFONO] Error enviando timeout:', e);
-                        }
-                    }
+                    client.channels.fetch(channelId).then(channel => {
+                        channel.send({ embeds: [timeoutEmbed] });
+                    }).catch(e => console.error('📞 [TELEFONO] Error timeout:', e));
                 } else {
-                    console.log('📞 [TELEFONO] Guild ya no está esperando (cancelado o conectado)');
+                    console.log('📞 [TELEFONO] Guild ya conectado (ok)');
                 }
             }, 180000); // 3 minutos
         }
     } catch (error) {
-        console.error('❌ [TELEFONO] ERROR CRÍTICO en handleLlamar:', error);
+        console.error('❌ [TELEFONO] ERROR CRÍTICO:', error);
         console.error('❌ [TELEFONO] Stack:', error.stack);
         
         try {
@@ -308,10 +309,11 @@ async function handleLlamar(interaction, client) {
                 content: '❌ **Error al procesar el comando.**\nRevisa los logs del servidor.'
             });
         } catch (replyError) {
-            console.error('❌ [TELEFONO] No se pudo enviar mensaje de error:', replyError);
+            console.error('❌ [TELEFONO] No se pudo enviar error:', replyError);
         }
     }
 }
+
 
 
 // ============================================
