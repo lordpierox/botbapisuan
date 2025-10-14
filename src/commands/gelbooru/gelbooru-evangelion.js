@@ -6,7 +6,7 @@ module.exports = {
         .setName('gelbooru-evangelion')
         .setDescription('Cerca immagini Evangelion su Gelbooru')
         .addStringOption(option => option
-            .setName('Tags')
+            .setName('tags')
             .setDescription('Selecciona los tags')
             .setRequired(true)
             .addChoices(
