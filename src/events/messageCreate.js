@@ -60,7 +60,7 @@ module.exports = {
                     // Crear embed
                     const messageEmbed = new EmbedBuilder()
                         .setAuthor({ 
-                            name: `${censoredNick} de ${censoredServer}`, 
+                            name: `${censoredNick} desde ${censoredServer}`, 
                             iconURL: userData.avatar
                         })
                         .setDescription(message.content || '*[mensaje vacío]*')

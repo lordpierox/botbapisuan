@@ -75,10 +75,15 @@ module.exports = {
 // ============================================
 
 function censorNick(nickname) {
-    if (!nickname || nickname.length <= 3) return nickname;
+    if (!nickname) return nickname;
     
     return nickname.split(' ').map(word => {
-        if (word.length <= 3) return word;
+        if (word.length === 0) return word;
+        if (word.length <= 3) {
+            // Palabras de 3 o menos caracteres se censuran completamente
+            return '*'.repeat(word.length);
+        }
+        // Palabras largas: primeras 3 letras + asteriscos
         const visible = word.slice(0, 3);
         const hidden = '*'.repeat(word.length - 3);
         return visible + hidden;
@@ -86,10 +91,15 @@ function censorNick(nickname) {
 }
 
 function censorServer(serverName) {
-    if (!serverName || serverName.length <= 3) return serverName;
+    if (!serverName) return serverName;
     
     return serverName.split(' ').map(word => {
-        if (word.length <= 3) return word;
+        if (word.length === 0) return word;
+        if (word.length <= 3) {
+            // Palabras de 3 o menos caracteres se censuran completamente
+            return '*'.repeat(word.length);
+        }
+        // Palabras largas: primeras 3 letras + asteriscos
         const visible = word.slice(0, 3);
         const hidden = '*'.repeat(word.length - 3);
         return visible + hidden;
