@@ -116,157 +116,203 @@ function generateRoomId() {
 }
 
 // ============================================
-// SUBCOMANDO: /telefono llamar
+// SUBCOMANDO: /telefono llamar (CON DEBUG)
 // ============================================
 async function handleLlamar(interaction, client) {
-    await interaction.deferReply();
+    try {
+        console.log('📞 [TELEFONO] Comando llamar iniciado');
+        console.log('📞 [TELEFONO] Guild:', interaction.guild?.name);
+        console.log('📞 [TELEFONO] Channel:', interaction.channel?.name);
+        
+        await interaction.deferReply();
+        console.log('📞 [TELEFONO] DeferReply exitoso');
 
-    const channelId = interaction.channelId;
-    const guildId = interaction.guildId;
-    const guild = interaction.guild;
+        const channelId = interaction.channelId;
+        const guildId = interaction.guildId;
+        const guild = interaction.guild;
 
-    // Verificar si este GUILD ya está en una llamada
-    if (global.phoneSystem.guildRooms.has(guildId)) {
-        return await interaction.editReply({
-            content: '📞 **Este servidor ya está en una llamada activa.**\nUsa `/telefono colgar` para terminarla primero.'
-        });
-    }
+        console.log('📞 [TELEFONO] IDs obtenidos:', { channelId, guildId });
 
-    // Verificar si ya está en cola
-    const alreadyWaiting = global.phoneSystem.waitingQueue.find(
-        entry => entry.guildId === guildId
-    );
-
-    if (alreadyWaiting) {
-        return await interaction.editReply({
-            content: '⏳ **Este servidor ya está esperando una llamada.**'
-        });
-    }
-
-    // Buscar sala activa con espacio
-    let targetRoom = null;
-
-    for (const [roomId, room] of global.phoneSystem.activeRooms) {
-        if (room.channels.size < 10) {
-            targetRoom = { roomId, room };
-            break;
-        }
-    }
-
-    if (targetRoom) {
-        // UNIRSE A SALA EXISTENTE
-        const { roomId, room } = targetRoom;
-
-        room.channels.add(channelId);
-        global.phoneSystem.guildRooms.set(guildId, roomId);
-
-        const joinEmbed = new EmbedBuilder()
-            .setTitle('📞 ¡Nuevo Participante!')
-            .setDescription(`**${censorServer(guild.name)}** se ha unido a la llamada.\n\n👥 **Participantes:** ${room.channels.size} servidor(es) conectados.`)
-            .setColor('Blue')
-            .setTimestamp();
-
-        for (const cId of room.channels) {
-            try {
-                const channel = await client.channels.fetch(cId);
-                await channel.send({ embeds: [joinEmbed] });
-            } catch (e) {}
+        // Verificar si este GUILD ya está en una llamada
+        if (global.phoneSystem.guildRooms.has(guildId)) {
+            console.log('📞 [TELEFONO] Guild ya está en llamada');
+            return await interaction.editReply({
+                content: '📞 **Este servidor ya está en una llamada activa.**\nUsa `/telefono colgar` para terminarla primero.'
+            });
         }
 
-        await interaction.editReply({
-            content: `✅ **¡Conectado a la llamada grupal!**\n${interaction.user} ha unido a **${guild.name}** a la conversación.\n\n👥 Ahora hay **${room.channels.size} servidores** conectados.`
-        });
+        // Verificar si ya está en cola
+        const alreadyWaiting = global.phoneSystem.waitingQueue.find(
+            entry => entry.guildId === guildId
+        );
 
-        startInactivityTimer(roomId, client);
+        if (alreadyWaiting) {
+            console.log('📞 [TELEFONO] Guild ya está esperando');
+            return await interaction.editReply({
+                content: '⏳ **Este servidor ya está esperando una llamada.**'
+            });
+        }
 
-    } else {
-        // CREAR NUEVA SALA Y ESPERAR
-        const queueEntry = {
-            channelId,
-            guildId,
-            guildName: guild.name,
-            userId: interaction.user.id,
-            timestamp: Date.now()
-        };
+        console.log('📞 [TELEFONO] Buscando salas activas...');
+        console.log('📞 [TELEFONO] Salas disponibles:', global.phoneSystem.activeRooms.size);
 
-        global.phoneSystem.waitingQueue.push(queueEntry);
+        // Buscar sala activa con espacio
+        let targetRoom = null;
 
-        const waitEmbed = new EmbedBuilder()
-            .setTitle('📞 Esperando Llamada...')
-            .setDescription(`${interaction.user} está buscando una conexión...\n\n⏳ Esperando hasta **3 minutos** por otra persona.\n\nSi alguien en otro servidor usa \`/telefono llamar\`, se establecerá la llamada.`)
-            .setColor('Orange')
-            .setTimestamp();
+        for (const [roomId, room] of global.phoneSystem.activeRooms) {
+            console.log(`📞 [TELEFONO] Sala ${roomId}: ${room.channels.size} canales`);
+            if (room.channels.size < 10) {
+                targetRoom = { roomId, room };
+                break;
+            }
+        }
 
-        await interaction.editReply({
-            embeds: [waitEmbed]
-        });
+        if (targetRoom) {
+            console.log('📞 [TELEFONO] Uniéndose a sala existente');
+            // UNIRSE A SALA EXISTENTE
+            const { roomId, room } = targetRoom;
 
-        // Timeout de 3 minutos
-        setTimeout(async () => {
-            const stillWaiting = global.phoneSystem.waitingQueue.find(
-                entry => entry.guildId === guildId
-            );
+            room.channels.add(channelId);
+            global.phoneSystem.guildRooms.set(guildId, roomId);
 
-            if (stillWaiting) {
-                const waitingEntries = global.phoneSystem.waitingQueue.filter(e => e.guildId !== guildId);
+            const joinEmbed = new EmbedBuilder()
+                .setTitle('📞 ¡Nuevo Participante!')
+                .setDescription(`**${censorServer(guild.name)}** se ha unido a la llamada.\n\n👥 **Participantes:** ${room.channels.size} servidor(es) conectados.`)
+                .setColor('Blue')
+                .setTimestamp();
 
-                if (waitingEntries.length > 0) {
-                    // Conectar con otros que esperan
-                    const roomId = generateRoomId();
-                    const newRoom = {
-                        channels: new Set([channelId]),
-                        users: new Map(),
-                        lastActivity: Date.now(),
-                        timeout: null
-                    };
-
-                    for (const entry of waitingEntries) {
-                        newRoom.channels.add(entry.channelId);
-                        global.phoneSystem.guildRooms.set(entry.guildId, roomId);
-                    }
-
-                    newRoom.channels.add(channelId);
-                    global.phoneSystem.guildRooms.set(guildId, roomId);
-                    global.phoneSystem.activeRooms.set(roomId, newRoom);
-
-                    global.phoneSystem.waitingQueue = [];
-
-                    const connectEmbed = new EmbedBuilder()
-                        .setTitle('📞 ¡Llamada Conectada!')
-                        .setDescription(`Se ha establecido una conexión grupal con ${newRoom.channels.size} servidores.\n\n**Escribe mensajes normales** y serán enviados a todos.\n\n🔴 La llamada se cerrará después de **6 minutos** sin mensajes.\n💬 Usa \`/telefono colgar\` para salir.`)
-                        .setColor('Green')
-                        .setTimestamp();
-
-                    for (const cId of newRoom.channels) {
-                        try {
-                            const channel = await client.channels.fetch(cId);
-                            await channel.send({ embeds: [connectEmbed] });
-                        } catch (e) {}
-                    }
-
-                    startInactivityTimer(roomId, client);
-
-                } else {
-                    // Nadie más esperando
-                    global.phoneSystem.waitingQueue = global.phoneSystem.waitingQueue.filter(
-                        entry => entry.guildId !== guildId
-                    );
-
-                    const timeoutEmbed = new EmbedBuilder()
-                        .setTitle('⏱️ Tiempo Agotado')
-                        .setDescription('No se encontró a nadie disponible.\nIntenta de nuevo más tarde.')
-                        .setColor('Red')
-                        .setTimestamp();
-
-                    try {
-                        const channel = await client.channels.fetch(channelId);
-                        await channel.send({ embeds: [timeoutEmbed] });
-                    } catch (e) {}
+            for (const cId of room.channels) {
+                try {
+                    const channel = await client.channels.fetch(cId);
+                    await channel.send({ embeds: [joinEmbed] });
+                } catch (e) {
+                    console.error('📞 [TELEFONO] Error enviando a canal:', e);
                 }
             }
-        }, 180000); // 3 minutos
+
+            await interaction.editReply({
+                content: `✅ **¡Conectado a la llamada grupal!**\n${interaction.user} ha unido a **${guild.name}** a la conversación.\n\n👥 Ahora hay **${room.channels.size} servidores** conectados.`
+            });
+
+            console.log('📞 [TELEFONO] Unión exitosa');
+            startInactivityTimer(roomId, client);
+
+        } else {
+            console.log('📞 [TELEFONO] Creando nueva sala / añadiendo a cola');
+            // CREAR NUEVA SALA Y ESPERAR
+            const queueEntry = {
+                channelId,
+                guildId,
+                guildName: guild.name,
+                userId: interaction.user.id,
+                timestamp: Date.now()
+            };
+
+            global.phoneSystem.waitingQueue.push(queueEntry);
+            console.log('📞 [TELEFONO] Añadido a cola. Total en cola:', global.phoneSystem.waitingQueue.length);
+
+            const waitEmbed = new EmbedBuilder()
+                .setTitle('📞 Esperando Llamada...')
+                .setDescription(`${interaction.user} está buscando una conexión...\n\n⏳ Esperando hasta **3 minutos** por otra persona.\n\nSi alguien en otro servidor usa \`/telefono llamar\`, se establecerá la llamada.`)
+                .setColor('Orange')
+                .setTimestamp();
+
+            await interaction.editReply({
+                embeds: [waitEmbed]
+            });
+
+            console.log('📞 [TELEFONO] Mensaje de espera enviado');
+
+            // Timeout de 3 minutos
+            setTimeout(async () => {
+                console.log('📞 [TELEFONO] Timeout de 3 minutos alcanzado');
+                const stillWaiting = global.phoneSystem.waitingQueue.find(
+                    entry => entry.guildId === guildId
+                );
+
+                if (stillWaiting) {
+                    console.log('📞 [TELEFONO] Guild sigue esperando. Procesando...');
+                    const waitingEntries = global.phoneSystem.waitingQueue.filter(e => e.guildId !== guildId);
+
+                    if (waitingEntries.length > 0) {
+                        console.log('📞 [TELEFONO] Conectando con', waitingEntries.length, 'otros en cola');
+                        // Conectar con otros que esperan
+                        const roomId = generateRoomId();
+                        const newRoom = {
+                            channels: new Set([channelId]),
+                            users: new Map(),
+                            lastActivity: Date.now(),
+                            timeout: null
+                        };
+
+                        for (const entry of waitingEntries) {
+                            newRoom.channels.add(entry.channelId);
+                            global.phoneSystem.guildRooms.set(entry.guildId, roomId);
+                        }
+
+                        newRoom.channels.add(channelId);
+                        global.phoneSystem.guildRooms.set(guildId, roomId);
+                        global.phoneSystem.activeRooms.set(roomId, newRoom);
+
+                        global.phoneSystem.waitingQueue = [];
+
+                        const connectEmbed = new EmbedBuilder()
+                            .setTitle('📞 ¡Llamada Conectada!')
+                            .setDescription(`Se ha establecido una conexión grupal con ${newRoom.channels.size} servidores.\n\n**Escribe mensajes normales** y serán enviados a todos.\n\n🔴 La llamada se cerrará después de **6 minutos** sin mensajes.\n💬 Usa \`/telefono colgar\` para salir.`)
+                            .setColor('Green')
+                            .setTimestamp();
+
+                        for (const cId of newRoom.channels) {
+                            try {
+                                const channel = await client.channels.fetch(cId);
+                                await channel.send({ embeds: [connectEmbed] });
+                            } catch (e) {
+                                console.error('📞 [TELEFONO] Error conectando:', e);
+                            }
+                        }
+
+                        console.log('📞 [TELEFONO] Sala creada con', newRoom.channels.size, 'canales');
+                        startInactivityTimer(roomId, client);
+
+                    } else {
+                        console.log('📞 [TELEFONO] Nadie más esperando. Timeout.');
+                        // Nadie más esperando
+                        global.phoneSystem.waitingQueue = global.phoneSystem.waitingQueue.filter(
+                            entry => entry.guildId !== guildId
+                        );
+
+                        const timeoutEmbed = new EmbedBuilder()
+                            .setTitle('⏱️ Tiempo Agotado')
+                            .setDescription('No se encontró a nadie disponible.\nIntenta de nuevo más tarde.')
+                            .setColor('Red')
+                            .setTimestamp();
+
+                        try {
+                            const channel = await client.channels.fetch(channelId);
+                            await channel.send({ embeds: [timeoutEmbed] });
+                        } catch (e) {
+                            console.error('📞 [TELEFONO] Error enviando timeout:', e);
+                        }
+                    }
+                } else {
+                    console.log('📞 [TELEFONO] Guild ya no está esperando (cancelado o conectado)');
+                }
+            }, 180000); // 3 minutos
+        }
+    } catch (error) {
+        console.error('❌ [TELEFONO] ERROR CRÍTICO en handleLlamar:', error);
+        console.error('❌ [TELEFONO] Stack:', error.stack);
+        
+        try {
+            await interaction.editReply({
+                content: '❌ **Error al procesar el comando.**\nRevisa los logs del servidor.'
+            });
+        } catch (replyError) {
+            console.error('❌ [TELEFONO] No se pudo enviar mensaje de error:', replyError);
+        }
     }
 }
+
 
 // ============================================
 // SUBCOMANDO: /telefono colgar
