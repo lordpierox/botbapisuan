@@ -4,7 +4,7 @@ const { searchGelbooru } = require('../../utils/gelbooru');
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('gelbooru-evangelion')
-        .setDescription('Cerca immagini Evangelion su Gelbooru')
+        .setDescription('Busca imágenes de Evangelion en Gelbooru')
         .addStringOption(option => option
             .setName('tags')
             .setDescription('Selecciona los tags')
@@ -25,27 +25,23 @@ module.exports = {
             .setDescription('Ordenar por')
             .setRequired(true)
             .addChoices(
-                { name: 'Random', value: 'sort:random' },
-                { name: 'Calificacion', value: 'sort:score' },
-                { name: 'Mas Recientes', value: 'sort:id:desc' },
-                { name: 'Mas Viejos', value: 'sort:id:asc' }
+                { name: 'Aleatorio', value: 'sort:random' },
+                { name: 'Calificación', value: 'sort:score' },
+                { name: 'Más Recientes', value: 'sort:id:desc' },
+                { name: 'Más Antiguos', value: 'sort:id:asc' }
             )),
 
     async execute(interaction, client) {
-        // ✅ Defer subito con gestione errori
         try {
             await interaction.deferReply();
         } catch (error) {
-            console.error('Defer failed (interaction expired):', error.message);
-            // Se deferReply fallisce, l'interazione è già scaduta
-            // Non possiamo fare nulla, usciamo
+            console.error('Error al diferir la respuesta:', error.message);
             return;
         }
         
-        const pairing = interaction.options.getString('pairing');
+        const tags = interaction.options.getString('tags');
         const sort = interaction.options.getString('sort');
 
-        // Definisci i tags per ogni pairing
         const pairingTags = {
             'asushin': 'ikari_shinji asuka_langley_souryuu -nagisa_kaworu -rating:explicit -rating:questionable -futanari -yaoi -bisexual_male -2boys -multiple_boys -pegging -yuri -2girls -multiple_girls -bestiality',
             'asurei': 'ayanami_rei asuka_langley_souryuu -nagisa_kaworu -ikari_shinji -rating:explicit -rating:questionable -futanari -yaoi -bisexual_male -2boys -multiple_boys -pegging -yuri -2girls -bestiality',
@@ -58,21 +54,21 @@ module.exports = {
             'nsfw_rei': 'ayanami_rei 1girl solo -futanari -yaoi -bisexual_male -2boys -multiple_boys -pegging -yuri -2girls -multiple_girls -bestiality rating:explicit'
         };
 
-        const tags = `${pairingTags[pairing]} ${sort}`;
+        const tagString = `${pairingTags[tags]} ${sort}`;
 
-        // Controlla NSFW per comandi NSFW
-        if (pairing.startsWith('nsfw_')) {
+        // Verificación NSFW
+        if (tags && tags.startsWith('nsfw_')) {
             if (!interaction.channel.nsfw && !(interaction.channel.parent && interaction.channel.parent.nsfw)) {
-                await interaction.editReply('Este comando solo se puede usar en canales NSFW');
+                await interaction.editReply('❌ Este comando solo se puede usar en canales NSFW');
                 return;
             }
         }
 
-        // Cerca su Gelbooru
-        const posts = await searchGelbooru(tags, 50);
+        // Buscar en Gelbooru
+        const posts = await searchGelbooru(tagString, 50);
 
         if (!posts || posts.length === 0) {
-            await interaction.editReply('No se encontraron resultados para los tags proporcionados.');
+            await interaction.editReply('❌ No se encontraron imágenes para los tags seleccionados.');
             return;
         }
 
@@ -80,12 +76,12 @@ module.exports = {
 
         const createEmbed = (index) => {
             return new EmbedBuilder()
-                .setTitle(`${pairing.toUpperCase()}`)
+                .setTitle(`${tags.toUpperCase()}`)
                 .setColor('Random')
                 .setTimestamp(new Date(posts[index].created_at))
                 .setDescription(`https://gelbooru.com/index.php?page=post&s=view&id=${posts[index].id}`)
                 .setImage(posts[index].file_url)
-                .setFooter({ text: `${index + 1}/${posts.length}` });
+                .setFooter({ text: `Imagen ${index + 1} de ${posts.length}` });
         };
 
         const buttons = new ActionRowBuilder().addComponents(
@@ -113,7 +109,7 @@ module.exports = {
         collector.on('collect', async i => {
             if (i.user.id !== interaction.user.id) {
                 return await i.reply({ 
-                    content: `Solo ${interaction.user.tag} Puede Usar Estos Botones`, 
+                    content: `⚠️ Solo ${interaction.user.tag} puede usar estos botones`, 
                     flags: 64
                 });
             }

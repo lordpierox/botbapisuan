@@ -26,10 +26,10 @@ module.exports = {
             .setDescription('Ordinamento')
             .setRequired(true)
             .addChoices(
-                { name: 'Random', value: 'sort:random' },
-                { name: 'Score', value: 'sort:score' },
-                { name: 'Mas Recientes', value: 'sort:id:desc' },
-                { name: 'Mas Viejos', value: 'sort:id:asc' }
+                { name: 'Aleatorio', value: 'sort:random' },
+                { name: 'Calificación', value: 'sort:score' },
+                { name: 'Más Recientes', value: 'sort:id:desc' },
+                { name: 'Más Antiguos', value: 'sort:id:asc' }
             )),
 
     async execute(interaction, client) {
@@ -87,7 +87,7 @@ module.exports = {
         const posts = await searchGelbooru(tags, 50);
 
         if (!posts || posts.length === 0) {
-            await interaction.editReply('Nessuna immagine trovata con questi tags');
+            await interaction.editReply('No se encontraron Imagenes.');
             return;
         }
 
