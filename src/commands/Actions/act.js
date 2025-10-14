@@ -3,43 +3,43 @@ const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 module.exports = {
     data: new SlashCommandBuilder()
         .setName('act')
-        .setDescription('Comandi di azione/roleplay')
+        .setDescription('Comandos de acciones (basados en Evangelion)')
         
         // Subcommand: angry
         .addSubcommand(subcommand =>
             subcommand
                 .setName('angry')
-                .setDescription('Mostra una reazione arrabbiata')
+                .setDescription('Muestra enfado')
                 .addUserOption(option => option
                     .setName('user')
-                    .setDescription('Seleziona un utente')
+                    .setDescription('Seleccionar un usuario')
                     .setRequired(false)))
         
         // Subcommand: bang
         .addSubcommand(subcommand =>
             subcommand
                 .setName('bang')
-                .setDescription('Dispara!')
+                .setDescription('Disparo!')
                 .addUserOption(option => option
                     .setName('user')
-                    .setDescription('Seleziona un utente')
+                    .setDescription('Seleccionar un usuario')
                     .setRequired(false)))
         
         // Subcommand: bite
         .addSubcommand(subcommand =>
             subcommand
                 .setName('bite')
-                .setDescription('Mordi qualcuno')
+                .setDescription('Morder a alguien')
                 .addUserOption(option => option
                     .setName('user')
-                    .setDescription('Seleziona un utente')
+                    .setDescription('Seleccionar un usuario')
                     .setRequired(true)))
         
         // Subcommand: blush
         .addSubcommand(subcommand =>
             subcommand
                 .setName('blush')
-                .setDescription('Arrossisci'))
+                .setDescription('Sonrojarse'))
         
         // Subcommand: claps
         .addSubcommand(subcommand =>
@@ -48,45 +48,45 @@ module.exports = {
                 .setDescription('Applaudi qualcuno')
                 .addUserOption(option => option
                     .setName('user')
-                    .setDescription('Seleziona un utente')
+                    .setDescription('Seleccionar un usuario')
                     .setRequired(true)))
         
         // Subcommand: confused
         .addSubcommand(subcommand =>
             subcommand
                 .setName('confused')
-                .setDescription('Mostra confusione'))
+                .setDescription('Mostrar confusión'))
         
         // Subcommand: dance
         .addSubcommand(subcommand =>
             subcommand
                 .setName('dance')
-                .setDescription('Balla!'))
+                .setDescription('Ballar!'))
         
         // Subcommand: eating
         .addSubcommand(subcommand =>
             subcommand
                 .setName('eating')
-                .setDescription('Mangia qualcosa'))
+                .setDescription('Comer'))
         
         // Subcommand: hug
         .addSubcommand(subcommand =>
             subcommand
                 .setName('hug')
-                .setDescription('Abbraccia qualcuno')
+                .setDescription('Abraza a alguien')
                 .addUserOption(option => option
                     .setName('user')
-                    .setDescription('Seleziona un utente')
+                    .setDescription('Seleccionar un usuario')
                     .setRequired(true)))
         
         // Subcommand: kiss
         .addSubcommand(subcommand =>
             subcommand
                 .setName('kiss')
-                .setDescription('Bacia qualcuno')
+                .setDescription('Besar a alguien')
                 .addUserOption(option => option
                     .setName('user')
-                    .setDescription('Seleziona un utente')
+                    .setDescription('Seleccionar un usuario')
                     .setRequired(true))),
 
     async execute(interaction, client) {
