@@ -1,6 +1,5 @@
 const { SlashCommandBuilder, EmbedBuilder } = require('discord.js');
 
-// Sistema global de llamadas
 if (!global.phoneSystem) {
     global.phoneSystem = {
         waitingQueue: [],
@@ -36,7 +35,7 @@ module.exports = {
 // SUBCOMANDO: /telefono llamar
 // ============================================
 async function handleLlamar(interaction, client) {
-    await interaction.deferReply({ ephemeral: true });
+    await interaction.deferReply();  // ✅ SIN ephemeral - público
 
     const channelId = interaction.channelId;
     const userId = interaction.user.id;
@@ -101,8 +100,9 @@ async function handleLlamar(interaction, client) {
             await channel1.send({ embeds: [connectEmbed] });
             await channel2.send({ embeds: [connectEmbed] });
 
+            // ✅ Respuesta PÚBLICA (sin ephemeral)
             await interaction.editReply({
-                content: '✅ **¡Llamada establecida!** Ahora puedes enviar mensajes.'
+                content: `✅ **¡Llamada establecida con éxito!**\n${interaction.user} ha conectado con otro servidor.`
             });
 
             // Iniciar timeout de inactividad
@@ -127,10 +127,11 @@ async function handleLlamar(interaction, client) {
 
         const waitEmbed = new EmbedBuilder()
             .setTitle('📞 Esperando Llamada...')
-            .setDescription('🔍 **Buscando alguien para conectar...**\n\n⏳ Esperando hasta **1 minuto** por otra persona.\n\nSi alguien en otro servidor usa `/telefono llamar`, la llamada se conectará automáticamente.')
+            .setDescription(`${interaction.user} está buscando una conexión...\n\n⏳ Esperando hasta **1 minuto** por otra persona.\n\nSi alguien en otro servidor usa \`/telefono llamar\`, la llamada se conectará automáticamente.`)
             .setColor('Orange')
             .setTimestamp();
 
+        // ✅ Respuesta PÚBLICA
         await interaction.editReply({
             embeds: [waitEmbed]
         });
@@ -164,20 +165,21 @@ async function handleLlamar(interaction, client) {
 // SUBCOMANDO: /telefono colgar
 // ============================================
 async function handleColgar(interaction, client) {
+    await interaction.deferReply();  // ✅ SIN ephemeral - público
+
     const channelId = interaction.channelId;
 
     if (!global.phoneSystem.activeConnections.has(channelId)) {
-        return await interaction.reply({
-            content: '❌ No hay ninguna llamada activa en este canal.',
-            ephemeral: true
+        return await interaction.editReply({
+            content: '❌ No hay ninguna llamada activa en este canal.'
         });
     }
 
     await endCall(channelId, client, 'manual');
 
-    await interaction.reply({
-        content: '✅ Llamada finalizada.',
-        ephemeral: true
+    // ✅ Respuesta PÚBLICA
+    await interaction.editReply({
+        content: `✅ **${interaction.user} ha finalizado la llamada.**`
     });
 }
 

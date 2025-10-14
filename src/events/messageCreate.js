@@ -3,24 +3,24 @@ const { Client, GatewayIntentBits, EmbedBuilder, PermissionsBitField, Permission
 module.exports = {
     name: 'messageCreate',
     on: true,
-    async execute(client, message, messageCreate) {
+    async execute(message, client) {  // ✅ ORDEN CORRECTO: message primero, luego client
         try {
             // ============================================
             // LÓGICA BUMP (Tu código existente)
             // ============================================
-            if (client.type == 20 && client.channel.id == "1032780435425603614" && client.interaction.commandName == "bump") {
+            if (message.type == 20 && message.channel.id == "1032780435425603614" && message.interaction?.commandName == "bump") {
                 console.log("bump detectado");
                 var member;
-                const guild = await message.guilds.cache.get(client.guildId);
+                const guild = message.guild;  // ✅ message.guild, no message.guilds.cache.get()
                 
-                await guild.members.cache.forEach(member => {
-                    member.roles.remove("1075621882591715419");
+                await guild.members.cache.forEach(m => {
+                    m.roles.remove("1075621882591715419").catch(() => {});
                 });
                 
-                member = await guild.members.cache.get(client.interaction.user.id);
-                const channel = await client.channel;
+                member = await guild.members.cache.get(message.interaction.user.id);
+                const channel = message.channel;  // ✅ message.channel directo
                 
-                if (member == null || member == undefined) {
+                if (!member) {
                     await channel.send("Lilim no encontrado dx.");
                 } else {
                     console.log(member);
@@ -55,7 +55,9 @@ module.exports = {
                     // Si tiene imágenes/archivos, añadirlos
                     if (message.attachments.size > 0) {
                         const attachment = message.attachments.first();
-                        messageEmbed.setImage(attachment.url);
+                        if (attachment.contentType?.startsWith('image/')) {
+                            messageEmbed.setImage(attachment.url);
+                        }
                     }
 
                     await partnerChannel.send({ embeds: [messageEmbed] });
@@ -72,7 +74,7 @@ module.exports = {
             }
 
         } catch (error) {
-            console.log(error);
+            console.log('Error en messageCreate:', error);
         }
     },
 };
