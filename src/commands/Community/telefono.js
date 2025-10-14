@@ -75,36 +75,45 @@ module.exports = {
 // ============================================
 
 function censorNick(nickname) {
+    console.log('🔍 [CENSOR_NICK] Entrada original:', JSON.stringify(nickname));
+    console.log('🔍 [CENSOR_NICK] Longitud:', nickname?.length);
+    
     if (!nickname) return nickname;
     
-    return nickname.split(' ').map(word => {
+    const result = nickname.split(' ').map(word => {
         if (word.length === 0) return word;
         if (word.length <= 3) {
-            // Palabras de 3 o menos caracteres se censuran completamente
             return '*'.repeat(word.length);
         }
-        // Palabras largas: primeras 3 letras + asteriscos
         const visible = word.slice(0, 3);
         const hidden = '*'.repeat(word.length - 3);
         return visible + hidden;
     }).join(' ');
+    
+    console.log('🔍 [CENSOR_NICK] Resultado:', JSON.stringify(result));
+    return result;
 }
 
 function censorServer(serverName) {
+    console.log('🔍 [CENSOR_SERVER] Entrada original:', JSON.stringify(serverName));
+    console.log('🔍 [CENSOR_SERVER] Longitud:', serverName?.length);
+    
     if (!serverName) return serverName;
     
-    return serverName.split(' ').map(word => {
+    const result = serverName.split(' ').map(word => {
         if (word.length === 0) return word;
         if (word.length <= 3) {
-            // Palabras de 3 o menos caracteres se censuran completamente
             return '*'.repeat(word.length);
         }
-        // Palabras largas: primeras 3 letras + asteriscos
         const visible = word.slice(0, 3);
         const hidden = '*'.repeat(word.length - 3);
         return visible + hidden;
     }).join(' ');
+    
+    console.log('🔍 [CENSOR_SERVER] Resultado:', JSON.stringify(result));
+    return result;
 }
+
 
 function getRandomAvatar() {
     const randomFile = AVATAR_FILES[Math.floor(Math.random() * AVATAR_FILES.length)];
