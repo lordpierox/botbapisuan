@@ -21,6 +21,12 @@ class WebServer {
     handleRequest(req, res) {
         let filePath = req.url === '/' ? '/pages/home.html' : req.url;
         
+        // API endpoint para listar archivos del carrousel
+        if (req.url === '/api/carrousel-files') {
+            this.handleCarrouselAPI(req, res);
+            return;
+        }
+        
         // Mapear rutas limpias a archivos HTML
         const routes = {
             '/': '/pages/home.html',
@@ -113,6 +119,34 @@ class WebServer {
                 }
             });
         }
+    }
+
+    // Manejar API para listar archivos del carrousel
+    handleCarrouselAPI(req, res) {
+        const carrouselPath = path.join(__dirname, 'public', 'carrousel');
+        
+        fs.readdir(carrouselPath, (error, files) => {
+            if (error) {
+                console.error('Error reading carrousel directory:', error);
+                res.writeHead(200, { 'Content-Type': 'application/json' });
+                res.end(JSON.stringify([]));
+                return;
+            }
+            
+            // Filtrar solo archivos de imagen/gif
+            const imageFiles = files.filter(file => {
+                const ext = path.extname(file).toLowerCase();
+                return ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.svg'].includes(ext);
+            });
+            
+            // Convertir a rutas completas
+            const filePaths = imageFiles.map(file => `/public/carrousel/${file}`);
+            
+            console.log(`🖼️ Carrousel images found: ${filePaths.length}`);
+            
+            res.writeHead(200, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify(filePaths));
+        });
     }
 
     stop() {
