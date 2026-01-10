@@ -1,7 +1,18 @@
 const { Client, GatewayIntentBits, Collection } = require('discord.js');
 const fs = require('fs');
+const WebServer = require('./web/server');
 require('dotenv').config();
 
+// ========================================
+// INICIAR SERVIDOR WEB PRIMERO (para Koyeb health checks)
+// ========================================
+const webServer = new WebServer(8080);
+webServer.start();
+console.log('✅ Servidor web iniciado ANTES de Discord');
+
+// ========================================
+// LUEGO INICIAR BOT DE DISCORD
+// ========================================
 const client = new Client({ 
     intents: [
         GatewayIntentBits.Guilds, 
