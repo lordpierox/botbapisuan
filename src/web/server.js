@@ -19,7 +19,7 @@ class WebServer {
     }
 
     handleRequest(req, res) {
-        let filePath = req.url === '/' ? '/home.html' : req.url;
+        let filePath = req.url === '/' ? '/pages/home.html' : req.url;
         
         // Mapear rutas limpias a archivos
         const routes = {
@@ -33,6 +33,11 @@ class WebServer {
 
         if (routes[req.url]) {
             filePath = routes[req.url];
+        }
+
+        // Si es un archivo público (CSS, imágenes, etc.), ajustar la ruta
+        if (req.url.startsWith('/public/')) {
+            filePath = req.url.replace('/public/', '/');
         }
 
         const extname = String(path.extname(filePath)).toLowerCase();
