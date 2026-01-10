@@ -3,50 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SukiBot - Pururin</title>
+    <title>SukiBaka Bot - Pururin</title>
     <link rel="stylesheet" href="https://unpkg.com/7.css">
-    <style>
-        body {
-            margin: 0;
-            padding: 20px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-        .title {
-            color: white;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-            font-size: 2.5em;
-            margin-bottom: 30px;
-            text-align: center;
-        }
-        .main-window { max-width: 900px; width: 100%; margin: 0 auto; }
-        .content-wrapper { display: flex; gap: 20px; padding: 20px; }
-        .sidebar { min-width: 150px; }
-        .sidebar button { width: 100%; margin-bottom: 10px; }
-        .sidebar a { text-decoration: none; display: block; }
-        .main-content { flex: 1; display: flex; gap: 20px; }
-        .bot-image { flex-shrink: 0; }
-        .bot-image img { width: 250px; height: 250px; object-fit: cover; border: 2px solid #ccc; border-radius: 4px; }
-        .bot-description { flex: 1; line-height: 1.6; }
-        .bot-description p { margin-bottom: 15px; }
-        .status-bar { display: flex; justify-content: space-between; padding: 4px 8px; border-top: 1px solid #ccc; background: #f0f0f0; font-size: 11px; }
-        @media (max-width: 768px) {
-            .content-wrapper { flex-direction: column; }
-            .main-content { flex-direction: column; }
-            .bot-image img { width: 100%; height: auto; }
-        }
-    </style>
+    <link rel="stylesheet" href="/public/css/style.css">
 </head>
 <body>
-    <h1 class="title">SukiBaka</h1>
+    <!-- Botón PLAY gigante (pantalla completa inicial) -->
+    <div class="play-button-container" id="playButtonContainer">
+        <div class="play-button" id="playButton">
+            <div class="play-icon"></div>
+        </div>
+    </div>
+
+    <!-- Video de fondo (se activa después de 5 segundos) -->
+    <div class="video-background hidden" id="videoBackground">
+        <video id="bgVideo" loop muted playsinline>
+            <source src="/public/videos/puruvideo.mp4" type="video/mp4">
+        </video>
+    </div>
+
+    <!-- Audio (oculto, se reproduce al hacer click en PLAY) -->
+    <audio id="puruAudio" loop>
+        <source src="/public/audio/puruaudio.mp3" type="audio/mpeg">
+    </audio>
+
+    <h1 class="title">SukiBaka Bot</h1>
     
     <div class="window main-window">
         <div class="title-bar">
-            <div class="title-bar-text">SukiBot - Pururin ♪</div>
+            <div class="title-bar-text">Suki el bot - Pururin ♪</div>
             <div class="title-bar-controls">
                 <button aria-label="Minimize"></button>
                 <button aria-label="Maximize"></button>
@@ -58,12 +43,17 @@
             <div class="sidebar">
                 <a href="/home"><button>Inicio</button></a>
                 <a href="/comandos"><button>Comandos</button></a>
+                <a href="/plan"><button>El Plan</button></a>
                 <a href="/pururin"><button>Pururin</button></a>
+                <a href="/aurora"><button disabled>Aurora</button></a>
             </div>
             
-            <div class="main-content">
-                <div class="bot-image">
-                    <img src="https://placehold.co/250x250/ff69b4/ffffff?text=Pururin" alt="Pururin">
+            <div class="main-content" style="flex-direction: column;">
+                <!-- Video en cuadrado -->
+                <div class="video-square">
+                    <video id="squareVideo" autoplay loop muted playsinline>
+                        <source src="/public/videos/puruvideo.mp4" type="video/mp4">
+                    </video>
                 </div>
                 
                 <div class="bot-description">
@@ -76,36 +66,73 @@
                     </p>
                     
                     <fieldset style="margin-top: 20px;">
-                        <legend>🎤 Top 5 Canciones Favoritas de Deraktsu</legend>
+                        <legend>🎤 Top 5 Canciones Favoritas de Michon</legend>
                         <ol>
-                            <li>Pururin</li>
-                            <li>Pururin</li>
-                            <li>Pururin</li>
-                            <li>Pururin</li>
-                            <li>Pururin</li>
+                            <li>Esa canción que escucho en loop 24/7</li>
+                            <li>La que me hace llorar (pero de emoción)</li>
+                            <li>La que pongo cuando planeo cosas</li>
+                            <li>La perfecta para conquistar el mundo</li>
+                            <li>Todas las demás (empate técnico)</li>
                         </ol>
                     </fieldset>
                     
                     <fieldset style="margin-top: 20px;">
-                        <legend>📊 Estadísticas de Deraktsu</legend>
+                        <legend>📊 Estadísticas de Michon</legend>
                         <p>🎧 Horas escuchando: ∞ (literalmente infinitas)</p>
-                        <p>💿 Canciones favoritas: Pururin</p>
+                        <p>💿 Canciones favoritas: TODAS</p>
                         <p>⭐ Rating personal: 11/10</p>
                         <p>🔄 Veces que he repetido canciones: Se perdió la cuenta</p>
                     </fieldset>
                     
                     <div style="margin-top: 20px; padding: 15px; background: #ffe6f0; border: 2px solid #ff69b4; border-radius: 4px; text-align: center;">
                         <strong style="color: #ff1493;">💖 FAN #1 OFICIAL 💖</strong><br>
-                        <small>Certificado por el mismo Deraktsu dx</small>
+                        <small>Certificado por el mismo Michon dx</small>
                     </div>
                 </div>
             </div>
         </div>
         
         <div class="status-bar">
-            <div>Sukibot v0.5</div>
+            <div>Michon Bot v1.0</div>
             <div>♪ Reproduciendo: Pururin - All Songs (Shuffle) ♪</div>
         </div>
     </div>
+
+    <script>
+        // ========================================
+        // LÓGICA DE PURURIN PAGE
+        // ========================================
+        
+        const playButtonContainer = document.getElementById('playButtonContainer');
+        const playButton = document.getElementById('playButton');
+        const puruAudio = document.getElementById('puruAudio');
+        const squareVideo = document.getElementById('squareVideo');
+        const videoBackground = document.getElementById('videoBackground');
+        const bgVideo = document.getElementById('bgVideo');
+        
+        // Click en botón PLAY
+        playButtonContainer.addEventListener('click', function() {
+            // Reproducir audio
+            puruAudio.play().catch(err => console.log('Error audio:', err));
+            
+            // Reproducir video cuadrado
+            squareVideo.play().catch(err => console.log('Error video:', err));
+            
+            // Ocultar botón PLAY
+            playButtonContainer.classList.add('hidden');
+            
+            // Después de 5 segundos, activar video de fondo
+            setTimeout(function() {
+                videoBackground.classList.remove('hidden');
+                bgVideo.play().catch(err => console.log('Error bg video:', err));
+            }, 5000);
+        });
+        
+        // Prevenir que el audio se pause
+        puruAudio.addEventListener('ended', function() {
+            this.currentTime = 0;
+            this.play();
+        });
+    </script>
 </body>
 </html>
