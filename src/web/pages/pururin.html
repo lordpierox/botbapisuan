@@ -137,13 +137,33 @@
         const videoBackground = document.getElementById('videoBackground');
         const bgVideo = document.getElementById('bgVideo');
         
-        // Array de imágenes/gifs para los cuadrados flotantes
-        // Puedes agregar más rutas aquí
-        const floatingImages = [
-            '/public/videos/puru.gif',
-            '/public/images/backgroundxp.png',
-            // Agrega más imágenes/gifs aquí
-        ];
+        // Array para guardar las imágenes del carrousel
+        let carrouselImages = [];
+        
+        // Cargar lista de archivos de /public/carrousel/
+        async function loadCarrouselImages() {
+            try {
+                // Fetch al endpoint que lista archivos del carrousel
+                const response = await fetch('/api/carrousel-files');
+                if (response.ok) {
+                    carrouselImages = await response.json();
+                    console.log('Carrousel images loaded:', carrouselImages);
+                } else {
+                    // Fallback: usar lista manual si el API falla
+                    console.log('Using fallback carrousel images');
+                    carrouselImages = [
+                        '/public/carrousel/image1.gif',
+                        '/public/carrousel/image2.png',
+                        '/public/carrousel/image3.jpg',
+                        // Agrega más imágenes aquí manualmente si no hay API
+                    ];
+                }
+            } catch (error) {
+                console.error('Error loading carrousel:', error);
+                // Fallback simple
+                carrouselImages = ['/public/videos/puru.gif'];
+            }
+        }
         
         // Clase para manejar cuadrados flotantes estilo DVD
         class FloatingBox {
@@ -211,9 +231,14 @@
         function createFloatingBoxes(count = 3) {
             console.log('Creating', count, 'floating boxes!');
             
+            if (carrouselImages.length === 0) {
+                console.warn('No carrousel images loaded!');
+                return;
+            }
+            
             for (let i = 0; i < count; i++) {
-                // Seleccionar imagen aleatoria
-                const randomImage = floatingImages[Math.floor(Math.random() * floatingImages.length)];
+                // Seleccionar imagen aleatoria del carrousel
+                const randomImage = carrouselImages[Math.floor(Math.random() * carrouselImages.length)];
                 const box = new FloatingBox(randomImage);
                 floatingBoxes.push(box);
             }
@@ -221,6 +246,9 @@
             // Iniciar animación
             animateBoxes();
         }
+        
+        // Cargar imágenes del carrousel al inicio
+        loadCarrouselImages();
         
         // Verificar que el video se cargó
         squareVideo.addEventListener('loadeddata', function() {
@@ -271,7 +299,7 @@
             
             // Después de 7 segundos, crear cuadrados flotantes
             setTimeout(function() {
-                createFloatingBoxes(3); // Crear 3 cuadrados (puedes cambiar el número)
+                createFloatingBoxes(5); // Crear 5 cuadrados
             }, 7000);
         });
         
