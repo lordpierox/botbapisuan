@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SukiBaka Bot - Comandos</title>
+    <link rel="stylesheet" href="https://unpkg.com/7.css">
+    <link rel="stylesheet" href="/public/css/style.css">
+</head>
+<body>
+    <h1 class="title">SukiBaka Bot</h1>
+    
+    <div class="window main-window">
+        <div class="title-bar">
+            <div class="title-bar-text">Suki el bot - Comandos</div>
+            <div class="title-bar-controls">
+                <button aria-label="Minimize"></button>
+                <button aria-label="Maximize"></button>
+                <button aria-label="Close"></button>
+            </div>
+        </div>
+        
+        <div class="content-wrapper">
+            <div class="sidebar">
+                <a href="/home"><button>Inicio</button></a>
+                <a href="/comandos"><button>Comandos</button></a>
+                <a href="/plan"><button>El Plan</button></a>
+                <a href="/pururin"><button>Pururin</button></a>
+                <a href="/aurora"><button disabled>Aurora</button></a>
+            </div>
+            
+            <div class="main-content" style="flex-direction: column;">
+                <h2>📜 Lista de Comandos</h2>
+                
+                <fieldset>
+                    <legend>Comandos Generales</legend>
+                    <ul class="command-list">
+                        <li class="command-item">
+                            <div class="command-name">/info</div>
+                            <div class="command-desc">Muestra información sobre el bot y sus capacidades dx</div>
+                        </li>
+                        <li class="command-item">
+                            <div class="command-name">/ayuda</div>
+                            <div class="command-desc">Guía de uso y comandos disponibles</div>
+                        </li>
+                        <li class="command-item">
+                            <div class="command-name">/ping</div>
+                            <div class="command-desc">Verifica el estado y latencia del bot</div>
+                        </li>
+                    </ul>
+                </fieldset>
+                
+                <fieldset style="margin-top: 20px;">
+                    <legend>Comandos de Moderación</legend>
+                    <ul class="command-list">
+                        <li class="command-item">
+                            <div class="command-name">/ban [usuario]</div>
+                            <div class="command-desc">Banea a un usuario del servidor (requiere permisos)</div>
+                        </li>
+                        <li class="command-item">
+                            <div class="command-name">/kick [usuario]</div>
+                            <div class="command-desc">Expulsa a un usuario del servidor (requiere permisos)</div>
+                        </li>
+                        <li class="command-item">
+                            <div class="command-name">/clear [cantidad]</div>
+                            <div class="command-desc">Elimina mensajes del chat (requiere permisos)</div>
+                        </li>
+                    </ul>
+                </fieldset>
+                
+                <fieldset style="margin-top: 20px;">
+                    <legend>Comandos Especiales</legend>
+                    <ul class="command-list">
+                        <li class="command-item">
+                            <div class="command-name">/plan</div>
+                            <div class="command-desc">Revela (parcialmente) el Plan Maestro dx</div>
+                        </li>
+                        <li class="command-item">
+                            <div class="command-name">/pururin</div>
+                            <div class="command-desc">Todo sobre la artista favorita de Michon</div>
+                        </li>
+                    </ul>
+                </fieldset>
+                
+                <p style="margin-top: 20px; color: #666; font-style: italic;">
+                    💡 Tip: Usa <code>/ayuda [comando]</code> para más información sobre un comando específico
+                </p>
+            </div>
+        </div>
+        
+        <div class="status-bar">
+            <div>Michon Bot v1.0</div>
+            <div>Comandos totales: 8 | En desarrollo: 3</div>
+        </div>
+    </div>
+</body>
+</html>
