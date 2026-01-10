@@ -1,10 +1,86 @@
 const { Client, GatewayIntentBits, EmbedBuilder, PermissionsBitField, Permissions, MessageManager, Embed, Collection, ActivityType } = require('discord.js');
+const axios = require('axios');
 
 module.exports = {
     name: 'messageCreate',
     on: true,
     async execute(message, client) {
         try {
+            // ============================================
+            // SISTEMA DE IA - Responder cuando mencionan o responden al bot
+            // ============================================
+            if (!message.author.bot) {
+                const botMentioned = message.mentions.has(client.user);
+                const isReplyToBot = message.reference && 
+                    message.channel.messages.cache.get(message.reference.messageId)?.author.id === client.user.id;
+
+                if (botMentioned || isReplyToBot) {
+                    // Mostrar indicador de "escribiendo..."
+                    await message.channel.sendTyping();
+
+                    try {
+                        // Obtener contexto de conversación (últimos 5 mensajes)
+                        const messages = await message.channel.messages.fetch({ limit: 10 });
+                        const conversationHistory = Array.from(messages.values())
+                            .reverse()
+                            .filter(m => !m.author.bot || m.author.id === client.user.id)
+                            .slice(-5)
+                            .map(m => ({
+                                role: m.author.id === client.user.id ? 'assistant' : 'user',
+                                content: `${m.author.username}: ${m.content}`
+                            }));
+
+                        // Limpiar la mención del bot del mensaje
+                        const cleanContent = message.content
+                            .replace(/<@!?\d+>/g, '')
+                            .trim();
+
+                        // Llamar a Groq API
+                        const response = await axios.post(
+                            'https://api.groq.com/openai/v1/chat/completions',
+                            {
+                                model: 'llama-3.3-70b-versatile',
+                                messages: [
+                                    {
+                                        role: 'system',
+                                        content: 'Eres Suki, un bot de Discord amigable y servicial. Responde de manera concisa, natural y divertida. Usa emojis ocasionalmente. Mantén las respuestas cortas (máximo 2000 caracteres).'
+                                    },
+                                    ...conversationHistory,
+                                    {
+                                        role: 'user',
+                                        content: cleanContent || '¡Hola!'
+                                    }
+                                ],
+                                max_tokens: 500,
+                                temperature: 0.7
+                            },
+                            {
+                                headers: {
+                                    'Authorization': `Bearer ${process.env.GROQ_API_KEY}`,
+                                    'Content-Type': 'application/json'
+                                }
+                            }
+                        );
+
+                        const aiResponse = response.data.choices[0].message.content;
+                        
+                        // Dividir respuesta si es muy larga (Discord tiene límite de 2000 caracteres)
+                        if (aiResponse.length > 2000) {
+                            const chunks = aiResponse.match(/[\s\S]{1,2000}/g);
+                            for (const chunk of chunks) {
+                                await message.reply(chunk);
+                            }
+                        } else {
+                            await message.reply(aiResponse);
+                        }
+
+                    } catch (error) {
+                        console.error('Error llamando a Groq API:', error.response?.data || error.message);
+                        await message.reply('¡Ups! Tuve un problema procesando tu mensaje. 😅');
+                    }
+                }
+            }
+
             // ============================================
             // LÓGICA BUMP
             // ============================================
