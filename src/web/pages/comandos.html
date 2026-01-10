@@ -6,6 +6,23 @@
     <title>SukiBaka Bot - Comandos</title>
     <link rel="stylesheet" href="https://unpkg.com/7.css">
     <link rel="stylesheet" href="/public/css/style.css">
+    <style>
+        /* Ventana más transparente */
+        .window {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+        }
+        
+        /* Botones de la ventana clickeables */
+        .title-bar-controls button {
+            cursor: pointer;
+            pointer-events: auto;
+        }
+        
+        .title-bar-controls button:hover {
+            background: #e0e0e0;
+        }
+    </style>
 </head>
 <body>
     <h1 class="title">SukiBaka Bot</h1>
@@ -14,9 +31,9 @@
         <div class="title-bar">
             <div class="title-bar-text">Suki el bot - Comandos</div>
             <div class="title-bar-controls">
-                <button aria-label="Minimize"></button>
-                <button aria-label="Maximize"></button>
-                <button aria-label="Close"></button>
+                <button aria-label="Minimize" onclick="alert('¡No puedes minimizar esto dx!')"></button>
+                <button aria-label="Maximize" onclick="alert('¡Ya estoy al máximo!')"></button>
+                <button aria-label="Close" onclick="alert('¡No me cierres pls!')"></button>
             </div>
         </div>
         
@@ -28,54 +45,142 @@
             </div>
             
             <div class="main-content" style="flex-direction: column;">
-                <h2>📜 Lorem Ipsum</h2>
+                <h2>📜 Comandos Disponibles</h2>
                 
                 <fieldset>
-                    <legend>Lorem Ipsum Dolor</legend>
+                    <legend>🔍 Búsqueda & Utilidades</legend>
                     <ul class="command-list">
                         <li class="command-item">
-                            <div class="command-name">/lorem</div>
-                            <div class="command-desc">Lorem ipsum dolor sit amet consectetur adipiscing elit</div>
+                            <div class="command-name">/search</div>
+                            <div class="command-desc">Busca imágenes en Gelbooru con tags (cosas bizarras de la deep web)</div>
                         </li>
                         <li class="command-item">
-                            <div class="command-name">/ipsum</div>
-                            <div class="command-desc">Sed do eiusmod tempor incididunt ut labore</div>
+                            <div class="command-name">/evangelion</div>
+                            <div class="command-desc">Busca imágenes específicas de Evangelion en Gelbooru</div>
                         </li>
                         <li class="command-item">
-                            <div class="command-name">/dolor</div>
-                            <div class="command-desc">Ut enim ad minim veniam quis nostrud</div>
+                            <div class="command-name">/sauceimg</div>
+                            <div class="command-desc">Encuentra el origen de una imagen (reverse image search)</div>
+                        </li>
+                        <li class="command-item">
+                            <div class="command-name">/saucelink</div>
+                            <div class="command-desc">Encuentra el origen de una imagen desde un link</div>
                         </li>
                     </ul>
                 </fieldset>
                 
                 <fieldset style="margin-top: 20px;">
-                    <legend>Sit Amet Consectetur</legend>
+                    <legend>🎭 Acciones & RP</legend>
                     <ul class="command-list">
                         <li class="command-item">
-                            <div class="command-name">/adipiscing</div>
-                            <div class="command-desc">Duis aute irure dolor in reprehenderit</div>
+                            <div class="command-name">/act</div>
+                            <div class="command-desc">Realiza acciones de roleplay con GIFs animados (hug, kiss, pat, etc.)</div>
+                        </li>
+                    </ul>
+                </fieldset>
+                
+                <fieldset style="margin-top: 20px;">
+                    <legend>👥 Comunidad & Social</legend>
+                    <ul class="command-list">
+                        <li class="command-item">
+                            <div class="command-name">/telefono</div>
+                            <div class="command-desc">Conecta con otros servidores aleatoriamente (chatroulette style)</div>
                         </li>
                         <li class="command-item">
-                            <div class="command-name">/elit</div>
-                            <div class="command-desc">Excepteur sint occaecat cupidatat non proident</div>
+                            <div class="command-name">/say</div>
+                            <div class="command-desc">Haz que el bot diga algo por ti</div>
                         </li>
                         <li class="command-item">
-                            <div class="command-name">/tempor</div>
-                            <div class="command-desc">Sunt in culpa qui officia deserunt mollit</div>
+                            <div class="command-name">/snipe</div>
+                            <div class="command-desc">Muestra el último mensaje borrado en el canal</div>
+                        </li>
+                        <li class="command-item">
+                            <div class="command-name">/snipebot</div>
+                            <div class="command-desc">Muestra mensajes borrados por bots</div>
+                        </li>
+                        <li class="command-item">
+                            <div class="command-name">/ob</div>
+                            <div class="command-desc">Comando especial de comunidad</div>
+                        </li>
+                    </ul>
+                </fieldset>
+                
+                <fieldset style="margin-top: 20px;">
+                    <legend>🎲 Diversión & Random</legend>
+                    <ul class="command-list">
+                        <li class="command-item">
+                            <div class="command-name">/bola8</div>
+                            <div class="command-desc">Pregúntale a la bola mágica (magic 8-ball)</div>
+                        </li>
+                        <li class="command-item">
+                            <div class="command-name">/roll</div>
+                            <div class="command-desc">Lanza dados personalizables</div>
+                        </li>
+                        <li class="command-item">
+                            <div class="command-name">/poll</div>
+                            <div class="command-desc">Crea una encuesta rápida</div>
+                        </li>
+                    </ul>
+                </fieldset>
+                
+                <fieldset style="margin-top: 20px;">
+                    <legend>🛠️ Info & Moderación</legend>
+                    <ul class="command-list">
+                        <li class="command-item">
+                            <div class="command-name">/ping</div>
+                            <div class="command-desc">Verifica la latencia del bot</div>
+                        </li>
+                        <li class="command-item">
+                            <div class="command-name">/info</div>
+                            <div class="command-desc">Información sobre el bot</div>
+                        </li>
+                        <li class="command-item">
+                            <div class="command-name">/avatar</div>
+                            <div class="command-desc">Muestra el avatar de un usuario</div>
+                        </li>
+                        <li class="command-item">
+                            <div class="command-name">/userinfo</div>
+                            <div class="command-desc">Información detallada de un usuario</div>
+                        </li>
+                        <li class="command-item">
+                            <div class="command-name">/serverinfo</div>
+                            <div class="command-desc">Información del servidor actual</div>
+                        </li>
+                        <li class="command-item">
+                            <div class="command-name">/clear</div>
+                            <div class="command-desc">Borra mensajes en masa (requiere permisos)</div>
                         </li>
                     </ul>
                 </fieldset>
                 
                 <p style="margin-top: 20px; color: #666; font-style: italic;">
-                    💡 Lorem ipsum dolor sit amet consectetur adipiscing elit sed do
+                    💡 Usa los comandos en tu servidor. Algunos requieren permisos especiales dx
                 </p>
             </div>
         </div>
         
         <div class="status-bar">
-            <div>SukiBaka Bot v1.0</div>
-            <div>Lorem ipsum dolor | Sit amet: 6</div>
+            <div id="statusVersion">Sukibot v0.5</div>
+            <div id="statusCommands">Total de comandos: 22</div>
         </div>
     </div>
+
+    <script>
+        // Cargar versión desde API
+        async function loadBotStats() {
+            try {
+                const response = await fetch('/api/bot-stats');
+                if (response.ok) {
+                    const stats = await response.json();
+                    document.getElementById('statusVersion').textContent = `${stats.name} v${stats.version}`;
+                }
+            } catch (error) {
+                console.error('Error loading bot stats:', error);
+            }
+        }
+        
+        loadBotStats();
+        console.log('Comandos page loaded! dx');
+    </script>
 </body>
 </html>
