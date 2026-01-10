@@ -1,5 +1,4 @@
 const { Client, GatewayIntentBits, ActivityType } = require('discord.js');
-const WebServer = require('../web/server');
 
 module.exports = {
     name: 'clientReady',
@@ -13,9 +12,8 @@ module.exports = {
             status: 'dnd',
           });
 
-        // Iniciar servidor web con estructura modular
-        const webServer = new WebServer(8080);
-        webServer.start();
+        // El servidor web ya se inició en index.js ANTES de Discord
+        // para pasar los health checks de Koyeb inmediatamente
 
         client.guilds.cache.forEach(guild => {
             console.log(`${guild.name} | ${guild.id}`);
