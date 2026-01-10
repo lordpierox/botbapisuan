@@ -6,6 +6,29 @@
     <title>SukiBaka Bot - Pururin</title>
     <link rel="stylesheet" href="https://unpkg.com/7.css">
     <link rel="stylesheet" href="/public/css/style.css">
+    <style>
+        /* Asegurar que el video sea visible */
+        .video-square {
+            background: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        
+        .video-square video {
+            display: block;
+            background: #000;
+        }
+        
+        /* Mensaje de carga */
+        .video-loading {
+            position: absolute;
+            color: white;
+            font-size: 18px;
+            z-index: 10;
+        }
+    </style>
 </head>
 <body>
     <!-- Botón PLAY gigante (pantalla completa inicial) -->
@@ -49,8 +72,10 @@
             <div class="main-content" style="flex-direction: column;">
                 <!-- Video en cuadrado -->
                 <div class="video-square">
-                    <video id="squareVideo" loop muted playsinline>
+                    <div class="video-loading" id="videoLoading">🔄 Cargando video...</div>
+                    <video id="squareVideo" loop muted playsinline preload="auto">
                         <source src="/public/videos/puruvideo.mp4" type="video/mp4">
+                        Tu navegador no soporta video HTML5
                     </video>
                 </div>
                 
@@ -104,6 +129,31 @@
         const squareVideo = document.getElementById('squareVideo');
         const videoBackground = document.getElementById('videoBackground');
         const bgVideo = document.getElementById('bgVideo');
+        const videoLoading = document.getElementById('videoLoading');
+        
+        // Verificar que el video se cargó
+        squareVideo.addEventListener('loadeddata', function() {
+            console.log('Video cuadrado loaded successfully!');
+            console.log('Video dimensions:', squareVideo.videoWidth, 'x', squareVideo.videoHeight);
+            console.log('Video duration:', squareVideo.duration, 'seconds');
+            videoLoading.style.display = 'none';
+        });
+        
+        squareVideo.addEventListener('error', function(e) {
+            console.error('Error loading square video:', e);
+            console.error('Video error code:', squareVideo.error?.code);
+            console.error('Video error message:', squareVideo.error?.message);
+            videoLoading.textContent = '⚠️ Error cargando video';
+            videoLoading.style.color = 'red';
+        });
+        
+        squareVideo.addEventListener('loadedmetadata', function() {
+            console.log('Video metadata loaded');
+        });
+        
+        squareVideo.addEventListener('canplay', function() {
+            console.log('Video can play!');
+        });
         
         // Click en botón PLAY
         playButtonContainer.addEventListener('click', function() {
@@ -116,7 +166,12 @@
             
             // Reproducir video cuadrado
             squareVideo.play()
-                .then(() => console.log('Video cuadrado playing'))
+                .then(() => {
+                    console.log('Video cuadrado playing');
+                    console.log('Video currentTime:', squareVideo.currentTime);
+                    console.log('Video paused:', squareVideo.paused);
+                    console.log('Video ended:', squareVideo.ended);
+                })
                 .catch(err => console.log('Error video cuadrado:', err));
             
             // Ocultar botón PLAY
@@ -130,15 +185,6 @@
                     .then(() => console.log('Background video playing'))
                     .catch(err => console.log('Error bg video:', err));
             }, 5000);
-        });
-        
-        // Debug: verificar que los videos están cargados
-        squareVideo.addEventListener('loadeddata', function() {
-            console.log('Video cuadrado loaded successfully!');
-        });
-        
-        squareVideo.addEventListener('error', function(e) {
-            console.error('Error loading square video:', e);
         });
         
         bgVideo.addEventListener('loadeddata', function() {
