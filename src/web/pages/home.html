@@ -6,6 +6,62 @@
     <title>SukiBaka Bot - Home</title>
     <link rel="stylesheet" href="https://unpkg.com/7.css">
     <link rel="stylesheet" href="/public/css/style.css">
+    <style>
+        /* Ventana más transparente */
+        .window {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+        }
+        
+        /* Botones de la ventana clickeables */
+        .title-bar-controls button {
+            cursor: pointer;
+            pointer-events: auto;
+        }
+        
+        .title-bar-controls button:hover {
+            background: #e0e0e0;
+        }
+        
+        /* Fix CSS del fieldset para que el texto no se corte */
+        fieldset {
+            padding: 15px;
+            margin-top: 20px;
+        }
+        
+        fieldset legend {
+            padding: 0 10px;
+            font-weight: bold;
+        }
+        
+        /* Botón de invitación destacado */
+        .invite-button {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: bold;
+            background: linear-gradient(180deg, #0078d7 0%, #0056a8 100%);
+            color: white;
+            border: 1px solid #003c7e;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.2s;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        
+        .invite-button:hover {
+            background: linear-gradient(180deg, #1084e0 0%, #0066c2 100%);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            transform: translateY(-1px);
+        }
+        
+        .invite-button:active {
+            transform: translateY(0);
+            box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+        }
+    </style>
 </head>
 <body>
     <h1 class="title">SukiBaka Bot</h1>
@@ -14,9 +70,9 @@
         <div class="title-bar">
             <div class="title-bar-text">Suki el bot - Inicio</div>
             <div class="title-bar-controls">
-                <button aria-label="Minimize"></button>
-                <button aria-label="Maximize"></button>
-                <button aria-label="Close"></button>
+                <button aria-label="Minimize" onclick="alert('¡No puedes minimizar esto dx!')"></button>
+                <button aria-label="Maximize" onclick="alert('¡Ya estoy al máximo!')"></button>
+                <button aria-label="Close" onclick="alert('¡No me cierres pls!')"></button>
             </div>
         </div>
         
@@ -33,31 +89,69 @@
                 </div>
                 
                 <div class="bot-description">
-                    <h2>Lorem Ipsum Dolor</h2>
+                    <h2>Sukibot - El Bot Más OP de Discord</h2>
                     <p>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-                    </p>
-                    <p>
-                        Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
+                        ¡Wasaaa! Soy Sukibaka, el bot más OP, más crazy de la head del Discord. Very en desarrollo y very early.
                     </p>
                     <p>
-                        Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.
+                        Comandos de búsqueda, de los funny y más cosas bizarras sacadas de la deep web.
                     </p>
-                    <p style="color: #666; font-style: italic;">
-                        Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt dx
+                    <p>
+                        Por favor, este es un pedido de ayuda. Mi creador me está obligando a escuchar Pururin eternamente.
                     </p>
-                    <fieldset style="margin-top: 20px;">
+                    <p>
+                        Para agregar al bot presiona el botón de abajo:
+                    </p>
+                    
+                    <a href="#" class="invite-button" id="inviteBtn">
+                        ➞ Agregar a mi Server
+                    </a>
+                    
+                    <fieldset>
                         <legend>Estado</legend>
-                        <p>🟢 Online | Lorem ipsum dolor sit amet</p>
+                        <p>🟢 Activo en todos los servers</p>
                     </fieldset>
                 </div>
             </div>
         </div>
         
         <div class="status-bar">
-            <div>SukiBaka Bot v1.0</div>
-            <div>Lorem ipsum dolor sit amet dx</div>
+            <div id="statusVersion">Sukibot v0.5</div>
+            <div id="statusServers">Cargando estadísticas...</div>
         </div>
     </div>
+
+    <script>
+        // Cargar estadísticas del bot
+        async function loadBotStats() {
+            try {
+                const response = await fetch('/api/bot-stats');
+                if (response.ok) {
+                    const stats = await response.json();
+                    document.getElementById('statusVersion').textContent = `${stats.name} v${stats.version}`;
+                    document.getElementById('statusServers').textContent = `Activo en ${stats.servers} servidores dx`;
+                    
+                    // Actualizar link de invitación
+                    const inviteBtn = document.getElementById('inviteBtn');
+                    if (stats.inviteLink) {
+                        inviteBtn.href = stats.inviteLink;
+                    }
+                    
+                    console.log('Bot stats loaded:', stats);
+                } else {
+                    document.getElementById('statusServers').textContent = 'Activo en múltiples servidores dx';
+                }
+            } catch (error) {
+                console.error('Error loading bot stats:', error);
+                document.getElementById('statusServers').textContent = 'Activo en múltiples servidores dx';
+            }
+        }
+        
+        // Cargar stats al inicio
+        loadBotStats();
+        
+        // Funcionalidad de los botones de la ventana
+        console.log('Home page loaded! dx');
+    </script>
 </body>
 </html>
