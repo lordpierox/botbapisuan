@@ -22,6 +22,20 @@
             position: relative;
             z-index: 2;
         }
+        
+        /* Cuadrados flotantes estilo DVD */
+        .floating-box {
+            position: fixed;
+            width: 100px;
+            height: 100px;
+            background-size: cover;
+            background-position: center;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            border-radius: 8px;
+            z-index: 100;
+            pointer-events: none;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
     </style>
 </head>
 <body>
@@ -123,6 +137,91 @@
         const videoBackground = document.getElementById('videoBackground');
         const bgVideo = document.getElementById('bgVideo');
         
+        // Array de imágenes/gifs para los cuadrados flotantes
+        // Puedes agregar más rutas aquí
+        const floatingImages = [
+            '/public/videos/puru.gif',
+            '/public/images/backgroundxp.png',
+            // Agrega más imágenes/gifs aquí
+        ];
+        
+        // Clase para manejar cuadrados flotantes estilo DVD
+        class FloatingBox {
+            constructor(imageSrc) {
+                this.element = document.createElement('div');
+                this.element.className = 'floating-box';
+                this.element.style.backgroundImage = `url('${imageSrc}')`;
+                
+                // Posición inicial aleatoria
+                this.x = Math.random() * (window.innerWidth - 100);
+                this.y = Math.random() * (window.innerHeight - 100);
+                
+                // Velocidad aleatoria
+                this.speedX = (Math.random() * 3 + 2) * (Math.random() > 0.5 ? 1 : -1);
+                this.speedY = (Math.random() * 3 + 2) * (Math.random() > 0.5 ? 1 : -1);
+                
+                this.element.style.left = this.x + 'px';
+                this.element.style.top = this.y + 'px';
+                
+                document.body.appendChild(this.element);
+            }
+            
+            update() {
+                // Actualizar posición
+                this.x += this.speedX;
+                this.y += this.speedY;
+                
+                // Detectar colisión con bordes y rebotar
+                if (this.x <= 0 || this.x >= window.innerWidth - 100) {
+                    this.speedX *= -1;
+                    this.x = Math.max(0, Math.min(this.x, window.innerWidth - 100));
+                    this.changeColor();
+                }
+                
+                if (this.y <= 0 || this.y >= window.innerHeight - 100) {
+                    this.speedY *= -1;
+                    this.y = Math.max(0, Math.min(this.y, window.innerHeight - 100));
+                    this.changeColor();
+                }
+                
+                // Aplicar nueva posición
+                this.element.style.left = this.x + 'px';
+                this.element.style.top = this.y + 'px';
+            }
+            
+            changeColor() {
+                // Cambiar color del borde al rebotar (efecto DVD)
+                const colors = ['#ff69b4', '#00ffff', '#ffff00', '#00ff00', '#ff00ff', '#ff0000'];
+                const randomColor = colors[Math.floor(Math.random() * colors.length)];
+                this.element.style.borderColor = randomColor;
+            }
+        }
+        
+        // Array para guardar los cuadrados flotantes
+        let floatingBoxes = [];
+        let animationId = null;
+        
+        // Función para animar todos los cuadrados
+        function animateBoxes() {
+            floatingBoxes.forEach(box => box.update());
+            animationId = requestAnimationFrame(animateBoxes);
+        }
+        
+        // Función para crear cuadrados flotantes
+        function createFloatingBoxes(count = 3) {
+            console.log('Creating', count, 'floating boxes!');
+            
+            for (let i = 0; i < count; i++) {
+                // Seleccionar imagen aleatoria
+                const randomImage = floatingImages[Math.floor(Math.random() * floatingImages.length)];
+                const box = new FloatingBox(randomImage);
+                floatingBoxes.push(box);
+            }
+            
+            // Iniciar animación
+            animateBoxes();
+        }
+        
         // Verificar que el video se cargó
         squareVideo.addEventListener('loadeddata', function() {
             console.log('Video cuadrado loaded successfully!');
@@ -169,6 +268,11 @@
                     .then(() => console.log('Background video playing'))
                     .catch(err => console.log('Error bg video:', err));
             }, 5000);
+            
+            // Después de 7 segundos, crear cuadrados flotantes
+            setTimeout(function() {
+                createFloatingBoxes(3); // Crear 3 cuadrados (puedes cambiar el número)
+            }, 7000);
         });
         
         bgVideo.addEventListener('loadeddata', function() {
