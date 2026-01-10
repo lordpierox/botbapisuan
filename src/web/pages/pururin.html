@@ -49,7 +49,7 @@
             <div class="main-content" style="flex-direction: column;">
                 <!-- Video en cuadrado -->
                 <div class="video-square">
-                    <video id="squareVideo" autoplay loop muted playsinline>
+                    <video id="squareVideo" loop muted playsinline>
                         <source src="/public/videos/puruvideo.mp4" type="video/mp4">
                     </video>
                 </div>
@@ -107,20 +107,46 @@
         
         // Click en botón PLAY
         playButtonContainer.addEventListener('click', function() {
+            console.log('PLAY clicked!');
+            
             // Reproducir audio
-            puruAudio.play().catch(err => console.log('Error audio:', err));
+            puruAudio.play()
+                .then(() => console.log('Audio playing'))
+                .catch(err => console.log('Error audio:', err));
             
             // Reproducir video cuadrado
-            squareVideo.play().catch(err => console.log('Error video:', err));
+            squareVideo.play()
+                .then(() => console.log('Video cuadrado playing'))
+                .catch(err => console.log('Error video cuadrado:', err));
             
             // Ocultar botón PLAY
             playButtonContainer.classList.add('hidden');
             
             // Después de 5 segundos, activar video de fondo
             setTimeout(function() {
+                console.log('Activating background video');
                 videoBackground.classList.remove('hidden');
-                bgVideo.play().catch(err => console.log('Error bg video:', err));
+                bgVideo.play()
+                    .then(() => console.log('Background video playing'))
+                    .catch(err => console.log('Error bg video:', err));
             }, 5000);
+        });
+        
+        // Debug: verificar que los videos están cargados
+        squareVideo.addEventListener('loadeddata', function() {
+            console.log('Video cuadrado loaded successfully!');
+        });
+        
+        squareVideo.addEventListener('error', function(e) {
+            console.error('Error loading square video:', e);
+        });
+        
+        bgVideo.addEventListener('loadeddata', function() {
+            console.log('Background video loaded successfully!');
+        });
+        
+        bgVideo.addEventListener('error', function(e) {
+            console.error('Error loading background video:', e);
         });
         
         // Prevenir que el audio se pause
