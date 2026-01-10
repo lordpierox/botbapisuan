@@ -26,18 +26,16 @@ class WebServer {
             '/': '/pages/home.html',
             '/home': '/pages/home.html',
             '/comandos': '/pages/comandos.html',
-            '/plan': '/pages/plan.html',
-            '/pururin': '/pages/pururin.html',
-            '/aurora': '/pages/aurora.html'
+            '/pururin': '/pages/pururin.html'
         };
 
         if (routes[req.url]) {
             filePath = routes[req.url];
         }
 
-        // Si es un archivo público, quitar el prefijo /public/
+        // Si es un archivo público, mantener la ruta completa
         if (req.url.startsWith('/public/')) {
-            filePath = req.url.replace('/public/', '/');
+            filePath = req.url; // Mantener /public/css/style.css
         }
 
         const extname = String(path.extname(filePath)).toLowerCase();
