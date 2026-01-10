@@ -1,11 +1,13 @@
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
+const BOT_CONFIG = require('./config/constants');
 
 class WebServer {
-    constructor(port = 8080) {
+    constructor(port = 8080, botClient = null) {
         this.port = port;
         this.server = null;
+        this.botClient = botClient; // Referencia al cliente de Discord
     }
 
     start() {
@@ -20,6 +22,12 @@ class WebServer {
 
     handleRequest(req, res) {
         let filePath = req.url === '/' ? '/pages/home.html' : req.url;
+        
+        // API endpoint para stats del bot
+        if (req.url === '/api/bot-stats') {
+            this.handleBotStatsAPI(req, res);
+            return;
+        }
         
         // API endpoint para listar archivos del carrousel
         if (req.url === '/api/carrousel-files') {
@@ -119,6 +127,24 @@ class WebServer {
                 }
             });
         }
+    }
+
+    // Manejar API para stats del bot
+    handleBotStatsAPI(req, res) {
+        const stats = {
+            version: BOT_CONFIG.version,
+            name: BOT_CONFIG.name,
+            servers: this.botClient ? this.botClient.guilds.cache.size : 0,
+            inviteLink: BOT_CONFIG.inviteLink
+        };
+        
+        console.log(`📊 Bot stats requested: ${stats.servers} servers`);
+        
+        res.writeHead(200, { 
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
+        });
+        res.end(JSON.stringify(stats));
     }
 
     // Manejar API para listar archivos del carrousel
