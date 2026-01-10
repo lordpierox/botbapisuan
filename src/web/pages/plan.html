@@ -5,7 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SukiBaka Bot - El Plan</title>
     <link rel="stylesheet" href="https://unpkg.com/7.css">
-    <link rel="stylesheet" href="/public/css/style.css">
+    <style>
+        body { margin: 0; padding: 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; min-height: 100vh; display: flex; flex-direction: column; align-items: center; }
+        .title { color: white; text-shadow: 2px 2px 4px rgba(0,0,0,0.5); font-size: 2.5em; margin-bottom: 30px; text-align: center; }
+        .main-window { max-width: 900px; width: 100%; margin: 0 auto; }
+        .content-wrapper { display: flex; gap: 20px; padding: 20px; }
+        .sidebar { min-width: 150px; }
+        .sidebar button { width: 100%; margin-bottom: 10px; }
+        .sidebar a { text-decoration: none; display: block; }
+        .main-content { flex: 1; }
+        .plan-secret { background: #ffe6e6; border: 2px dashed #ff0000; padding: 15px; margin: 20px 0; text-align: center; font-style: italic; }
+        .status-bar { display: flex; justify-content: space-between; padding: 4px 8px; border-top: 1px solid #ccc; background: #f0f0f0; font-size: 11px; }
+        .pulse { animation: pulse 2s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.7; } }
+        @media (max-width: 768px) { .content-wrapper { flex-direction: column; } }
+    </style>
 </head>
 <body>
     <h1 class="title">SukiBaka Bot</h1>
@@ -29,7 +43,7 @@
                 <a href="/aurora"><button disabled>Aurora</button></a>
             </div>
             
-            <div class="main-content" style="flex-direction: column;">
+            <div class="main-content">
                 <h2>🎯 El Plan Maestro de Michon</h2>
                 
                 <div class="plan-secret">
