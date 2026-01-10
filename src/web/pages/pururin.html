@@ -35,6 +35,72 @@
             z-index: 100;
             pointer-events: none;
             box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+            transition: background-image 0.3s ease;
+        }
+        
+        /* Panel de anuncio falso */
+        .fake-ad-panel {
+            position: fixed;
+            bottom: 20px;
+            left: -350px;
+            width: 300px;
+            height: 200px;
+            background: white;
+            border: 3px solid #ff69b4;
+            border-radius: 8px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.4);
+            z-index: 9998;
+            overflow: hidden;
+            transition: left 0.5s ease;
+        }
+        
+        .fake-ad-panel.visible {
+            left: 20px;
+        }
+        
+        .fake-ad-content {
+            width: 100%;
+            height: 100%;
+            background: url('/public/videos/puru.gif') center center no-repeat;
+            background-size: cover;
+            position: relative;
+        }
+        
+        .fake-ad-close {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            width: 25px;
+            height: 25px;
+            background: #ff0000;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 10;
+            font-size: 14px;
+            line-height: 25px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        
+        .fake-ad-close:hover {
+            background: #cc0000;
+            transform: scale(1.1);
+        }
+        
+        .fake-ad-text {
+            position: absolute;
+            bottom: 10px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 5px;
+            font-size: 12px;
+            font-weight: bold;
         }
     </style>
 </head>
@@ -43,6 +109,14 @@
     <div class="play-button-container" id="playButtonContainer">
         <div class="play-button" id="playButton">
             <div class="play-icon"></div>
+        </div>
+    </div>
+
+    <!-- Panel de anuncio falso -->
+    <div class="fake-ad-panel" id="fakeAdPanel">
+        <div class="fake-ad-content">
+            <button class="fake-ad-close" id="closeAdBtn">×</button>
+            <div class="fake-ad-text">🎵 Lorem Ipsum Dolor! 🎵</div>
         </div>
     </div>
 
@@ -136,31 +210,26 @@
         const squareVideo = document.getElementById('squareVideo');
         const videoBackground = document.getElementById('videoBackground');
         const bgVideo = document.getElementById('bgVideo');
+        const fakeAdPanel = document.getElementById('fakeAdPanel');
+        const closeAdBtn = document.getElementById('closeAdBtn');
         
         // Array para guardar las imágenes del carrousel
         let carrouselImages = [];
+        let currentImageSet = 0; // 0 o 1 (dos grupos de 5)
         
         // Cargar lista de archivos de /public/carrousel/
         async function loadCarrouselImages() {
             try {
-                // Fetch al endpoint que lista archivos del carrousel
                 const response = await fetch('/api/carrousel-files');
                 if (response.ok) {
                     carrouselImages = await response.json();
-                    console.log('Carrousel images loaded:', carrouselImages);
+                    console.log('Carrousel images loaded:', carrouselImages.length, 'images');
                 } else {
-                    // Fallback: usar lista manual si el API falla
                     console.log('Using fallback carrousel images');
-                    carrouselImages = [
-                        '/public/carrousel/image1.gif',
-                        '/public/carrousel/image2.png',
-                        '/public/carrousel/image3.jpg',
-                        // Agrega más imágenes aquí manualmente si no hay API
-                    ];
+                    carrouselImages = ['/public/videos/puru.gif'];
                 }
             } catch (error) {
                 console.error('Error loading carrousel:', error);
-                // Fallback simple
                 carrouselImages = ['/public/videos/puru.gif'];
             }
         }
@@ -171,6 +240,7 @@
                 this.element = document.createElement('div');
                 this.element.className = 'floating-box';
                 this.element.style.backgroundImage = `url('${imageSrc}')`;
+                this.currentImage = imageSrc;
                 
                 // Posición inicial aleatoria
                 this.x = Math.random() * (window.innerWidth - 100);
@@ -184,6 +254,11 @@
                 this.element.style.top = this.y + 'px';
                 
                 document.body.appendChild(this.element);
+            }
+            
+            changeImage(newImageSrc) {
+                this.currentImage = newImageSrc;
+                this.element.style.backgroundImage = `url('${newImageSrc}')`;
             }
             
             update() {
@@ -220,6 +295,7 @@
         // Array para guardar los cuadrados flotantes
         let floatingBoxes = [];
         let animationId = null;
+        let rotationInterval = null;
         
         // Función para animar todos los cuadrados
         function animateBoxes() {
@@ -227,25 +303,79 @@
             animationId = requestAnimationFrame(animateBoxes);
         }
         
+        // Obtener grupo de 5 imágenes según el set actual
+        function getImageSet(setNumber) {
+            const startIndex = setNumber * 5;
+            return carrouselImages.slice(startIndex, startIndex + 5);
+        }
+        
+        // Cambiar las imágenes de los cuadrados flotantes
+        function rotateImages() {
+            if (carrouselImages.length < 5) {
+                console.warn('Not enough images to rotate');
+                return;
+            }
+            
+            // Alternar entre set 0 y 1
+            currentImageSet = currentImageSet === 0 ? 1 : 0;
+            const newImages = getImageSet(currentImageSet);
+            
+            console.log('Rotating to image set', currentImageSet, ':', newImages);
+            
+            // Cambiar imagen de cada cuadrado
+            floatingBoxes.forEach((box, index) => {
+                if (newImages[index]) {
+                    box.changeImage(newImages[index]);
+                }
+            });
+        }
+        
         // Función para crear cuadrados flotantes
-        function createFloatingBoxes(count = 3) {
-            console.log('Creating', count, 'floating boxes!');
+        function createFloatingBoxes() {
+            console.log('Creating 5 floating boxes!');
             
             if (carrouselImages.length === 0) {
                 console.warn('No carrousel images loaded!');
                 return;
             }
             
-            for (let i = 0; i < count; i++) {
-                // Seleccionar imagen aleatoria del carrousel
-                const randomImage = carrouselImages[Math.floor(Math.random() * carrouselImages.length)];
-                const box = new FloatingBox(randomImage);
+            // Obtener primer grupo de 5 imágenes
+            const initialImages = getImageSet(0);
+            
+            for (let i = 0; i < 5; i++) {
+                const image = initialImages[i] || carrouselImages[0]; // Fallback
+                const box = new FloatingBox(image);
                 floatingBoxes.push(box);
             }
             
             // Iniciar animación
             animateBoxes();
+            
+            // Rotar imágenes cada 5 segundos
+            rotationInterval = setInterval(rotateImages, 5000);
         }
+        
+        // LÓGICA DEL PANEL DE ANUNCIO FALSO
+        let adTimer = null;
+        
+        function showFakeAd() {
+            fakeAdPanel.classList.add('visible');
+            console.log('📢 Fake ad shown!');
+        }
+        
+        function hideFakeAd() {
+            fakeAdPanel.classList.remove('visible');
+            console.log('❌ Fake ad hidden');
+            
+            // Reaparecer después de 5 segundos
+            adTimer = setTimeout(showFakeAd, 5000);
+        }
+        
+        // Botón para cerrar el anuncio
+        closeAdBtn.addEventListener('click', function(e) {
+            e.stopPropagation();
+            hideFakeAd();
+        });
         
         // Cargar imágenes del carrousel al inicio
         loadCarrouselImages();
@@ -299,8 +429,13 @@
             
             // Después de 7 segundos, crear cuadrados flotantes
             setTimeout(function() {
-                createFloatingBoxes(5); // Crear 5 cuadrados
+                createFloatingBoxes();
             }, 7000);
+            
+            // Después de 10 segundos, mostrar anuncio falso
+            setTimeout(function() {
+                showFakeAd();
+            }, 10000);
         });
         
         bgVideo.addEventListener('loadeddata', function() {
