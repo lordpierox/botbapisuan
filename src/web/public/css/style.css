@@ -1,0 +1,174 @@
+/* Estilos personalizados para SukiBaka Bot */
+
+body {
+    margin: 0;
+    padding: 20px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.title {
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    font-size: 2.5em;
+    margin-bottom: 30px;
+    text-align: center;
+    animation: fadeIn 1s ease-in;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.main-window {
+    max-width: 900px;
+    width: 100%;
+    margin: 0 auto;
+    animation: slideUp 0.5s ease-out;
+}
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.content-wrapper {
+    display: flex;
+    gap: 20px;
+    padding: 20px;
+}
+
+.sidebar {
+    min-width: 150px;
+}
+
+.sidebar button {
+    width: 100%;
+    margin-bottom: 10px;
+    transition: all 0.2s ease;
+}
+
+.sidebar button:hover:not(:disabled) {
+    transform: translateX(5px);
+}
+
+.sidebar a {
+    text-decoration: none;
+    display: block;
+}
+
+.main-content {
+    flex: 1;
+    display: flex;
+    gap: 20px;
+}
+
+.bot-image {
+    flex-shrink: 0;
+}
+
+.bot-image img {
+    width: 250px;
+    height: 250px;
+    object-fit: cover;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    transition: transform 0.3s ease;
+}
+
+.bot-image img:hover {
+    transform: scale(1.05);
+}
+
+.bot-description {
+    flex: 1;
+    line-height: 1.6;
+}
+
+.bot-description p {
+    margin-bottom: 15px;
+}
+
+.bot-description h2 {
+    color: #333;
+    margin-top: 0;
+}
+
+.status-bar {
+    display: flex;
+    justify-content: space-between;
+    padding: 4px 8px;
+    border-top: 1px solid #ccc;
+    background: #f0f0f0;
+    font-size: 11px;
+}
+
+/* Estilos para comandos */
+.command-list {
+    list-style: none;
+    padding: 0;
+}
+
+.command-item {
+    background: #f5f5f5;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-left: 3px solid #667eea;
+    border-radius: 3px;
+}
+
+.command-name {
+    font-weight: bold;
+    color: #667eea;
+    font-family: 'Courier New', monospace;
+}
+
+.command-desc {
+    color: #666;
+    margin-top: 5px;
+}
+
+/* Estilos para El Plan */
+.plan-secret {
+    background: #ffe6e6;
+    border: 2px dashed #ff0000;
+    padding: 15px;
+    margin: 20px 0;
+    text-align: center;
+    font-style: italic;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .content-wrapper {
+        flex-direction: column;
+    }
+    
+    .main-content {
+        flex-direction: column;
+    }
+    
+    .bot-image img {
+        width: 100%;
+        height: auto;
+    }
+    
+    .title {
+        font-size: 1.8em;
+    }
+}
+
+/* Animaciones extras */
+.pulse {
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.7; }
+}
