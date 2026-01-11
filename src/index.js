@@ -1,5 +1,6 @@
 const { Client, GatewayIntentBits, Collection } = require('discord.js');
 const fs = require('fs');
+const WebServer = require('./web/server');
 require('dotenv').config();
 
 console.log('\n\n========== INICIANDO BOT ==========\n');
@@ -10,6 +11,19 @@ if (!process.env.token) {
     console.error('\nAsegúrate de agregar en Koyeb las variables de entorno:');
     console.error('  token = tu_token_de_discord\n');
     process.exit(1);
+}
+
+// ========================================
+// INICIAR SERVIDOR WEB PRIMERO (para health checks de Koyeb)
+// ========================================
+let webServer = null;
+try {
+    webServer = new WebServer(8080, null); // null inicialmente, se actualizará cuando el bot esté listo
+    webServer.start();
+    console.log('🌐 Servidor web iniciado en puerto 8080');
+} catch (error) {
+    console.error('❌ Error iniciando servidor web:', error.message);
+    console.log('   Continuando solo con Discord bot...\n');
 }
 
 // ========================================
@@ -35,9 +49,9 @@ const functions = fs.readdirSync("./src/functions").filter(file => file.endsWith
 const eventFiles = fs.readdirSync("./src/events").filter(file => file.endsWith(".js"));
 const commandFolders = fs.readdirSync("./src/commands");
 
-console.log(`📚 Cargando ${functions.length} funciones...`);
-console.log(`📚 Cargando ${eventFiles.length} eventos...`);
-console.log(`📚 Cargando ${commandFolders.length} carpetas de comandos...\n`);
+console.log(`\ud83d\udcda Cargando ${functions.length} funciones...`);
+console.log(`\ud83d\udcda Cargando ${eventFiles.length} eventos...`);
+console.log(`\ud83d\udcda Cargando ${commandFolders.length} carpetas de comandos...\n`);
 
 (async () => {
     // Cargar funciones
@@ -50,9 +64,15 @@ console.log(`📚 Cargando ${commandFolders.length} carpetas de comandos...\n`);
     client.handleCommands(commandFolders, "./src/commands");
 
     // CONECTAR A DISCORD
-    console.log('\n🔌 Conectando a Discord...');
+    console.log('\n\ud83d\udd0c Conectando a Discord...');
     try {
         await client.login(process.env.token);
+        
+        // Una vez conectado, actualizar el cliente en el WebServer
+        if (webServer) {
+            webServer.botClient = client;
+            console.log('\n\u2705 WebServer actualizado con cliente Discord');
+        }
     } catch (error) {
         console.error('\n\u274c ERROR al conectar a Discord:');
         console.error(error.message);
