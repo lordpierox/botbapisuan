@@ -2,6 +2,8 @@ const { Client, GatewayIntentBits, Collection } = require('discord.js');
 const fs = require('fs');
 require('dotenv').config();
 
+console.log('\n\n========== INICIANDO BOT ==========\n');
+
 // ========================================
 // CREAR CLIENTE DE DISCORD
 // ========================================
@@ -25,6 +27,10 @@ const functions = fs.readdirSync("./src/functions").filter(file => file.endsWith
 const eventFiles = fs.readdirSync("./src/events").filter(file => file.endsWith(".js"));
 const commandFolders = fs.readdirSync("./src/commands");
 
+console.log(`📚 Cargando ${functions.length} funciones...`);
+console.log(`📚 Cargando ${eventFiles.length} eventos...`);
+console.log(`📚 Cargando ${commandFolders.length} carpetas de comandos...\n`);
+
 (async () => {
     // Cargar funciones
     for (const file of functions) {
@@ -36,5 +42,6 @@ const commandFolders = fs.readdirSync("./src/commands");
     client.handleCommands(commandFolders, "./src/commands");
 
     // CONECTAR A DISCORD
+    console.log('\n🔌 Conectando a Discord...\n');
     await client.login(process.env.token);
 })();
