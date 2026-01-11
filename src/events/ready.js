@@ -1,10 +1,10 @@
 const { Client, GatewayIntentBits, ActivityType } = require('discord.js');
 
 module.exports = {
-    name: 'clientReady',
+    name: 'ready',
     once: true,
     async execute(client) {
-        console.log('Ready!');
+        console.log('🤖 Bot ready! Conectado como:', client.user.tag);
 
         client.user.setPresence({
             activities: [{ name: "Dominio Total del Mundo! | /info" ,
@@ -12,11 +12,9 @@ module.exports = {
             status: 'dnd',
           });
 
-        // El servidor web ya se inició en index.js ANTES de Discord
-        // para pasar los health checks de Koyeb inmediatamente
-
+        console.log(`📊 Bot en ${client.guilds.cache.size} servidores`);
         client.guilds.cache.forEach(guild => {
-            console.log(`${guild.name} | ${guild.id}`);
+            console.log(`  ├─ ${guild.name} (${guild.id})`);
         })    
     },
 };
