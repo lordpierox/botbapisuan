@@ -4,6 +4,14 @@ require('dotenv').config();
 
 console.log('\n\n========== INICIANDO BOT ==========\n');
 
+// Verificar que el TOKEN existe
+if (!process.env.token) {
+    console.error('\n\u274c ERROR: No se encontró la variable de entorno "token"');
+    console.error('\nAsegúrate de agregar en Koyeb las variables de entorno:');
+    console.error('  token = tu_token_de_discord\n');
+    process.exit(1);
+}
+
 // ========================================
 // CREAR CLIENTE DE DISCORD
 // ========================================
@@ -42,6 +50,12 @@ console.log(`📚 Cargando ${commandFolders.length} carpetas de comandos...\n`);
     client.handleCommands(commandFolders, "./src/commands");
 
     // CONECTAR A DISCORD
-    console.log('\n🔌 Conectando a Discord...\n');
-    await client.login(process.env.token);
+    console.log('\n🔌 Conectando a Discord...');
+    try {
+        await client.login(process.env.token);
+    } catch (error) {
+        console.error('\n\u274c ERROR al conectar a Discord:');
+        console.error(error.message);
+        process.exit(1);
+    }
 })();
