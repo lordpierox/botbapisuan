@@ -35,23 +35,6 @@ const commandFolders = fs.readdirSync("./src/commands");
     client.handleEvents(eventFiles, "./src/events");
     client.handleCommands(commandFolders, "./src/commands");
 
-    // PRIMERO: Conectar a Discord
-    try {
-        await client.login(process.env.token);
-        console.log('🤖 Bot de Discord conectado correctamente');
-    } catch (error) {
-        console.error('❌ Error conectando a Discord:', error);
-        process.exit(1);
-    }
-
-    // SEGUNDO: Iniciar WebServer DESPUÉS de conectar
-    try {
-        const WebServer = require('./web/server');
-        const webServer = new WebServer(8080, client);
-        webServer.start();
-        console.log('🌐 Servidor web iniciado');
-    } catch (error) {
-        console.error('❌ Error iniciando servidor web:', error);
-        // El bot sigue funcionando aunque falle el web server
-    }
+    // CONECTAR A DISCORD
+    await client.login(process.env.token);
 })();
