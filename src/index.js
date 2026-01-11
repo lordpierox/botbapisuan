@@ -4,14 +4,7 @@ const WebServer = require('./web/server');
 require('dotenv').config();
 
 // ========================================
-// INICIAR SERVIDOR WEB PRIMERO (para Koyeb health checks)
-// ========================================
-const webServer = new WebServer(8080);
-webServer.start();
-console.log('✅ Servidor web iniciado ANTES de Discord');
-
-// ========================================
-// LUEGO INICIAR BOT DE DISCORD
+// CREAR CLIENTE DE DISCORD
 // ========================================
 const client = new Client({ 
     intents: [
@@ -29,6 +22,16 @@ if (!global.snipe_user) global.snipe_user = [];
 if (!global.snipe_bot) global.snipe_bot = [];
 if (!global.snipe_bot_user) global.snipe_bot_user = [];
 
+// ========================================
+// INICIAR SERVIDOR WEB CON CLIENTE (para Koyeb health checks)
+// ========================================
+const webServer = new WebServer(8080, client);
+webServer.start();
+console.log('✅ Servidor web iniciado ANTES de Discord');
+
+// ========================================
+// LUEGO INICIAR BOT DE DISCORD
+// ========================================
 const functions = fs.readdirSync("./src/functions").filter(file => file.endsWith(".js"));
 const eventFiles = fs.readdirSync("./src/events").filter(file => file.endsWith(".js"));
 const commandFolders = fs.readdirSync("./src/commands");
@@ -41,5 +44,8 @@ const commandFolders = fs.readdirSync("./src/commands");
     client.handleEvents(eventFiles, "./src/events");
     client.handleCommands(commandFolders, "./src/commands");
 
-    client.login(process.env.token);
+    // Login con token
+    await client.login(process.env.token);
+    
+    console.log('🤖 Bot de Discord conectado correctamente');
 })();
