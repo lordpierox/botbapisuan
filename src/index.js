@@ -1,5 +1,6 @@
 const { Client, GatewayIntentBits, Collection } = require('discord.js');
 const fs = require('fs');
+const WebServer = require('./web/server');
 require('dotenv').config();
 
 const client = new Client({ 
@@ -28,7 +29,21 @@ const commandFolders = fs.readdirSync("./src/commands");
     }
 
     client.handleEvents(eventFiles, "./src/events");
-    client.handleCommands(commandFolders, "./src/commands");
+    
+    // Iniciar WebServer ANTES de login
+    try {
+        const webServer = new WebServer(8080, client);
+        webServer.start();
+        console.log('🌐 WebServer iniciado en puerto 8080');
+    } catch (error) {
+        console.error('❌ Error iniciando WebServer:', error.message);
+    }
 
-    client.login(process.env.token);
+    // Login primero
+    await client.login(process.env.token);
+    
+    // Registrar comandos DESPUÉS (en background, sin bloquear)
+    setTimeout(() => {
+        client.handleCommands(commandFolders, "./src/commands");
+    }, 2000);
 })();
