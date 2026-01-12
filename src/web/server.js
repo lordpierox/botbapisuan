@@ -8,14 +8,22 @@ class WebServer {
         this.port = port;
         this.server = null;
         this.botClient = botClient; // Referencia al cliente de Discord
+        this.isRunning = false; // Flag para evitar inicio duplicado
     }
 
     start() {
+        // Prevenir inicio duplicado
+        if (this.isRunning) {
+            console.log('⚠️ WebServer ya está corriendo, ignorando inicio duplicado');
+            return;
+        }
+
         this.server = http.createServer((req, res) => {
             this.handleRequest(req, res);
         });
 
         this.server.listen(this.port, () => {
+            this.isRunning = true;
             console.log(`🌐 Servidor web iniciado en puerto ${this.port}`);
         });
     }
@@ -138,8 +146,6 @@ class WebServer {
             inviteLink: BOT_CONFIG.inviteLink
         };
         
-        console.log(`📊 Bot stats requested: ${stats.servers} servers`);
-        
         res.writeHead(200, { 
             'Content-Type': 'application/json',
             'Access-Control-Allow-Origin': '*'
@@ -168,8 +174,6 @@ class WebServer {
             // Convertir a rutas completas
             const filePaths = imageFiles.map(file => `/public/carrousel/${file}`);
             
-            console.log(`🖼️ Carrousel images found: ${filePaths.length}`);
-            
             res.writeHead(200, { 'Content-Type': 'application/json' });
             res.end(JSON.stringify(filePaths));
         });
@@ -178,6 +182,7 @@ class WebServer {
     stop() {
         if (this.server) {
             this.server.close();
+            this.isRunning = false;
         }
     }
 }
