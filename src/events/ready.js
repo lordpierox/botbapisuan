@@ -2,7 +2,7 @@ const { ActivityType } = require('discord.js');
 const WebServer = require('../web/server');
 
 module.exports = {
-    name: 'ready',
+    name: 'clientReady',  // Cambiado de 'ready' a 'clientReady'
     once: true,
     async execute(client) {
         console.log('\n========================================');
