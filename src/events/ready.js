@@ -1,4 +1,5 @@
 const { ActivityType } = require('discord.js');
+const WebServer = require('../web/server');
 
 module.exports = {
     name: 'ready',
@@ -23,6 +24,15 @@ module.exports = {
         console.log('📊 Lista de servidores:');
         client.guilds.cache.forEach(guild => {
             console.log(`  ├─ ${guild.name} (${guild.id})`);
-        })    
+        });
+        
+        // Iniciar WebServer DESPUÉS de que el bot esté listo
+        try {
+            const webServer = new WebServer(8080, client);
+            webServer.start();
+        } catch (error) {
+            console.error('\n❌ Error iniciando WebServer:', error.message);
+            console.log('   El bot sigue funcionando sin web...\n');
+        }
     },
 };
