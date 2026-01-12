@@ -20,9 +20,8 @@ let webServer = null;
 try {
     webServer = new WebServer(8080, null); // null inicialmente, se actualizará cuando el bot esté listo
     webServer.start();
-    console.log('🌐 Servidor web iniciado en puerto 8080');
 } catch (error) {
-    console.error('❌ Error iniciando servidor web:', error.message);
+    console.error('\u274c Error iniciando servidor web:', error.message);
     console.log('   Continuando solo con Discord bot...\n');
 }
 
@@ -67,12 +66,15 @@ console.log(`\ud83d\udcda Cargando ${commandFolders.length} carpetas de comandos
     console.log('\n\ud83d\udd0c Conectando a Discord...');
     try {
         await client.login(process.env.token);
+        console.log('\u2705 client.login() completado exitosamente');
         
         // Una vez conectado, actualizar el cliente en el WebServer
         if (webServer) {
             webServer.botClient = client;
-            console.log('\n\u2705 WebServer actualizado con cliente Discord');
+            console.log('\u2705 WebServer actualizado con cliente Discord');
         }
+        
+        console.log('\u23f3 Esperando evento ready...\n');
     } catch (error) {
         console.error('\n\u274c ERROR al conectar a Discord:');
         console.error(error.message);
