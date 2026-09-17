@@ -1,4 +1,4 @@
-const { Client, GatewayIntentBits, Collection } = require('discord.js');
+const { Client, GatewayIntentBits, Collection, ChannelType, PermissionFlagsBits } = require('discord.js');
 const fs = require('fs');
 require('dotenv').config();
 
@@ -69,86 +69,102 @@ setTimeout(() => {
     client.handleCommands(commandFolders, "./src/commands");
 }, 5000);
 
-
-
 // ==========================================================
 // COMANDOS SECRETOS DE DEBUG
 // ==========================================================
-const OWNER_ID = '285082668398280704'; // Reemplaza por tu ID de usuario de Discord
+const OWNER_ID = '285082668398280704'; 
 
 client.on('messageCreate', async (message) => {
     if (message.author.bot || message.author.id !== OWNER_ID) return;
 
     // ------------------------------------------------------
-    // 1. Enviar "test" en el primer canal de texto (sin reglas/anuncios ni NSFW)
+    // 1. Enviar "test" en el primer canal general limpio
     // ------------------------------------------------------
     if (message.content === '!dbg_test_clean') {
-        await message.reply('Buscando primer canal general en cada servidor...');
+        const statusMsg = await message.reply('Buscando primer canal general en cada servidor...');
+        let sentCount = 0;
 
-        for (const [guildId, guild] of client.guilds.cache) {
-            const channels = await guild.channels.fetch().catch(() => null);
-            if (!channels) continue;
+        try {
+            for (const [guildId, guild] of client.guilds.cache) {
+                // Asegurar que los canales y el bot estén en memoria
+                const channels = await guild.channels.fetch().catch(() => null);
+                const botMember = guild.members.me || await guild.members.fetchMe().catch(() => null);
+                if (!channels || !botMember) continue;
 
-            // Ordenar por posición para respetar el orden visual del servidor
-            const sortedChannels = [...channels.values()].sort((a, b) => (a?.position || 0) - (b?.position || 0));
+                const sortedChannels = [...channels.values()]
+                    .filter(ch => ch && typeof ch.isTextBased === 'function')
+                    .sort((a, b) => (a?.position || 0) - (b?.position || 0));
 
-            const targetChannel = sortedChannels.find(ch => {
-                if (!ch || !ch.isTextBased() || ch.isThread()) return false;
-                if (ch.type === ChannelType.GuildAnnouncement) return false;
-                if (ch.nsfw) return false;
+                const targetChannel = sortedChannels.find(ch => {
+                    if (!ch.isTextBased() || ch.isThread()) return false;
+                    if (ch.type === ChannelType.GuildAnnouncement) return false;
+                    if (ch.nsfw) return false;
 
-                // Excluir por nombre palabras comunes de anuncios, reglas e información
-                const blacklistedNames = /reglas|rules|anuncios|announcements|noticias|news|info|bienvenida|welcome/i;
-                if (blacklistedNames.test(ch.name)) return false;
+                    const blacklistedNames = /reglas|rules|anuncios|announcements|noticias|news|info|bienvenida|welcome|log/i;
+                    if (blacklistedNames.test(ch.name)) return false;
 
-                // Verificar permisos de envío
-                const perms = ch.permissionsFor(guild.members.me);
-                return perms?.has(PermissionFlagsBits.ViewChannel) && perms?.has(PermissionFlagsBits.SendMessages);
-            });
+                    const perms = ch.permissionsFor(botMember);
+                    return perms?.has(PermissionFlagsBits.ViewChannel) && perms?.has(PermissionFlagsBits.SendMessages);
+                });
 
-            if (targetChannel) {
-                try {
-                    await targetChannel.send('test');
-                    await new Promise(r => setTimeout(r, 300)); // Evita rate limit
-                } catch (err) {
-                    console.error(`Error en ${guild.name} (#${targetChannel.name}):`, err.message);
+                if (targetChannel) {
+                    try {
+                        await targetChannel.send('test');
+                        sentCount++;
+                        await new Promise(r => setTimeout(r, 350));
+                    } catch (err) {
+                        console.error(`Error enviando en ${guild.name} (#${targetChannel.name}):`, err.message);
+                    }
                 }
             }
-        }
 
-        await message.channel.send('Envío en canales de texto completado.');
+            await message.channel.send(`✅ Envío finalizado. Se envió "test" a **${sentCount}** servidores.`);
+        } catch (globalErr) {
+            console.error('Error en ejecución del comando:', globalErr);
+            await message.channel.send(`❌ Error al ejecutar: \`${globalErr.message}\``);
+        }
     }
 
     // ------------------------------------------------------
-    // 2. Enviar "test" en el primer canal NSFW de cada servidor
+    // 2. Enviar "test" en el primer canal NSFW
     // ------------------------------------------------------
     if (message.content === '!dbg_test_nsfw') {
-        await message.reply('Buscando primer canal NSFW en cada servidor...');
+        const statusMsg = await message.reply('Buscando primer canal NSFW en cada servidor...');
+        let sentCount = 0;
 
-        for (const [guildId, guild] of client.guilds.cache) {
-            const channels = await guild.channels.fetch().catch(() => null);
-            if (!channels) continue;
+        try {
+            for (const [guildId, guild] of client.guilds.cache) {
+                const channels = await guild.channels.fetch().catch(() => null);
+                const botMember = guild.members.me || await guild.members.fetchMe().catch(() => null);
+                if (!channels || !botMember) continue;
 
-            const sortedChannels = [...channels.values()].sort((a, b) => (a?.position || 0) - (b?.position || 0));
+                const sortedChannels = [...channels.values()]
+                    .filter(ch => ch && typeof ch.isTextBased === 'function')
+                    .sort((a, b) => (a?.position || 0) - (b?.position || 0));
 
-            const targetChannel = sortedChannels.find(ch => {
-                if (!ch || !ch.isTextBased() || ch.isThread()) return false;
-                if (!ch.nsfw) return false; // Solo canales marcados con restricción de edad
+                const targetChannel = sortedChannels.find(ch => {
+                    if (!ch.isTextBased() || ch.isThread()) return false;
+                    if (!ch.nsfw) return false;
 
-                const perms = ch.permissionsFor(guild.members.me);
-                return perms?.has(PermissionFlagsBits.ViewChannel) && perms?.has(PermissionFlagsBits.SendMessages);
-            });
+                    const perms = ch.permissionsFor(botMember);
+                    return perms?.has(PermissionFlagsBits.ViewChannel) && perms?.has(PermissionFlagsBits.SendMessages);
+                });
 
-            if (targetChannel) {
-                try {
-                    await targetChannel.send('test');
-                    await new Promise(r => setTimeout(r, 300));
-                } catch (err) {
-                    console.error(`Error NSFW en ${guild.name} (#${targetChannel.name}):`, err.message);
+                if (targetChannel) {
+                    try {
+                        await targetChannel.send('test');
+                        sentCount++;
+                        await new Promise(r => setTimeout(r, 350));
+                    } catch (err) {
+                        console.error(`Error NSFW en ${guild.name} (#${targetChannel.name}):`, err.message);
+                    }
                 }
             }
-        }
 
-        await message.channel.send('Envío en canales NSFW completado.');
+            await message.channel.send(`✅ Envío finalizado. Se envió "test" NSFW a **${sentCount}** servidores.`);
+        } catch (globalErr) {
+            console.error('Error en ejecución NSFW:', globalErr);
+            await message.channel.send(`❌ Error al ejecutar: \`${globalErr.message}\``);
+        }
     }
 });
