@@ -6,7 +6,7 @@ module.exports = {
     name: 'clientReady',
     once: true,
     async execute(client) {
-        console.log('\n========================================');
+        console.log('\n========================================')
         console.log('🤖 BOT CONECTADO A DISCORD');
         console.log('========================================');
         console.log(`Usuario: ${client.user.tag}`);
