@@ -1,5 +1,27 @@
-const { SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+const { SlashCommandBuilder, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, AttachmentBuilder } = require('discord.js');
+const axios = require('axios');
 const { searchGelbooru } = require('../../utils/gelbooru');
+
+// Descarga la imagen en memoria con el Referer adecuado
+async function fetchImageAttachment(url) {
+    try {
+        const response = await axios.get(url, {
+            responseType: 'arraybuffer',
+            headers: {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
+                'Referer': 'https://gelbooru.com/'
+            },
+            timeout: 10000
+        });
+
+        const extension = url.split('.').pop().split('?')[0] || 'jpg';
+        const fileName = `gelbooru_image.${extension}`;
+        return new AttachmentBuilder(Buffer.from(response.data), { name: fileName });
+    } catch (error) {
+        console.error('Error al descargar la imagen:', error.message);
+        return null;
+    }
+}
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -36,7 +58,7 @@ module.exports = {
         try {
             await interaction.deferReply();
         } catch (error) {
-            console.error('Error al diferir la respuesta (interacción expirada):', error.message);
+            console.error('Error al diferir:', error.message);
             return;
         }
 
@@ -44,7 +66,6 @@ module.exports = {
         const rating = interaction.options.getString('rating');
         const sort = interaction.options.getString('sort');
 
-        // Normalización de nombres de personajes de Evangelion
         tags = ` ${tags} ${sort} `;
         tags = tags.replace(/ mpe/gi, ' mass_production_eva ');
         tags = tags.replace(/ shinji/gi, ' ikari_shinji ');
@@ -65,11 +86,8 @@ module.exports = {
         tags = tags.replace(/ pen-pen/gi, ' pen_pen ');
         tags = tags.replace(/ penpen/gi, ' pen_pen ');
 
-        // Verificación de canal NSFW
-        const isNsfw = interaction.channel?.nsfw || 
-                      (interaction.channel?.parent && interaction.channel.parent.nsfw);
+        const isNsfw = interaction.channel?.nsfw || (interaction.channel?.parent && interaction.channel.parent.nsfw);
 
-        // SFW, General y Sensitive están permitidos en canales normales; Questionable, Explicit y NSFW requieren canal NSFW
         if (!isNsfw) {
             if (rating === '-rating:general -rating:sensitive' || 
                 rating === 'rating:questionable' || 
@@ -77,13 +95,11 @@ module.exports = {
                 await interaction.editReply('❌ Este comando solo se puede usar en canales NSFW');
                 return;
             }
-            // En canales regulares se eliminan tags explícitos
             tags += ' -penis -completely_nude -sex -futanari -breasts -nipples -nude';
         }
 
         tags += ` ${rating}`;
 
-        // Búsqueda en Gelbooru a través del proxy
         const posts = await searchGelbooru(tags, 50);
 
         if (!posts || posts.length === 0) {
@@ -93,46 +109,38 @@ module.exports = {
 
         let currentIndex = 0;
 
-        const createEmbed = (index) => {
+        const buildMessagePayload = async (index) => {
             const post = posts[index];
-            
-            // Reconstruye la URL directa evitando los bloqueos de hotlink de Discord
-            let imageUrl = post.file_url;
-            if (post.directory && post.image) {
-                imageUrl = `https://gelbooru.com//images/${post.directory}/${post.image}`;
-            }
+            const rawUrl = post.sample_url || post.file_url || post.preview_url;
+            const attachment = await fetchImageAttachment(rawUrl);
 
             const embed = new EmbedBuilder()
-                .setTitle(tags ? tags.toUpperCase() : 'SEARCH')
+                .setTitle('SEARCH')
                 .setColor('Random')
                 .setTimestamp(post.created_at ? new Date(post.created_at) : new Date())
                 .setDescription(`[Ver en Gelbooru](https://gelbooru.com/index.php?page=post&s=view&id=${post.id})`)
-                .setImage(imageUrl)
-                .setFooter({ text: `Imagen ${index + 1} de ${posts.length}` });
+                .setFooter({ text: `${index + 1}/${posts.length}` });
 
-            return embed;
+            if (attachment) {
+                embed.setImage(`attachment://${attachment.name}`);
+                return { embeds: [embed], files: [attachment] };
+            } else if (rawUrl) {
+                embed.setImage(rawUrl);
+                return { embeds: [embed], files: [] };
+            }
+            return { embeds: [embed], files: [] };
         };
 
         const buttons = new ActionRowBuilder().addComponents(
-            new ButtonBuilder()
-                .setCustomId('prev')
-                .setEmoji('⬅️')
-                .setStyle(ButtonStyle.Primary),
-            new ButtonBuilder()
-                .setCustomId('next')
-                .setEmoji('➡️')
-                .setStyle(ButtonStyle.Primary),
-            new ButtonBuilder()
-                .setCustomId('exit')
-                .setEmoji('❌')
-                .setStyle(ButtonStyle.Danger)
+            new ButtonBuilder().setCustomId('prev').setEmoji('⬅️').setStyle(ButtonStyle.Primary),
+            new ButtonBuilder().setCustomId('next').setEmoji('➡️').setStyle(ButtonStyle.Primary),
+            new ButtonBuilder().setCustomId('exit').setEmoji('❌').setStyle(ButtonStyle.Danger)
         );
 
-        const response = await interaction.editReply({ 
-            embeds: [createEmbed(0)], 
-            components: [buttons] 
-        });
+        const initialPayload = await buildMessagePayload(0);
+        initialPayload.components = [buttons];
 
+        const response = await interaction.editReply(initialPayload);
         const collector = response.createMessageComponentCollector({ time: 300000 });
 
         collector.on('collect', async i => {
@@ -145,10 +153,14 @@ module.exports = {
 
             if (i.customId === 'next') {
                 currentIndex = (currentIndex + 1) % posts.length;
-                await i.update({ embeds: [createEmbed(currentIndex)] });
+                const payload = await buildMessagePayload(currentIndex);
+                payload.components = [buttons];
+                await i.update(payload);
             } else if (i.customId === 'prev') {
                 currentIndex = (currentIndex - 1 + posts.length) % posts.length;
-                await i.update({ embeds: [createEmbed(currentIndex)] });
+                const payload = await buildMessagePayload(currentIndex);
+                payload.components = [buttons];
+                await i.update(payload);
             } else if (i.customId === 'exit') {
                 collector.stop();
                 await i.message.delete().catch(() => {});
@@ -159,5 +171,5 @@ module.exports = {
             buttons.components.forEach(button => button.setDisabled(true));
             response.edit({ components: [buttons] }).catch(() => {});
         });
-    },
+    }
 };
