@@ -4,6 +4,8 @@ async function searchGelbooru(tags, limit = 50) {
     try {
         const apiKey = process.env.GELBOORU_API_KEY;
         const userId = process.env.GELBOORU_USER_ID;
+        // Lee el token desde el entorno o usa una clave directa
+        const proxySecret = process.env.PROXY_SECRET || 'Ugotto1821';
 
         const params = {
             page: 'dapi',
@@ -19,10 +21,12 @@ async function searchGelbooru(tags, limit = 50) {
             params.user_id = userId;
         }
 
+        // Llamada a través de tu Cloudflare Worker con token de seguridad
         const response = await axios.get('https://gelproxy.deraktsu.com/index.php', {
             params,
             headers: {
-                'Accept': 'application/json, text/javascript, */*; q=0.01'
+                'Accept': 'application/json, text/javascript, */*; q=0.01',
+                'x-proxy-token': proxySecret
             },
             timeout: 15000
         });
@@ -35,7 +39,7 @@ async function searchGelbooru(tags, limit = 50) {
 
         return [];
     } catch (error) {
-        console.error('Gelbooru Proxy Error:', error.message);
+        console.error('Error en el Proxy de Gelbooru:', error.message);
         if (error.response) {
             console.error('Status:', error.response.status);
             console.error('Data:', error.response.data);
