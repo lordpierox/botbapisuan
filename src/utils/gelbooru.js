@@ -1,12 +1,5 @@
 const axios = require('axios');
 
-let HttpsProxyAgent;
-try {
-    HttpsProxyAgent = require('https-proxy-agent').HttpsProxyAgent;
-} catch (e) {
-    // Prosegue in modalità diretta se https-proxy-agent non è ancora installato
-}
-
 async function searchGelbooru(tags, limit = 50) {
     try {
         const apiKey = process.env.GELBOORU_API_KEY;
@@ -21,26 +14,21 @@ async function searchGelbooru(tags, limit = 50) {
             tags: tags.trim()
         };
 
+        // Inserisce le credenziali se presenti nel compose
         if (apiKey && userId) {
             params.api_key = apiKey;
             params.user_id = userId;
         }
 
-        const axiosConfig = {
+        const response = await axios.get('https://gelbooru.com/index.php', {
             params,
             headers: {
                 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
-                'Accept': 'application/json, text/javascript, */*; q=0.01'
+                'Accept': 'application/json, text/javascript, */*; q=0.01',
+                'Referer': 'https://gelbooru.com/'
             },
             timeout: 15000
-        };
-
-        // Inoltra la richiesta a easyproxy se installato per uscire con IP WARP pulito
-        if (HttpsProxyAgent) {
-            axiosConfig.httpsAgent = new HttpsProxyAgent('http://172.17.0.1:7860');
-        }
-
-        const response = await axios.get('https://gelbooru.com/index.php', axiosConfig);
+        });
 
         if (response.data && Array.isArray(response.data.post)) {
             return response.data.post;
@@ -53,6 +41,7 @@ async function searchGelbooru(tags, limit = 50) {
         console.error('Gelbooru API Error:', error.message);
         if (error.response) {
             console.error('Status:', error.response.status);
+            console.error('Data:', error.response.data);
         }
         return [];
     }
