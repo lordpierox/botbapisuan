@@ -2,6 +2,27 @@ const { Client, GatewayIntentBits, EmbedBuilder, PermissionsBitField, Permission
 const axios = require('axios');
 const { resolveSearchQuery } = require('../utils/tagManager');
 
+// Función auxiliar para descargar la imagen en memoria con el Referer adecuado (igual que en search.js)
+async function fetchImageAttachment(url) {
+    try {
+        const response = await axios.get(url, {
+            responseType: 'arraybuffer',
+            headers: {
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
+                'Referer': 'https://gelbooru.com/'
+            },
+            timeout: 10000
+        });
+
+        const extension = url.split('.').pop().split('?')[0] || 'jpg';
+        const fileName = `gelbooru_image.${extension}`;
+        return new AttachmentBuilder(Buffer.from(response.data), { name: fileName });
+    } catch (error) {
+        console.error('Error al descargar la imagen:', error.message);
+        return null;
+    }
+}
+
 module.exports = {
     name: 'messageCreate',
     on: true,
@@ -83,18 +104,30 @@ module.exports = {
                         const posts = response.data?.post;
 
                         if (!posts || posts.length === 0) {
-                            return message.reply('No encontré ninguna imagen con esos tags dx.');
+                            return message.reply('❌ No encontré ninguna imagen con esos tags dx.');
                         }
 
                         const post = posts[0];
-                        const imageUrl = post.file_url;
+                        const rawUrl = post.sample_url || post.file_url || post.preview_url;
+                        
+                        // Descargar la imagen de manera segura en memoria usando el proxy/referer adecuado
+                        const attachment = await fetchImageAttachment(rawUrl);
 
-                        const attachment = new AttachmentBuilder(imageUrl, {
-                            name: `gelbooru_${post.id}.${post.image || 'jpg'}`,
-                            headers: { 'Referer': 'https://gelbooru.com/' }
-                        });
+                        const embed = new EmbedBuilder()
+                            .setTitle('SEARCH')
+                            .setColor('Random')
+                            .setTimestamp(post.created_at ? new Date(post.created_at) : new Date())
+                            .setDescription(`[Ver en Gelbooru](https://gelbooru.com/index.php?page=post&s=view&id=${post.id})`);
 
-                        return message.reply({ files: [attachment] });
+                        if (attachment) {
+                            embed.setImage(`attachment://${attachment.name}`);
+                            return message.reply({ embeds: [embed], files: [attachment] });
+                        } else if (rawUrl) {
+                            embed.setImage(rawUrl);
+                            return message.reply({ embeds: [embed], files: [] });
+                        }
+
+                        return message.reply({ embeds: [embed], files: [] });
 
                     } catch (error) {
                         console.error('Error en búsqueda de Gelbooru:', error);
