@@ -77,13 +77,22 @@ module.exports = {
         let currentIndex = 0;
 
         const createEmbed = (index) => {
-            return new EmbedBuilder()
+            const post = posts[index];
+            // Priorità: sample_url (carica sempre veloce su Discord) o file_url
+            const imageUrl = post.sample_url || post.file_url || post.preview_url;
+
+            const embed = new EmbedBuilder()
                 .setTitle(`${tags.toUpperCase()}`)
                 .setColor('Random')
-                .setTimestamp(new Date(posts[index].created_at))
-                .setDescription(`https://gelbooru.com/index.php?page=post&s=view&id=${posts[index].id}`)
-                .setImage(posts[index].file_url)
+                .setTimestamp(new Date(post.created_at))
+                .setDescription(`https://gelbooru.com/index.php?page=post&s=view&id=${post.id}`)
                 .setFooter({ text: `Imagen ${index + 1} de ${posts.length}` });
+
+            if (imageUrl) {
+                embed.setImage(imageUrl);
+            }
+
+            return embed;
         };
 
         const buttons = new ActionRowBuilder().addComponents(

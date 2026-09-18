@@ -94,13 +94,21 @@ module.exports = {
         let currentIndex = 0;
 
         const createEmbed = (index) => {
-            return new EmbedBuilder()
+            const post = posts[index];
+            const imageUrl = post.sample_url || post.file_url || post.preview_url;
+
+            const embed = new EmbedBuilder()
                 .setTitle('SEARCH')
                 .setColor('Random')
-                .setTimestamp(new Date(posts[index].created_at))
-                .setDescription(`https://gelbooru.com/index.php?page=post&s=view&id=${posts[index].id}`)
-                .setImage(posts[index].file_url)
+                .setTimestamp(new Date(post.created_at))
+                .setDescription(`https://gelbooru.com/index.php?page=post&s=view&id=${post.id}`)
                 .setFooter({ text: `${index + 1}/${posts.length}` });
+
+            if (imageUrl) {
+                embed.setImage(imageUrl);
+            }
+
+            return embed;
         };
 
         const buttons = new ActionRowBuilder().addComponents(
