@@ -10,65 +10,96 @@ module.exports = {
             if (message.author.bot) return;
 
             // ============================================
-            // SISTEMA DE BÚSQUEDA LOCAL DE GELBOORU (0 TOKENS)
+            // DETECTAR MENCIÓN O RESPUESTA AL BOT
             // ============================================
-            const textLower = message.content.toLowerCase();
-            const searchTriggers = ['busca', 'manda', 'envia', 'mandame', 'enviame', 'buscame'];
-            const isSearchCommand = searchTriggers.some(trigger => textLower.startsWith(trigger) || textLower.includes(` ${trigger} `));
+            const botMentioned = message.mentions.has(client.user);
+            const isReplyToBot = message.reference && 
+                message.channel.messages.cache.get(message.reference.messageId)?.author.id === client.user.id;
 
-            if (isSearchCommand) {
-                await message.channel.sendTyping();
+            if (botMentioned || isReplyToBot) {
+                const textLower = message.content.toLowerCase();
+                const searchTriggers = ['busca', 'manda', 'envia', 'mandame', 'enviame', 'buscame'];
+                const isSearchCommand = searchTriggers.some(trigger => textLower.includes(trigger));
 
-                try {
-                    let cleanQuery = textLower
-                        .replace(/\b(manda|envia|busca|mandame|enviame|buscame)\b/gi, '')
-                        .replace(/\b(imagen|imagenes|foto|fotos|dibujo|dibujos|de|del|un|una|algo)\b/gi, '')
-                        .replace(/\b(porno|xxx|rule|rule34|r34|hentai|nopor|ecchi|nsfw)\b/gi, '')
-                        .trim();
+                // Si interactúan con el bot usando un comando de búsqueda
+                if (isSearchCommand) {
+                    await message.channel.sendTyping();
 
-                    let tagsToSearch = resolveSearchQuery(cleanQuery);
+                    try {
+                        // Limpiar la mención del bot y los términos del comando
+                        let cleanContent = message.content
+                            .replace(/<@!?\d+>/g, '')
+                            .toLowerCase();
 
-                    // Si no está en el CSV local, usar API de Gelbooru directamente como respaldo (fallback)
-                    if (!tagsToSearch || tagsToSearch === cleanQuery) {
-                        try {
-                            const firstWord = cleanQuery.split(' ')[0];
-                            const tagSearchUrl = `https://gelbooru.com/index.php?page=dapi&s=tag&q=index&name=${encodeURIComponent(firstWord)}&json=1`;
-                            const tagRes = await axios.get(tagSearchUrl);
-                            
-                            if (tagRes.data && tagRes.data.tag && tagRes.data.tag.length > 0) {
-                                tagsToSearch = tagRes.data.tag[0].name;
+                        let cleanQuery = cleanContent
+                            .replace(/\b(manda|envia|busca|mandame|enviame|buscame)\b/gi, '')
+                            .replace(/\b(imagen|imagenes|foto|fotos|dibujo|dibujos|de|del|un|una|algo)\b/gi, '')
+                            .replace(/\b(porno|xxx|rule|rule34|r34|hentai|nopor|ecchi|nsfw)\b/gi, '')
+                            .trim();
+
+                        // Resolver tags usando el tagManager (con los dos CSVs)
+                        let tagsToSearch = resolveSearchQuery(cleanQuery);
+
+                        // Fallback dinámico si no está en el CSV local
+                        if (!tagsToSearch || tagsToSearch === cleanQuery) {
+                            try {
+                                const firstWord = cleanQuery.split(' ')[0];
+                                if (firstWord) {
+                                    const tagSearchUrl = `https://gelbooru.com/index.php?page=dapi&s=tag&q=index&name=${encodeURIComponent(firstWord)}&json=1`;
+                                    const tagRes = await axios.get(tagSearchUrl);
+                                    
+                                    if (tagRes.data && tagRes.data.tag && tagRes.data.tag.length > 0) {
+                                        tagsToSearch = tagRes.data.tag[0].name;
+                                    }
+                                }
+                            } catch (apiError) {
+                                console.error('Error buscando tag dinámico en Gelbooru:', apiError);
                             }
-                        } catch (apiError) {
-                            console.error('Error buscando tag dinámico en Gelbooru:', apiError);
                         }
+
+                        const isNsfwChannel = message.channel.nsfw || false;
+                        const ratingFilter = isNsfwChannel ? 'rating:questionable' : 'rating:general';
+
+                        const finalTags = `${tagsToSearch} ${ratingFilter} sort:random`;
+                        const proxyUrl = 'https://gelproxy.deraktsu.com/index.php';
+                        
+                        const params = new URLSearchParams({
+                            page: 'dapi',
+                            s: 'post',
+                            q: 'index',
+                            tags: finalTags,
+                            json: '1',
+                            limit: '1',
+                            user_id: '2055792',
+                            api_key: '492c6a96bc04c723915e7ae476716a7b88f6f52f8d38ebce0104c655e5d4faf0a82e1fcd0c145d268190eb1e4e88024256980b7f0d4ff81fc780242f4b200c92'
+                        });
+
+                        const response = await axios.get(`${proxyUrl}?${params.toString()}`, {
+                            headers: {
+                                'x-proxy-token': 'Ugotto1821'
+                            }
+                        });
+
+                        const posts = response.data?.post;
+
+                        if (!posts || posts.length === 0) {
+                            return message.reply('No encontré ninguna imagen con esos tags dx.');
+                        }
+
+                        const post = posts[0];
+                        const imageUrl = post.file_url;
+
+                        const attachment = new AttachmentBuilder(imageUrl, {
+                            name: `gelbooru_${post.id}.${post.image || 'jpg'}`,
+                            headers: { 'Referer': 'https://gelbooru.com/' }
+                        });
+
+                        return message.reply({ files: [attachment] });
+
+                    } catch (error) {
+                        console.error('Error en búsqueda de Gelbooru:', error);
+                        return message.reply('Hubo un error buscando la imagen dx.');
                     }
-
-                    const isNsfwChannel = message.channel.nsfw || false;
-                    const ratingFilter = isNsfwChannel ? 'rating:questionable' : 'rating:general';
-
-                    const finalTags = `${tagsToSearch} ${ratingFilter} sort:random`;
-                    const apiUrl = `https://gelbooru.com/index.php?page=dapi&s=post&q=index&tags=${encodeURIComponent(finalTags)}&json=1&limit=1`;
-
-                    const response = await axios.get(apiUrl);
-                    const posts = response.data?.post;
-
-                    if (!posts || posts.length === 0) {
-                        return message.reply('No encontré ninguna imagen con esos tags dx.');
-                    }
-
-                    const post = posts[0];
-                    const imageUrl = post.file_url;
-
-                    const attachment = new AttachmentBuilder(imageUrl, {
-                        name: `gelbooru_${post.id}.${post.image || 'jpg'}`,
-                        headers: { 'Referer': 'https://gelbooru.com/' }
-                    });
-
-                    return message.reply({ files: [attachment] });
-
-                } catch (error) {
-                    console.error('Error en búsqueda de Gelbooru:', error);
-                    return message.reply('Hubo un error buscando la imagen dx.');
                 }
             }
 
