@@ -14,18 +14,15 @@ async function searchGelbooru(tags, limit = 50) {
             tags: tags.trim()
         };
 
-        // Inserisce le credenziali se presenti nel compose
         if (apiKey && userId) {
             params.api_key = apiKey;
             params.user_id = userId;
         }
 
-        const response = await axios.get('https://gelbooru.com/index.php', {
+        const response = await axios.get('https://gelproxy.deraktsu.com/index.php', {
             params,
             headers: {
-                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
-                'Accept': 'application/json, text/javascript, */*; q=0.01',
-                'Referer': 'https://gelbooru.com/'
+                'Accept': 'application/json, text/javascript, */*; q=0.01'
             },
             timeout: 15000
         });
@@ -38,7 +35,7 @@ async function searchGelbooru(tags, limit = 50) {
 
         return [];
     } catch (error) {
-        console.error('Gelbooru API Error:', error.message);
+        console.error('Gelbooru Proxy Error:', error.message);
         if (error.response) {
             console.error('Status:', error.response.status);
             console.error('Data:', error.response.data);
