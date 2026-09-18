@@ -1,31 +1,41 @@
 const axios = require('axios');
 
-/**
- * Cerca immagini su Gelbooru con autenticazione
- * @param {string} tags - Tags separati da spazi
- * @param {number} limit - Numero massimo di risultati
- * @returns {Promise<Array>} Array di post Gelbooru
- */
 async function searchGelbooru(tags, limit = 50) {
-    const url = 'https://gelbooru.com/index.php';
-    
-    const params = {
-        page: 'dapi',
-        s: 'post',
-        q: 'index',
-        json: 1,
-        tags: tags,
-        limit: limit,
-        api_key: process.env.GELBOORU_API_KEY,
-        user_id: process.env.GELBOORU_USER_ID
-    };
-    
     try {
-        const response = await axios.get(url, { 
-            params, 
-            timeout: 10000 
+        const apiKey = process.env.GELBOORU_API_KEY;
+        const userId = process.env.GELBOORU_USER_ID;
+
+        const params = {
+            page: 'dapi',
+            s: 'post',
+            q: 'index',
+            json: 1,
+            limit: limit,
+            tags: tags.trim()
+        };
+
+        // Inietta credenziali solo se configurate
+        if (apiKey && userId) {
+            params.api_key = apiKey;
+            params.user_id = userId;
+        }
+
+        const response = await axios.get('https://gelbooru.com/index.php', {
+            params,
+            headers: {
+                // User-Agent realistico fondamentale per evitare il 429 di Nginx
+                'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36',
+                'Accept': 'application/json, text/javascript, */*; q=0.01'
+            },
+            timeout: 10000
         });
-        return response.data.post || [];
+
+        // Gelbooru restituisce i post all'interno dell'array post
+        if (response.data && response.data.post) {
+            return response.data.post;
+        }
+
+        return [];
     } catch (error) {
         console.error('Gelbooru API Error:', error.message);
         if (error.response) {
