@@ -78,19 +78,20 @@ module.exports = {
 
         const createEmbed = (index) => {
             const post = posts[index];
-            // Priorità: sample_url (carica sempre veloce su Discord) o file_url
-            const imageUrl = post.sample_url || post.file_url || post.preview_url;
+            
+            // Reconstruye la URL directa evitando los bloqueos de hotlink de Discord
+            let imageUrl = post.file_url;
+            if (post.directory && post.image) {
+                imageUrl = `https://gelbooru.com//images/${post.directory}/${post.image}`;
+            }
 
             const embed = new EmbedBuilder()
-                .setTitle(`${tags.toUpperCase()}`)
+                .setTitle(tags ? tags.toUpperCase() : 'SEARCH')
                 .setColor('Random')
-                .setTimestamp(new Date(post.created_at))
-                .setDescription(`https://gelbooru.com/index.php?page=post&s=view&id=${post.id}`)
+                .setTimestamp(post.created_at ? new Date(post.created_at) : new Date())
+                .setDescription(`[Ver en Gelbooru](https://gelbooru.com/index.php?page=post&s=view&id=${post.id})`)
+                .setImage(imageUrl)
                 .setFooter({ text: `Imagen ${index + 1} de ${posts.length}` });
-
-            if (imageUrl) {
-                embed.setImage(imageUrl);
-            }
 
             return embed;
         };
