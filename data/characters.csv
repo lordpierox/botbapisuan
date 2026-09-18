@@ -1,0 +1,701 @@
+tag_personaje,alias_personaje,popularidad,tag_franquicia
+hakurei_reimu,reimu hakurei|hakurei reimu|hakurei|reimu,101007,touhou
+kirisame_marisa,marisa kirisame|kirisame marisa|kirisame|marisa,87516,touhou
+flandre_scarlet,flandre scarlet|scarlet flandre|scarlet|flandre,63077,touhou
+remilia_scarlet,scarlet remilia|remilia scarlet|scarlet|remilia,62475,touhou
+izayoi_sakuya,izayoi sakuya|sakuya izayoi|izayoi|sakuya,53299,touhou
+konpaku_youmu,youmu konpaku|konpaku youmu|konpaku|youmu,40944,touhou
+komeiji_koishi,komeiji koishi|koishi komeiji|komeiji|koishi,45280,touhou
+kochiya_sanae,kochiya sanae|sanae kochiya|kochiya|sanae,41134,touhou
+cirno,cirno,40877,touhou
+patchouli_knowledge,patchouli knowledge|knowledge patchouli|knowledge|patchouli,38868,touhou
+alice_margatroid,alice margatroid|margatroid alice|margatroid|alice,39961,touhou
+yakumo_yukari,yakumo yukari|yukari yakumo|yakumo|yukari,38535,touhou
+reisen_udongein_inaba,reisen udongein inaba|reisen|inaba,31248,touhou
+fujiwara_no_mokou,fujiwara no mokou|fujiwara|mokou,30682,touhou
+shameimaru_aya,aya shameimaru|shameimaru aya|shameimaru|aya,34317,touhou
+hong_meiling,meiling hong|hong meiling|meiling|hong,28200,touhou
+saigyouji_yuyuko,saigyouji yuyuko|yuyuko saigyouji|saigyouji|yuyuko,28069,touhou
+komeiji_satori,satori komeiji|komeiji satori|komeiji|satori,31027,touhou
+inubashiri_momiji,momiji inubashiri|inubashiri momiji|inubashiri|momiji,26136,touhou
+kaenbyou_rin,kaenbyou rin|rin kaenbyou|kaenbyou|rin,22803,touhou
+konpaku_youmu_(ghost),youmu konpaku|konpaku youmu|konpaku|youmu,22894,touhou
+rumia,rumia,22395,touhou
+moriya_suwako,suwako moriya|moriya suwako|suwako|moriya,22053,touhou
+kawashiro_nitori,kawashiro nitori|nitori kawashiro|kawashiro|nitori,18700,touhou
+yakumo_ran,ran yakumo|yakumo ran|yakumo|ran,22818,touhou
+reiuji_utsuho,reiuji utsuho|utsuho reiuji|utsuho|reiuji,20666,touhou
+chen,chen,20625,touhou
+kazami_yuuka,yuuka kazami|kazami yuuka|kazami|yuuka,20318,touhou
+hinanawi_tenshi,tenshi hinanawi|hinanawi tenshi|hinanawi|tenshi,17902,touhou
+kamishirasawa_keine,keine kamishirasawa|kamishirasawa keine|kamishirasawa|keine,17896,touhou
+nazrin,nazrin,16152,touhou
+tatara_kogasa,kogasa tatara|tatara kogasa|kogasa|tatara,18749,touhou
+koakuma,koakuma,16221,touhou
+mizuhashi_parsee,mizuhashi parsee|parsee mizuhashi|mizuhashi|parsee,13258,touhou
+mystia_lorelei,mystia lorelei|lorelei mystia|lorelei|mystia,16267,touhou
+inaba_tewi,tewi inaba|inaba tewi|inaba|tewi,15751,touhou
+usami_renko,renko usami|usami renko|renko|usami,15520,touhou
+ibuki_suika,ibuki suika|suika ibuki|suika|ibuki,16031,touhou
+maribel_hearn,maribel hearn|hearn maribel|maribel|hearn,15145,touhou
+houraisan_kaguya,houraisan kaguya|kaguya houraisan|houraisan|kaguya,17989,touhou
+yasaka_kanako,yasaka kanako|kanako yasaka|kanako|yasaka,13206,touhou
+shiki_eiki,eiki shiki|shiki eiki|shiki|eiki,10549,touhou
+houjuu_nue,houjuu nue|nue houjuu|houjuu|nue,14117,touhou
+daiyousei,daiyousei,11400,touhou
+yagokoro_eirin,yagokoro eirin|eirin yagokoro|yagokoro|eirin,13361,touhou
+wriggle_nightbug,nightbug wriggle|wriggle nightbug|nightbug|wriggle,10389,touhou
+shanghai_doll,shanghai doll|doll shanghai|shanghai|doll,10342,touhou
+hoshiguma_yuugi,yuugi hoshiguma|hoshiguma yuugi|hoshiguma|yuugi,10661,touhou
+mononobe_no_futo,mononobe no futo|mononobe|futo,10576,touhou
+onozuka_komachi,komachi onozuka|onozuka komachi|komachi|onozuka,10332,touhou
+admiral_(kancolle),admiral,39044,kantai_collection
+kaga_(kancolle),kaga,22200,kantai_collection
+shimakaze_(kancolle),shimakaze,20730,kantai_collection
+shigure_(kancolle),shigure,17803,kantai_collection
+hibiki_(kancolle),hibiki,18062,kantai_collection
+kongou_(kancolle),kongou,14057,kantai_collection
+inazuma_(kancolle),inazuma,13556,kantai_collection
+akagi_(kancolle),akagi,13005,kantai_collection
+yuudachi_(kancolle),yuudachi,12170,kantai_collection
+shigure_kai_ni_(kancolle),shigure kai ni|shigure|ni,11606,kantai_collection
+fubuki_(kancolle),fubuki,12939,kantai_collection
+hamakaze_(kancolle),hamakaze,10911,kantai_collection
+ikazuchi_(kancolle),ikazuchi,11441,kantai_collection
+tenryuu_(kancolle),tenryuu,12010,kantai_collection
+zuikaku_(kancolle),zuikaku,10768,kantai_collection
+haruna_(kancolle),haruna,10477,kantai_collection
+nagato_(kancolle),nagato,9826,kantai_collection
+yuudachi_kai_ni_(kancolle),yuudachi kai ni|yuudachi|ni,9943,kantai_collection
+ryuujou_(kancolle),ryuujou,8946,kantai_collection
+akatsuki_(kancolle),akatsuki,10685,kantai_collection
+kashima_(kancolle),kashima,10026,kantai_collection
+suzuya_(kancolle),suzuya,9432,kantai_collection
+murakumo_(kancolle),murakumo,7774,kantai_collection
+houshou_(kancolle),houshou,8327,kantai_collection
+northern_ocean_princess,northern ocean princess|princess|northern,6763,kantai_collection
+akebono_(kancolle),akebono,6982,kantai_collection
+asashio_(kancolle),asashio,6277,kantai_collection
+takao_(kancolle),takao,5640,kantai_collection
+ushio_(kancolle),ushio,7443,kantai_collection
+atago_(kancolle),atago,7182,kantai_collection
+amatsukaze_(kancolle),amatsukaze,7743,kantai_collection
+prinz_eugen_(kancolle),prinz eugen|eugen prinz|eugen|prinz,6036,kantai_collection
+kitakami_(kancolle),kitakami,6551,kantai_collection
+mutsu_(kancolle),mutsu,5897,kantai_collection
+yamato_(kancolle),yamato,7576,kantai_collection
+yukikaze_(kancolle),yukikaze,7451,kantai_collection
+female_admiral_(kancolle),female admiral|admiral female|admiral|female,5683,kantai_collection
+verniy_(kancolle),verniy,4801,kantai_collection
+rensouhou-chan,rensouhou-chan,6341,kantai_collection
+bismarck_(kancolle),bismarck,5504,kantai_collection
+shoukaku_(kancolle),shoukaku,6951,kantai_collection
+ooyodo_(kancolle),ooyodo,6741,kantai_collection
+yuubari_(kancolle),yuubari,4523,kantai_collection
+shiranui_(kancolle),shiranui,5392,kantai_collection
+souryuu_(kancolle),souryuu,5239,kantai_collection
+kasumi_(kancolle),kasumi,5225,kantai_collection
+ooi_(kancolle),ooi,5620,kantai_collection
+sendai_(kancolle),sendai,5608,kantai_collection
+akashi_(kancolle),akashi,5444,kantai_collection
+iowa_(kancolle),iowa,5218,kantai_collection
+sensei_(blue_archive),sensei,39491,blue_archive
+doodle_sensei_(blue_archive),doodle sensei|sensei doodle|doodle|sensei,22449,blue_archive
+yuuka_(blue_archive),yuuka,18965,blue_archive
+hina_(blue_archive),hina,19615,blue_archive
+mika_(blue_archive),mika,16277,blue_archive
+asuna_(blue_archive),asuna,18517,blue_archive
+hoshino_(blue_archive),hoshino,15193,blue_archive
+rio_(blue_archive),rio,14875,blue_archive
+kayoko_(blue_archive),kayoko,11620,blue_archive
+kisaki_(blue_archive),kisaki,13114,blue_archive
+aris_(blue_archive),aris,11824,blue_archive
+mari_(blue_archive),mari,11439,blue_archive
+shiroko_(blue_archive),shiroko,11529,blue_archive
+toki_(blue_archive),toki,12151,blue_archive
+kazusa_(blue_archive),kazusa,11196,blue_archive
+koharu_(blue_archive),koharu,10281,blue_archive
+noa_(blue_archive),noa,8514,blue_archive
+seia_(blue_archive),seia,9418,blue_archive
+plana_(blue_archive),plana,8435,blue_archive
+karin_(blue_archive),karin,8562,blue_archive
+kanna_(blue_archive),kanna,6653,blue_archive
+aru_(blue_archive),aru,7676,blue_archive
+ako_(blue_archive),ako,7057,blue_archive
+arona_(blue_archive),arona,7905,blue_archive
+hasumi_(blue_archive),hasumi,6968,blue_archive
+momoi_(blue_archive),momoi,7812,blue_archive
+kei_(blue_archive),kei,7335,blue_archive
+asuna_(bunny)_(blue_archive),asuna,6957,blue_archive
+saori_(blue_archive),saori,6431,blue_archive
+neru_(blue_archive),neru,5800,blue_archive
+miyu_(blue_archive),miyu,5520,blue_archive
+nozomi_(blue_archive),nozomi,6749,blue_archive
+hanako_(blue_archive),hanako,7600,blue_archive
+hikari_(blue_archive),hikari,6296,blue_archive
+ui_(blue_archive),ui,5193,blue_archive
+mutsuki_(blue_archive),mutsuki,6241,blue_archive
+hifumi_(blue_archive),hifumi,4872,blue_archive
+ibuki_(blue_archive),ibuki,5409,blue_archive
+midori_(blue_archive),midori,6519,blue_archive
+toki_(bunny)_(blue_archive),toki,5987,blue_archive
+ichika_(blue_archive),ichika,4656,blue_archive
+shiroko_terror_(blue_archive),terror shiroko|shiroko terror|shiroko|terror,4727,blue_archive
+miyako_(blue_archive),miyako,5178,blue_archive
+kei_(student)_(blue_archive),kei,4315,blue_archive
+iori_(blue_archive),iori,4211,blue_archive
+kikyou_(blue_archive),kikyou,4424,blue_archive
+iroha_(blue_archive),iroha,4426,blue_archive
+peroro_(blue_archive),peroro,3391,blue_archive
+hibiki_(blue_archive),hibiki,3537,blue_archive
+wakamo_(blue_archive),wakamo,4279,blue_archive
+gardevoir,gardevoir,17825,pokemon
+pikachu,pikachu,17550,pokemon
+rosa_(pokemon),rosa,8923,pokemon
+dawn_(pokemon),dawn,9514,pokemon
+hilda_(pokemon),hilda,8139,pokemon
+may_(pokemon),may,8852,pokemon
+lillie_(pokemon),lillie,9358,pokemon
+marnie_(pokemon),marnie,8179,pokemon
+kieran_(pokemon),kieran,6817,pokemon
+cynthia_(pokemon),cynthia,7719,pokemon
+eevee,eevee,7285,pokemon
+gloria_(pokemon),gloria,6815,pokemon
+red_(pokemon),red,6317,pokemon
+serena_(pokemon),serena,6120,pokemon
+selene_(pokemon),selene,5088,pokemon
+iono_(pokemon),iono,5799,pokemon
+rotom,rotom,5302,pokemon
+misty_(pokemon),misty,4758,pokemon
+ash_ketchum,ash ketchum|ketchum ash|ketchum|ash,6395,pokemon
+ethan_(pokemon),ethan,3844,pokemon
+nessa_(pokemon),nessa,3878,pokemon
+sylveon,sylveon,4236,pokemon
+akari_(pokemon),akari,4029,pokemon
+lucario,lucario,3902,pokemon
+juliana_(pokemon),juliana,3877,pokemon
+bea_(pokemon),bea,3661,pokemon
+glaceon,glaceon,3543,pokemon
+leon_(pokemon),leon,3954,pokemon
+rowlet,rowlet,3786,pokemon
+mega_gardevoir,gardevoir mega|mega gardevoir|gardevoir|mega,3459,pokemon
+piplup,piplup,3628,pokemon
+hilbert_(pokemon),hilbert,3356,pokemon
+hex_maniac_(pokemon),maniac hex|hex maniac|maniac|hex,4490,pokemon
+charizard,charizard,3917,pokemon
+rotom_phone,phone rotom|rotom phone|rotom|phone,3748,pokemon
+brendan_(pokemon),brendan,2780,pokemon
+rika_(pokemon),rika,3850,pokemon
+lana_(pokemon),lana,3540,pokemon
+carmine_(pokemon),carmine,3256,pokemon
+skyla_(pokemon),skyla,3207,pokemon
+florian_(pokemon),florian,3090,pokemon
+umbreon,umbreon,3738,pokemon
+leaf_(pokemon),leaf,3111,pokemon
+kirlia,kirlia,2895,pokemon
+gengar,gengar,3360,pokemon
+n_(pokemon),,3145,pokemon
+raihan_(pokemon),raihan,3961,pokemon
+bulbasaur,bulbasaur,3253,pokemon
+blue_oak,oak blue|blue oak|blue|oak,3636,pokemon
+lyra_(pokemon),lyra,3000,pokemon
+artoria_pendragon_(fate),pendragon artoria|artoria pendragon|pendragon|artoria,46219,fate_(series)
+saber_(fate),saber,21226,fate_(series)
+fujimaru_ritsuka_(male),ritsuka fujimaru|fujimaru ritsuka|fujimaru|ritsuka,19134,fate_(series)
+mash_kyrielight,mash kyrielight|kyrielight mash|kyrielight|mash,20941,fate_(series)
+fujimaru_ritsuka_(female),ritsuka fujimaru|fujimaru ritsuka|fujimaru|ritsuka,16536,fate_(series)
+jeanne_d'arc_alter_(fate),jeanne darc alter|jeanne|alter,13793,fate_(series)
+abigail_williams_(fate),abigail williams|williams abigail|williams|abigail,12728,fate_(series)
+illyasviel_von_einzbern,illyasviel von einzbern|illyasviel|einzbern,11131,fate_(series)
+tohsaka_rin,tohsaka rin|rin tohsaka|tohsaka|rin,10942,fate_(series)
+nero_claudius_(fate),claudius nero|nero claudius|claudius|nero,11408,fate_(series)
+scathach_(fate),scathach,9508,fate_(series)
+tamamo_no_mae_(fate),tamamo no mae|tamamo|mae,9165,fate_(series)
+emiya_shirou,shirou emiya|emiya shirou|shirou|emiya,7823,fate_(series)
+archer_(fate),archer,7222,fate_(series)
+baobhan_sith_(fate),sith baobhan|baobhan sith|baobhan|sith,7628,fate_(series)
+gilgamesh_(fate),gilgamesh,8368,fate_(series)
+saber_alter,alter saber|saber alter|alter|saber,7291,fate_(series)
+shuten_douji_(fate),douji shuten|shuten douji|shuten|douji,7814,fate_(series)
+cu_chulainn_(fate),chulainn cu|cu chulainn|chulainn|cu,7040,fate_(series)
+astolfo_(fate),astolfo,7664,fate_(series)
+matou_sakura,sakura matou|matou sakura|sakura|matou,6898,fate_(series)
+ereshkigal_(fate),ereshkigal,5643,fate_(series)
+bb_(fate),bb,6588,fate_(series)
+morgan_le_fay_(fate),morgan le fay|morgan|fay,6285,fate_(series)
+jeanne_d'arc_(fate),jeanne darc|darc jeanne|jeanne|darc,8773,fate_(series)
+minamoto_no_raikou_(fate),minamoto no raikou|minamoto|raikou,6606,fate_(series)
+medusa_(fate),medusa,5847,fate_(series)
+okita_souji_(fate),okita souji|souji okita|souji|okita,7970,fate_(series)
+mordred_(fate),mordred,6749,fate_(series)
+artoria_pendragon_(lancer)_(fate),pendragon artoria|artoria pendragon|pendragon|artoria,5788,fate_(series)
+chloe_von_einzbern,chloe von einzbern|einzbern|chloe,4632,fate_(series)
+ishtar_(fate),ishtar,5334,fate_(series)
+miyamoto_musashi_(fate),miyamoto musashi|musashi miyamoto|miyamoto|musashi,5155,fate_(series)
+meltryllis_(fate),meltryllis,5232,fate_(series)
+cu_chulainn_(lancer)_(fate),chulainn cu|cu chulainn|chulainn|cu,4317,fate_(series)
+kama_(fate),kama,4313,fate_(series)
+medusa_(rider)_(fate),medusa,4497,fate_(series)
+waver_velvet,velvet waver|waver velvet|velvet|waver,3353,fate_(series)
+artoria_caster_(fate),caster artoria|artoria caster|artoria|caster,4606,fate_(series)
+iskandar_(fate),iskandar,3410,fate_(series)
+emiya_kiritsugu,emiya kiritsugu|kiritsugu emiya|kiritsugu|emiya,2903,fate_(series)
+florence_nightingale_(fate),nightingale florence|florence nightingale|nightingale|florence,3931,fate_(series)
+okita_souji_(koha-ace),okita souji|souji okita|souji|okita,5594,fate_(series)
+jeanne_d'arc_alter_(avenger)_(fate),jeanne darc alter|jeanne|alter,3577,fate_(series)
+abigail_williams_(first_ascension)_(fate),abigail williams|williams abigail|williams|abigail,3679,fate_(series)
+jack_the_ripper_(fate/apocrypha),jack the ripper|ripper|jack,3687,fate_(series)
+oberon_(fate),oberon,3497,fate_(series)
+nitocris_(fate),nitocris,3445,fate_(series)
+oda_nobunaga_(fate),oda nobunaga|nobunaga oda|nobunaga|oda,4047,fate_(series)
+mash_kyrielight_(dangerous_beast),mash kyrielight|kyrielight mash|kyrielight|mash,2993,fate_(series)
+gawr_gura,gura gawr|gawr gura|gawr|gura,16488,hololive
+houshou_marine,marine houshou|houshou marine|houshou|marine,17979,hololive
+shirakami_fubuki,shirakami fubuki|fubuki shirakami|shirakami|fubuki,16036,hololive
+hoshimachi_suisei,hoshimachi suisei|suisei hoshimachi|hoshimachi|suisei,15321,hololive
+nekomata_okayu,nekomata okayu|okayu nekomata|nekomata|okayu,11733,hololive
+ouro_kronii,kronii ouro|ouro kronii|kronii|ouro,14511,hololive
+mori_calliope,mori calliope|calliope mori|calliope|mori,12682,hololive
+usada_pekora,usada pekora|pekora usada|pekora|usada,11970,hololive
+ninomae_ina'nis,inanis ninomae|ninomae inanis|ninomae|inanis,12753,hololive
+takanashi_kiara,takanashi kiara|kiara takanashi|takanashi|kiara,10536,hololive
+minato_aqua,minato aqua|aqua minato|minato|aqua,9643,hololive
+tokoyami_towa,tokoyami towa|towa tokoyami|tokoyami|towa,9958,hololive
+nanashi_mumei,mumei nanashi|nanashi mumei|nanashi|mumei,9683,hololive
+ookami_mio,ookami mio|mio ookami|ookami|mio,8458,hololive
+sakura_miko,sakura miko|miko sakura|sakura|miko,10284,hololive
+nerissa_ravencroft,ravencroft nerissa|nerissa ravencroft|ravencroft|nerissa,7648,hololive
+oozora_subaru,subaru oozora|oozora subaru|oozora|subaru,7985,hololive
+watson_amelia,amelia watson|watson amelia|watson|amelia,7406,hololive
+inugami_korone,korone inugami|inugami korone|inugami|korone,7350,hololive
+shirogane_noel,noel shirogane|shirogane noel|shirogane|noel,7337,hololive
+amane_kanata,amane kanata|kanata amane|kanata|amane,7766,hololive
+gawr_gura_(1st_costume),gura gawr|gawr gura|gawr|gura,7630,hololive
+hakos_baelz,baelz hakos|hakos baelz|baelz|hakos,7617,hololive
+sakamata_chloe,sakamata chloe|chloe sakamata|sakamata|chloe,7059,hololive
+shiori_novella,novella shiori|shiori novella|novella|shiori,7797,hololive
+yukihana_lamy,yukihana lamy|lamy yukihana|yukihana|lamy,7675,hololive
+houshou_marine_(1st_costume),marine houshou|houshou marine|houshou|marine,6204,hololive
+shishiro_botan,botan shishiro|shishiro botan|shishiro|botan,6561,hololive
+irys_(hololive),irys,5923,hololive
+la+_darknesss,la+ darknesss|darknesss la+|darknesss|la+,5943,hololive
+raora_panthera,panthera raora|raora panthera|panthera|raora,5164,hololive
+fuwawa_abyssgard,abyssgard fuwawa|fuwawa abyssgard|abyssgard|fuwawa,6295,hololive
+mococo_abyssgard,mococo abyssgard|abyssgard mococo|abyssgard|mococo,6213,hololive
+ceres_fauna,ceres fauna|fauna ceres|fauna|ceres,5659,hololive
+usada_pekora_(1st_costume),usada pekora|pekora usada|pekora|usada,4880,hololive
+uruha_rushia,uruha rushia|rushia uruha|rushia|uruha,4698,hololive
+nakiri_ayame,ayame nakiri|nakiri ayame|nakiri|ayame,5506,hololive
+takodachi_(ninomae_ina'nis),takodachi,4242,hololive
+shiranui_flare,shiranui flare|flare shiranui|shiranui|flare,5307,hololive
+natsuiro_matsuri,matsuri natsuiro|natsuiro matsuri|natsuiro|matsuri,4567,hololive
+don-chan_(usada_pekora),don-chan,4027,hololive
+shirakami_fubuki_(1st_costume),shirakami fubuki|fubuki shirakami|shirakami|fubuki,4661,hololive
+gigi_murin,murin gigi|gigi murin|murin|gigi,3321,hololive
+kazama_iroha,iroha kazama|kazama iroha|kazama|iroha,4515,hololive
+hakui_koyori,hakui koyori|koyori hakui|koyori|hakui,5224,hololive
+koseki_bijou,koseki bijou|bijou koseki|koseki|bijou,5099,hololive
+nekomata_okayu_(1st_costume),nekomata okayu|okayu nekomata|nekomata|okayu,3089,hololive
+momosuzu_nene,momosuzu nene|nene momosuzu|momosuzu|nene,3776,hololive
+murasaki_shion,murasaki shion|shion murasaki|murasaki|shion,5227,hololive
+azki_(hololive),azki,3924,hololive
+scaramouche_(genshin_impact),scaramouche,27355,genshin_impact
+raiden_shogun,raiden shogun|shogun raiden|raiden|shogun,22062,genshin_impact
+lumine_(genshin_impact),lumine,22177,genshin_impact
+ganyu_(genshin_impact),ganyu,20215,genshin_impact
+wanderer_(genshin_impact),wanderer,15263,genshin_impact
+hu_tao_(genshin_impact),hu tao|tao hu|tao|hu,14581,genshin_impact
+furina_(genshin_impact),furina,13956,genshin_impact
+aether_(genshin_impact),aether,14080,genshin_impact
+nahida_(genshin_impact),nahida,13408,genshin_impact
+yae_miko,yae miko|miko yae|miko|yae,12476,genshin_impact
+columbina_(genshin_impact),columbina,9540,genshin_impact
+zhongli_(genshin_impact),zhongli,10193,genshin_impact
+mona_(genshin_impact),mona,9953,genshin_impact
+keqing_(genshin_impact),keqing,8441,genshin_impact
+kamisato_ayaka,ayaka kamisato|kamisato ayaka|kamisato|ayaka,7355,genshin_impact
+klee_(genshin_impact),klee,7229,genshin_impact
+venti_(genshin_impact),venti,8471,genshin_impact
+paimon_(genshin_impact),paimon,8357,genshin_impact
+tartaglia_(genshin_impact),tartaglia,7486,genshin_impact
+nilou_(genshin_impact),nilou,5986,genshin_impact
+sandrone_(genshin_impact),sandrone,6629,genshin_impact
+arlecchino_(genshin_impact),arlecchino,5948,genshin_impact
+xiao_(genshin_impact),xiao,6247,genshin_impact
+boo_tao_(genshin_impact),boo tao|tao boo|tao|boo,5811,genshin_impact
+eula_(genshin_impact),eula,6431,genshin_impact
+shenhe_(genshin_impact),shenhe,6391,genshin_impact
+yelan_(genshin_impact),yelan,4694,genshin_impact
+alhaitham_(genshin_impact),alhaitham,3783,genshin_impact
+kaedehara_kazuha,kaedehara kazuha|kazuha kaedehara|kaedehara|kazuha,4555,genshin_impact
+fischl_(genshin_impact),fischl,4162,genshin_impact
+sangonomiya_kokomi,kokomi sangonomiya|sangonomiya kokomi|sangonomiya|kokomi,4525,genshin_impact
+tighnari_(genshin_impact),tighnari,3005,genshin_impact
+cyno_(genshin_impact),cyno,2496,genshin_impact
+barbara_(genshin_impact),barbara,4059,genshin_impact
+diluc_(genshin_impact),diluc,3957,genshin_impact
+jean_(genshin_impact),jean,4092,genshin_impact
+scaramouche_(harbinger)_(genshin_impact),scaramouche,3866,genshin_impact
+kaveh_(genshin_impact),kaveh,2732,genshin_impact
+citlali_(genshin_impact),citlali,3986,genshin_impact
+amber_(genshin_impact),amber,3433,genshin_impact
+neuvillette_(genshin_impact),neuvillette,2991,genshin_impact
+kaeya_(genshin_impact),kaeya,3134,genshin_impact
+ningguang_(genshin_impact),ningguang,2686,genshin_impact
+yoimiya_(genshin_impact),yoimiya,3892,genshin_impact
+scaramouche_(kabukimono)_(genshin_impact),scaramouche,2536,genshin_impact
+qiqi_(genshin_impact),qiqi,3213,genshin_impact
+mavuika_(genshin_impact),mavuika,2535,genshin_impact
+aranara_(genshin_impact),aranara,2005,genshin_impact
+albedo_(genshin_impact),albedo,3074,genshin_impact
+noelle_(genshin_impact),noelle,2158,genshin_impact
+producer_(idolmaster),producer,11600,idolmaster
+shibuya_rin,rin shibuya|shibuya rin|shibuya|rin,7464,idolmaster
+kisaragi_chihaya,chihaya kisaragi|kisaragi chihaya|kisaragi|chihaya,6942,idolmaster
+higuchi_madoka,madoka higuchi|higuchi madoka|higuchi|madoka,5948,idolmaster
+amami_haruka,amami haruka|haruka amami|haruka|amami,6368,idolmaster
+kikuchi_makoto,makoto kikuchi|kikuchi makoto|kikuchi|makoto,5932,idolmaster
+shinosawa_hiro,hiro shinosawa|shinosawa hiro|shinosawa|hiro,6860,idolmaster
+hoshii_miki,hoshii miki|miki hoshii|hoshii|miki,6847,idolmaster
+shijou_takane,takane shijou|shijou takane|takane|shijou,5645,idolmaster
+yumemi_riamu,yumemi riamu|riamu yumemi|yumemi|riamu,5596,idolmaster
+minase_iori,minase iori|iori minase|minase|iori,5106,idolmaster
+fujita_kotone,fujita kotone|kotone fujita|fujita|kotone,4124,idolmaster
+shirasaka_koume,shirasaka koume|koume shirasaka|shirasaka|koume,5446,idolmaster
+futaba_anzu,futaba anzu|anzu futaba|futaba|anzu,4129,idolmaster
+kanzaki_ranko,ranko kanzaki|kanzaki ranko|kanzaki|ranko,4002,idolmaster
+mayuzumi_fuyuko,fuyuko mayuzumi|mayuzumi fuyuko|mayuzumi|fuyuko,3949,idolmaster
+takagaki_kaede,takagaki kaede|kaede takagaki|takagaki|kaede,4650,idolmaster
+sagisawa_fumika,fumika sagisawa|sagisawa fumika|sagisawa|fumika,4809,idolmaster
+shimamura_uzuki,uzuki shimamura|shimamura uzuki|shimamura|uzuki,4896,idolmaster
+jougasaki_mika,jougasaki mika|mika jougasaki|jougasaki|mika,4160,idolmaster
+nitta_minami,nitta minami|minami nitta|minami|nitta,3728,idolmaster
+tachibana_arisu,arisu tachibana|tachibana arisu|tachibana|arisu,5106,idolmaster
+anastasia_(idolmaster),anastasia,3561,idolmaster
+miura_azusa,azusa miura|miura azusa|azusa|miura,3518,idolmaster
+koshimizu_sachiko,koshimizu sachiko|sachiko koshimizu|koshimizu|sachiko,3624,idolmaster
+ganaha_hibiki,ganaha hibiki|hibiki ganaha|hibiki|ganaha,4758,idolmaster
+hachimiya_meguru,hachimiya meguru|meguru hachimiya|hachimiya|meguru,2794,idolmaster
+sakurai_momoka,momoka sakurai|sakurai momoka|sakurai|momoka,3563,idolmaster
+takatsuki_yayoi,yayoi takatsuki|takatsuki yayoi|takatsuki|yayoi,4488,idolmaster
+akizuki_ritsuko,ritsuko akizuki|akizuki ritsuko|akizuki|ritsuko,3256,idolmaster
+ichinose_shiki,shiki ichinose|ichinose shiki|ichinose|shiki,3893,idolmaster
+p-head_producer,p-head producer|producer p-head|producer|p-head,3291,idolmaster
+hagiwara_yukiho,hagiwara yukiho|yukiho hagiwara|hagiwara|yukiho,3559,idolmaster
+ohtsuki_yui,yui ohtsuki|ohtsuki yui|ohtsuki|yui,2835,idolmaster
+fukumaru_koito,fukumaru koito|koito fukumaru|fukumaru|koito,2791,idolmaster
+tsukimura_temari,tsukimura temari|temari tsukimura|tsukimura|temari,2708,idolmaster
+morikubo_nono,morikubo nono|nono morikubo|morikubo|nono,2453,idolmaster
+sasaki_chie,sasaki chie|chie sasaki|sasaki|chie,2419,idolmaster
+hayami_kanade,hayami kanade|kanade hayami|hayami|kanade,2977,idolmaster
+sakuragi_mano,mano sakuragi|sakuragi mano|sakuragi|mano,2054,idolmaster
+jougasaki_rika,jougasaki rika|rika jougasaki|jougasaki|rika,3370,idolmaster
+asakura_toru,asakura toru|toru asakura|asakura|toru,3318,idolmaster
+akagi_miria,miria akagi|akagi miria|miria|akagi,2785,idolmaster
+hanami_saki,saki hanami|hanami saki|hanami|saki,2645,idolmaster
+kazano_hiori,kazano hiori|hiori kazano|kazano|hiori,1798,idolmaster
+maekawa_miku,maekawa miku|miku maekawa|maekawa|miku,3184,idolmaster
+hanami_ume,hanami ume|ume hanami|hanami|ume,3149,idolmaster
+osaki_amana,osaki amana|amana osaki|amana|osaki,2402,idolmaster
+ichihara_nina,ichihara nina|nina ichihara|ichihara|nina,1937,idolmaster
+morino_rinze,morino rinze|rinze morino|morino|rinze,2269,idolmaster
+trainer_(umamusume),trainer,14724,umamusume
+agnes_tachyon_(umamusume),agnes tachyon|tachyon agnes|tachyon|agnes,14257,umamusume
+manhattan_cafe_(umamusume),manhattan cafe|cafe manhattan|manhattan|cafe,13299,umamusume
+gold_ship_(umamusume),gold ship|ship gold|gold|ship,10751,umamusume
+rice_shower_(umamusume),shower rice|rice shower|shower|rice,10014,umamusume
+mejiro_mcqueen_(umamusume),mejiro mcqueen|mcqueen mejiro|mcqueen|mejiro,8655,umamusume
+daiwa_scarlet_(umamusume),scarlet daiwa|daiwa scarlet|scarlet|daiwa,8895,umamusume
+silence_suzuka_(umamusume),silence suzuka|suzuka silence|silence|suzuka,6378,umamusume
+tokai_teio_(umamusume),teio tokai|tokai teio|tokai|teio,7167,umamusume
+nice_nature_(umamusume),nature nice|nice nature|nature|nice,5567,umamusume
+oguri_cap_(umamusume),cap oguri|oguri cap|oguri|cap,6762,umamusume
+symboli_rudolf_(umamusume),rudolf symboli|symboli rudolf|symboli|rudolf,5131,umamusume
+agnes_tachyon_(tach-nology)_(umamusume),agnes tachyon|tachyon agnes|tachyon|agnes,5492,umamusume
+satono_diamond_(umamusume),satono diamond|diamond satono|diamond|satono,5568,umamusume
+kitasan_black_(umamusume),black kitasan|kitasan black|kitasan|black,5103,umamusume
+special_week_(umamusume),week special|special week|special|week,5024,umamusume
+king_halo_(umamusume),king halo|halo king|king|halo,3963,umamusume
+t-head_trainer_(umamusume),t-head trainer|trainer t-head|trainer|t-head,4091,umamusume
+t.m._opera_o_(umamusume),opera t.m.|t.m. opera|opera|t.m.,4046,umamusume
+haru_urara_(umamusume),haru urara|urara haru|urara|haru,4610,umamusume
+seiun_sky_(umamusume),sky seiun|seiun sky|seiun|sky,3619,umamusume
+gentildonna_(umamusume),gentildonna,4023,umamusume
+vodka_(umamusume),vodka,3613,umamusume
+cheval_grand_(umamusume),grand cheval|cheval grand|cheval|grand,4210,umamusume
+tamamo_cross_(umamusume),tamamo cross|cross tamamo|tamamo|cross,4188,umamusume
+curren_chan_(umamusume),chan curren|curren chan|curren|chan,4652,umamusume
+mayano_top_gun_(umamusume),mayano top gun|mayano|gun,3722,umamusume
+narita_brian_(umamusume),brian narita|narita brian|narita|brian,2792,umamusume
+admire_vega_(umamusume),admire vega|vega admire|admire|vega,4111,umamusume
+mihono_bourbon_(umamusume),mihono bourbon|bourbon mihono|bourbon|mihono,3920,umamusume
+dantsu_flame_(umamusume),flame dantsu|dantsu flame|dantsu|flame,3085,umamusume
+jungle_pocket_(umamusume),jungle pocket|pocket jungle|jungle|pocket,3275,umamusume
+orfevre_(umamusume),orfevre,2900,umamusume
+sirius_symboli_(umamusume),sirius symboli|symboli sirius|symboli|sirius,3267,umamusume
+grass_wonder_(umamusume),wonder grass|grass wonder|wonder|grass,2978,umamusume
+nakayama_festa_(umamusume),festa nakayama|nakayama festa|nakayama|festa,2857,umamusume
+narita_taishin_(umamusume),taishin narita|narita taishin|taishin|narita,2607,umamusume
+eishin_flash_(umamusume),eishin flash|flash eishin|eishin|flash,3372,umamusume
+agnes_digital_(umamusume),digital agnes|agnes digital|digital|agnes,3352,umamusume
+twin_turbo_(umamusume),turbo twin|twin turbo|turbo|twin,3352,umamusume
+super_creek_(umamusume),super creek|creek super|super|creek,3234,umamusume
+still_in_love_(umamusume),still in love|still|love,3235,umamusume
+air_shakur_(umamusume),air shakur|shakur air|shakur|air,2474,umamusume
+biwa_hayahide_(umamusume),hayahide biwa|biwa hayahide|hayahide|biwa,2157,umamusume
+gold_ship_(red_strife)_(umamusume),gold ship|ship gold|gold|ship,3188,umamusume
+air_groove_(umamusume),groove air|air groove|groove|air,3102,umamusume
+meisho_doto_(umamusume),doto meisho|meisho doto|meisho|doto,2988,umamusume
+mr._c.b._(umamusume),c.b. mr.|mr. c.b.|c.b.|mr.,2934,umamusume
+verxina_(umamusume),verxina,2503,umamusume
+matikanetannhauser_(umamusume),matikanetannhauser,3000,umamusume
+doctor_(arknights),doctor,13002,arknights
+amiya_(arknights),amiya,12177,arknights
+texas_(arknights),texas,8622,arknights
+lappland_(arknights),lappland,7205,arknights
+kal'tsit_(arknights),kaltsit,6510,arknights
+suzuran_(arknights),suzuran,6859,arknights
+exusiai_(arknights),exusiai,5761,arknights
+skadi_(arknights),skadi,6922,arknights
+angelina_(arknights),angelina,6038,arknights
+surtr_(arknights),surtr,5338,arknights
+w_(arknights),,4826,arknights
+ch'en_(arknights),chen,4526,arknights
+shu_(arknights),shu,5031,arknights
+mudrock_(arknights),mudrock,4295,arknights
+mostima_(arknights),mostima,3635,arknights
+dusk_(arknights),dusk,4169,arknights
+specter_(arknights),specter,3003,arknights
+endministrator_(arknights),endministrator,3496,arknights
+saria_(arknights),saria,2371,arknights
+nian_(arknights),nian,3493,arknights
+skadi_the_corrupting_heart_(arknights),skadi the corrupting heart|heart|skadi,2845,arknights
+goldenglow_(arknights),goldenglow,2616,arknights
+irene_(arknights),irene,2567,arknights
+sussurro_(arknights),sussurro,2580,arknights
+male_doctor_(arknights),male doctor|doctor male|doctor|male,2105,arknights
+female_endministrator_(arknights),endministrator female|female endministrator|endministrator|female,2581,arknights
+eyjafjalla_(arknights),eyjafjalla,2282,arknights
+yvonne_(arknights),yvonne,2066,arknights
+perlica_(arknights),perlica,2629,arknights
+blue_poison_(arknights),poison blue|blue poison|poison|blue,1904,arknights
+hoshiguma_(arknights),hoshiguma,2313,arknights
+virtuosa_(arknights),virtuosa,2066,arknights
+schwarz_(arknights),schwarz,1739,arknights
+ho'olheyak_(arknights),hoolheyak,2305,arknights
+muelsyse_(arknights),muelsyse,2104,arknights
+mon3tr_(arknights),mon3tr,2224,arknights
+chongyue_(arknights),chongyue,2008,arknights
+blaze_(arknights),blaze,1748,arknights
+fiammetta_(arknights),fiammetta,1515,arknights
+reed_(arknights),reed,1892,arknights
+siege_(arknights),siege,1796,arknights
+rossi_(arknights),rossi,2140,arknights
+la_pluma_(arknights),la pluma|pluma la|pluma|la,1870,arknights
+texas_the_omertosa_(arknights),texas the omertosa|omertosa|texas,1719,arknights
+silence_(arknights),silence,1548,arknights
+mountain_(arknights),mountain,2026,arknights
+chen_qianyu_(arknights),chen qianyu|qianyu chen|qianyu|chen,1683,arknights
+lemuen_(arknights),lemuen,1669,arknights
+gilberta_(arknights),gilberta,1581,arknights
+theresa_(arknights),theresa,1855,arknights
+hatsune_miku,hatsune miku|miku hatsune|hatsune|miku,146070,vocaloid
+kagamine_rin,rin kagamine|kagamine rin|kagamine|rin,26299,vocaloid
+kagamine_len,kagamine len|len kagamine|kagamine|len,17240,vocaloid
+megurine_luka,megurine luka|luka megurine|megurine|luka,13953,vocaloid
+kaito_(vocaloid),kaito,9019,vocaloid
+yuzuki_yukari,yuzuki yukari|yukari yuzuki|yuzuki|yukari,9836,vocaloid
+meiko_(vocaloid),meiko,7013,vocaloid
+gumi,gumi,6017,vocaloid
+yuki_miku,yuki miku|miku yuki|yuki|miku,5184,vocaloid
+magical_mirai_miku,magical mirai miku|magical|miku,2830,vocaloid
+sakura_miku,sakura miku|miku sakura|sakura|miku,3451,vocaloid
+ia_(vocaloid),ia,2709,vocaloid
+brazilian_miku,miku brazilian|brazilian miku|brazilian|miku,2294,vocaloid
+yowane_haku,haku yowane|yowane haku|yowane|haku,1944,vocaloid
+akita_neru,akita neru|neru akita|akita|neru,2304,vocaloid
+rabbit_yukine,rabbit yukine|yukine rabbit|yukine|rabbit,2073,vocaloid
+racing_miku,racing miku|miku racing|racing|miku,1780,vocaloid
+kamui_gakupo,kamui gakupo|gakupo kamui|gakupo|kamui,1780,vocaloid
+flower_(vocaloid),flower,1172,vocaloid
+hatsune_miku_(append),hatsune miku|miku hatsune|hatsune|miku,1621,vocaloid
+otomachi_una,una otomachi|otomachi una|otomachi|una,1692,vocaloid
+luo_tianyi,tianyi luo|luo tianyi|tianyi|luo,1136,vocaloid
+kaai_yuki,yuki kaai|kaai yuki|yuki|kaai,1171,vocaloid
+flower_(vocaloid4),flower,860,vocaloid
+takoluka,takoluka,1038,vocaloid
+hachune_miku,miku hachune|hachune miku|hachune|miku,667,vocaloid
+master_(vocaloid),master,890,vocaloid
+25-ji_miku,25-ji miku|miku 25-ji|25-ji|miku,828,vocaloid
+cinnamiku,cinnamiku,958,vocaloid
+chibi_miku,miku chibi|chibi miku|chibi|miku,834,vocaloid
+yuki_miku_(2011),yuki miku|miku yuki|yuki|miku,632,vocaloid
+riliane_lucifen_d'autriche,riliane lucifen dautriche|dautriche|riliane,725,vocaloid
+allen_avadonia,allen avadonia|avadonia allen|avadonia|allen,514,vocaloid
+kaito_(vocaloid3),kaito,435,vocaloid
+symphony_miku,miku symphony|symphony miku|symphony|miku,769,vocaloid
+hatsune_miku_(vocaloid4),hatsune miku|miku hatsune|hatsune|miku,606,vocaloid
+racing_miku_(2022),racing miku|miku racing|racing|miku,704,vocaloid
+hatsune_miku_(vocaloid6),hatsune miku|miku hatsune|hatsune|miku,413,vocaloid
+leo/need_miku,miku leo/need|leo/need miku|leo/need|miku,316,vocaloid
+seeu,seeu,763,vocaloid
+hatsune_miku_(nt),hatsune miku|miku hatsune|hatsune|miku,670,vocaloid
+hatsune_mikuo,hatsune mikuo|mikuo hatsune|hatsune|mikuo,573,vocaloid
+meloetta,meloetta,834,vocaloid
+meloetta_(aria),meloetta,738,vocaloid
+yuki_miku_(2021),yuki miku|miku yuki|yuki|miku,345,vocaloid
+magical_mirai_miku_(2018),magical mirai miku|magical|miku,301,vocaloid
+sf-a2_miki,miki sf-a2|sf-a2 miki|sf-a2|miki,827,vocaloid
+aimaina,aimaina,399,vocaloid
+psychic_miku_(project_voltage),miku psychic|psychic miku|psychic|miku,351,vocaloid
+yuezheng_ling,yuezheng ling|ling yuezheng|yuezheng|ling,326,vocaloid
+trailblazer_(honkai:_star_rail),trailblazer,21357,honkai_(series)
+firefly_(honkai:_star_rail),firefly,16662,honkai_(series)
+elysia_(honkai_impact),elysia,13517,honkai_(series)
+stelle_(honkai:_star_rail),stelle,13274,honkai_(series)
+phainon_(honkai:_star_rail),phainon,10512,honkai_(series)
+caelus_(honkai:_star_rail),caelus,8953,honkai_(series)
+cyrene_(honkai:_star_rail),cyrene,9032,honkai_(series)
+kafka_(honkai:_star_rail),kafka,8075,honkai_(series)
+march_7th_(honkai:_star_rail),march 7th|7th march|march|7th,9690,honkai_(series)
+sparkle_(honkai:_star_rail),sparkle,7997,honkai_(series)
+kiana_kaslana,kiana kaslana|kaslana kiana|kaslana|kiana,7889,honkai_(series)
+acheron_(honkai:_star_rail),acheron,6799,honkai_(series)
+raiden_mei,mei raiden|raiden mei|raiden|mei,5796,honkai_(series)
+mydei_(honkai:_star_rail),mydei,6454,honkai_(series)
+robin_(honkai:_star_rail),robin,5469,honkai_(series)
+silver_wolf_(honkai:_star_rail),wolf silver|silver wolf|silver|wolf,6102,honkai_(series)
+cyrene_(demiurge)_(honkai:_star_rail),cyrene,5832,honkai_(series)
+dan_heng_(honkai:_star_rail),heng dan|dan heng|heng|dan,5043,honkai_(series)
+herta_(honkai:_star_rail),herta,4825,honkai_(series)
+bronya_zaychik,bronya zaychik|zaychik bronya|zaychik|bronya,5000,honkai_(series)
+elysia_(herrscher_of_human:_ego)_(honkai_impact),elysia,4688,honkai_(series)
+aventurine_(honkai:_star_rail),aventurine,4460,honkai_(series)
+fu_hua,hua fu|fu hua|hua|fu,5226,honkai_(series)
+the_herta_(honkai:_star_rail),the herta|herta the|herta|the,3555,honkai_(series)
+elysia_(miss_pink_elf)_(honkai_impact),elysia,4329,honkai_(series)
+cyrene_(philia093)_(honkai:_star_rail),cyrene,3691,honkai_(series)
+march_7th_(preservation)_(honkai:_star_rail),march 7th|7th march|march|7th,4432,honkai_(series)
+castorice_(honkai:_star_rail),castorice,4584,honkai_(series)
+blade_(honkai:_star_rail),blade,3649,honkai_(series)
+black_swan_(honkai:_star_rail),black swan|swan black|black|swan,3282,honkai_(series)
+seele_vollerei,vollerei seele|seele vollerei|vollerei|seele,3633,honkai_(series)
+sunday_(honkai:_star_rail),sunday,3108,honkai_(series)
+ruan_mei_(honkai:_star_rail),ruan mei|mei ruan|ruan|mei,2625,honkai_(series)
+theresa_apocalypse,apocalypse theresa|theresa apocalypse|apocalypse|theresa,2708,honkai_(series)
+yae_sakura,yae sakura|sakura yae|sakura|yae,2658,honkai_(series)
+evernight_(honkai:_star_rail),evernight,2742,honkai_(series)
+hyacine_(honkai:_star_rail),hyacine,2660,honkai_(series)
+anaxa_(honkai:_star_rail),anaxa,2570,honkai_(series)
+rita_rossweisse,rita rossweisse|rossweisse rita|rossweisse|rita,2136,honkai_(series)
+cipher_(honkai:_star_rail),cipher,2630,honkai_(series)
+dr._ratio_(honkai:_star_rail),dr. ratio|ratio dr.|ratio|dr.,2295,honkai_(series)
+himeko_(honkai:_star_rail),himeko,2267,honkai_(series)
+bronya_zaychik_(silverwing:_n-ex),bronya zaychik|zaychik bronya|zaychik|bronya,1744,honkai_(series)
+aglaea_(honkai:_star_rail),aglaea,2309,honkai_(series)
+topaz_(honkai:_star_rail),topaz,2015,honkai_(series)
+elysia_(hi_love_elf)_(honkai_impact),elysia,1957,honkai_(series)
+sparxie_(honkai:_star_rail),sparxie,2006,honkai_(series)
+herrscher_of_sentience,herrscher of sentience|sentience|herrscher,2102,honkai_(series)
+kiana_kaslana_(herrscher_of_finality),kiana kaslana|kaslana kiana|kaslana|kiana,1639,honkai_(series)
+raiden_mei_(herrscher_of_thunder),mei raiden|raiden mei|raiden|mei,1645,honkai_(series)
+manjuu_(azur_lane),manjuu,11245,azur_lane
+bremerton_(azur_lane),bremerton,5468,azur_lane
+taihou_(azur_lane),taihou,6436,azur_lane
+atago_(azur_lane),atago,4890,azur_lane
+sirius_(azur_lane),sirius,4311,azur_lane
+prinz_eugen_(azur_lane),prinz eugen|eugen prinz|eugen|prinz,4971,azur_lane
+unicorn_(azur_lane),unicorn,3704,azur_lane
+belfast_(azur_lane),belfast,4374,azur_lane
+commander_(azur_lane),commander,4947,azur_lane
+formidable_(azur_lane),formidable,5037,azur_lane
+enterprise_(azur_lane),enterprise,2820,azur_lane
+illustrious_(azur_lane),illustrious,3346,azur_lane
+ayanami_(azur_lane),ayanami,3435,azur_lane
+laffey_(azur_lane),laffey,2969,azur_lane
+kaga_(azur_lane),kaga,2858,azur_lane
+takao_(azur_lane),takao,2781,azur_lane
+akagi_(azur_lane),akagi,2655,azur_lane
+le_malin_(azur_lane),malin le|le malin|malin|le,1896,azur_lane
+st._louis_(azur_lane),louis st.|st. louis|louis|st.,2421,azur_lane
+javelin_(azur_lane),javelin,2188,azur_lane
+bremerton_(scorching-hot_training)_(azur_lane),bremerton,1730,azur_lane
+kashino_(azur_lane),kashino,1663,azur_lane
+shinano_(azur_lane),shinano,2160,azur_lane
+amagi_(azur_lane),amagi,1392,azur_lane
+z23_(azur_lane),z23,1979,azur_lane
+baltimore_(azur_lane),baltimore,1857,azur_lane
+honolulu_(azur_lane),honolulu,1949,azur_lane
+dido_(azur_lane),dido,1642,azur_lane
+nagato_(azur_lane),nagato,1538,azur_lane
+zara_(azur_lane),zara,1475,azur_lane
+cheshire_(azur_lane),cheshire,1405,azur_lane
+new_jersey_(azur_lane),new jersey|jersey new|jersey|new,1673,azur_lane
+yamashiro_(azur_lane),yamashiro,1235,azur_lane
+hindenburg_(azur_lane),hindenburg,948,azur_lane
+musashi_(azur_lane),musashi,1260,azur_lane
+st._louis_(luxurious_wheels)_(azur_lane),louis st.|st. louis|louis|st.,1120,azur_lane
+cleveland_(azur_lane),cleveland,1002,azur_lane
+akashi_(azur_lane),akashi,1043,azur_lane
+yuudachi_(azur_lane),yuudachi,1023,azur_lane
+bismarck_(azur_lane),bismarck,1141,azur_lane
+sirius_(azure_horizons)_(azur_lane),sirius,930,azur_lane
+graf_zeppelin_(azur_lane),graf zeppelin|zeppelin graf|zeppelin|graf,1016,azur_lane
+friedrich_der_grosse_(azur_lane),friedrich der grosse|friedrich|grosse,910,azur_lane
+aegir_(azur_lane),aegir,1455,azur_lane
+roon_(azur_lane),roon,1099,azur_lane
+prinz_eugen_(unfading_smile)_(azur_lane),prinz eugen|eugen prinz|eugen|prinz,1185,azur_lane
+jean_bart_(azur_lane),bart jean|jean bart|jean|bart,1161,azur_lane
+implacable_(azur_lane),implacable,1122,azur_lane
+kisaragi_(azur_lane),kisaragi,1035,azur_lane
+sirius_(scorching-hot_seirios)_(azur_lane),sirius,829,azur_lane
+hinoshita_kaho,kaho hinoshita|hinoshita kaho|hinoshita|kaho,9097,love_live!
+nishikino_maki,maki nishikino|nishikino maki|nishikino|maki,8398,love_live!
+sonoda_umi,sonoda umi|umi sonoda|sonoda|umi,7750,love_live!
+tojo_nozomi,tojo nozomi|nozomi tojo|nozomi|tojo,7807,love_live!
+yazawa_nico,nico yazawa|yazawa nico|yazawa|nico,7828,love_live!
+fujishima_megumi,fujishima megumi|megumi fujishima|fujishima|megumi,7548,love_live!
+ayase_eli,ayase eli|eli ayase|ayase|eli,7261,love_live!
+watanabe_you,watanabe you|you watanabe|watanabe|you,6762,love_live!
+momose_ginko,ginko momose|momose ginko|momose|ginko,7216,love_live!
+murano_sayaka,sayaka murano|murano sayaka|sayaka|murano,7068,love_live!
+otomune_kozue,otomune kozue|kozue otomune|otomune|kozue,7247,love_live!
+osawa_rurino,rurino osawa|osawa rurino|rurino|osawa,6620,love_live!
+minami_kotori,minami kotori|kotori minami|kotori|minami,5880,love_live!
+kachimachi_kosuzu,kachimachi kosuzu|kosuzu kachimachi|kachimachi|kosuzu,5460,love_live!
+anyoji_hime,anyoji hime|hime anyoji|anyoji|hime,5955,love_live!
+yugiri_tsuzuri,yugiri tsuzuri|tsuzuri yugiri|tsuzuri|yugiri,5807,love_live!
+kosaka_honoka,honoka kosaka|kosaka honoka|kosaka|honoka,5297,love_live!
+hoshizora_rin,hoshizora rin|rin hoshizora|hoshizora|rin,5140,love_live!
+sakurauchi_riko,riko sakurauchi|sakurauchi riko|sakurauchi|riko,4366,love_live!
+tsushima_yoshiko,yoshiko tsushima|tsushima yoshiko|tsushima|yoshiko,4587,love_live!
+takami_chika,chika takami|takami chika|takami|chika,4086,love_live!
+koizumi_hanayo,koizumi hanayo|hanayo koizumi|koizumi|hanayo,4240,love_live!
+yuki_setsuna,yuki setsuna|setsuna yuki|setsuna|yuki,3550,love_live!
+ceras_yanagida_lilienfeld,ceras yanagida lilienfeld|lilienfeld|ceras,3137,love_live!
+matsuura_kanan,matsuura kanan|kanan matsuura|matsuura|kanan,3266,love_live!
+uehara_ayumu,uehara ayumu|ayumu uehara|uehara|ayumu,3583,love_live!
+kurosawa_ruby,ruby kurosawa|kurosawa ruby|kurosawa|ruby,2870,love_live!
+takasaki_yu,yu takasaki|takasaki yu|takasaki|yu,2837,love_live!
+shibuya_kanon,kanon shibuya|shibuya kanon|shibuya|kanon,2527,love_live!
+kurosawa_dia,dia kurosawa|kurosawa dia|kurosawa|dia,3075,love_live!
+osaka_shizuku,osaka shizuku|shizuku osaka|shizuku|osaka,2862,love_live!
+ohara_mari,ohara mari|mari ohara|ohara|mari,2603,love_live!
+kunikida_hanamaru,hanamaru kunikida|kunikida hanamaru|kunikida|hanamaru,2844,love_live!
+tennoji_rina,rina tennoji|tennoji rina|tennoji|rina,2536,love_live!
+nakasu_kasumi,kasumi nakasu|nakasu kasumi|nakasu|kasumi,2505,love_live!
+emma_verde,emma verde|verde emma|verde|emma,2485,love_live!
+mifune_shioriko,shioriko mifune|mifune shioriko|shioriko|mifune,2204,love_live!
+asaka_karin,karin asaka|asaka karin|asaka|karin,2203,love_live!
+miyashita_ai,ai miyashita|miyashita ai|miyashita|ai,2290,love_live!
+katsuragi_izumi,katsuragi izumi|izumi katsuragi|katsuragi|izumi,1942,love_live!
+tang_keke,keke tang|tang keke|keke|tang,1783,love_live!
+konoe_kanata,konoe kanata|kanata konoe|kanata|konoe,2146,love_live!
+heanna_sumire,sumire heanna|heanna sumire|heanna|sumire,1812,love_live!
+arashi_chisato,chisato arashi|arashi chisato|chisato|arashi,1428,love_live!
+mia_taylor,taylor mia|mia taylor|taylor|mia,1310,love_live!
+wakana_shiki,wakana shiki|shiki wakana|wakana|shiki,1194,love_live!
+wien_margarete,margarete wien|wien margarete|margarete|wien,715,love_live!
+zhong_lanzhu,lanzhu zhong|zhong lanzhu|lanzhu|zhong,1305,love_live!
+hazuki_ren,hazuki ren|ren hazuki|hazuki|ren,1171,love_live!
+onitsuka_natsumi,natsumi onitsuka|onitsuka natsumi|onitsuka|natsumi,819,love_live!
