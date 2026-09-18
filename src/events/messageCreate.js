@@ -1,8 +1,16 @@
-const { Client, GatewayIntentBits, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, AttachmentBuilder } = require('discord.js');
+const { 
+    Client, 
+    GatewayIntentBits, 
+    EmbedBuilder, 
+    ActionRowBuilder, 
+    ButtonBuilder, 
+    ButtonStyle, 
+    AttachmentBuilder 
+} = require('discord.js');
 const axios = require('axios');
 const { resolveSearchQuery } = require('../utils/tagManager');
 
-// Función para descargar la imagen en memoria con el Referer adecuado
+// Descarga la imagen en memoria con el Referer adecuado para evitar bloqueos CDN de Discord
 async function fetchImageAttachment(url) {
     try {
         const response = await axios.get(url, {
@@ -18,15 +26,15 @@ async function fetchImageAttachment(url) {
         const fileName = `gelbooru_image.${extension}`;
         return new AttachmentBuilder(Buffer.from(response.data), { name: fileName });
     } catch (error) {
-        console.error('[Gelbooru Image Fetch] Error al descargar la imagen:', error.message);
+        console.error('[Image Fetch] Error al descargar la imagen:', error.message);
         return null;
     }
 }
 
-// Función auxiliar para consultar a Groq y obtener tags de Danbooru en caso de fallo local
+// Respaldo con IA (Groq) para traducir nombres libres a tags oficiales de Danbooru/Gelbooru
 async function askGroqForDanbooruTag(query) {
     try {
-        console.log(`[Groq AI Fallback] Consultando tag de Danbooru para la query: "${query}"`);
+        console.log(`[Groq AI Fallback] Solicitando tags canónicos para: "${query}"`);
         const response = await axios.post(
             'https://api.groq.com/openai/v1/chat/completions',
             {
@@ -34,31 +42,63 @@ async function askGroqForDanbooruTag(query) {
                 messages: [
                     {
                         role: 'system',
-                        content: 'Eres un experto en tags de Danbooru y Gelbooru. El usuario te dará el nombre de un personaje, serie o descripción. Debes devolver EXCLUSIVAMENTE los tags oficiales de Danbooru separados por espacios (por ejemplo: asuka_langley_souryuu evangelion). No agregues texto adicional, explicaciones, comillas ni puntuación.'
+                        content: `Eres un conversor estricto de texto a etiquetas (tags) de Danbooru y Gelbooru.
+Tu único objetivo es convertir el personaje, serie o descripción del usuario en sus tags EXACTOS oficiales de Danbooru.
+
+REGLAS OBLIGATORIAS:
+1. Formato de Personajes: Usa SIEMPRE el tag oficial con guiones bajos (ejemplos: "misato" -> katsuragi_misato, "asuka" -> asuka_langley_souryuu, "shinji" -> ikari_shinji, "chisa" o "chisa de grand blue" -> kotegawa_chisa, "yani neko" -> satou_yaniko, "makima" -> makima).
+2. Franquicias: Si se deduce o menciona la franquicia, añade su tag oficial de Danbooru (ej: neon_genesis_evangelion, grand_blue, chainsaw_man).
+3. Modificadores: Convierte vestimentas al tag correspondiente (ej: "bikini" -> swimsuit, "conejita" -> bunny_suit, "sirvienta" -> maid).
+4. Contenido explícito: Si piden contenido sexual, NO escribas groserías, déjalo fuera (el filtro rating se encarga).
+5. FORMATO: Responde ÚNICAMENTE con los tags separados por espacios. Cero explicaciones, cero comillas, cero texto adicional.`
                     },
                     {
                         role: 'user',
                         content: query
                     }
                 ],
-                max_tokens: 30,
-                temperature: 0.2
+                max_tokens: 40,
+                temperature: 0.1
             },
             {
                 headers: {
                     'Authorization': `Bearer ${process.env.GROQ_API_KEY}`,
                     'Content-Type': 'application/json'
-                }
+                },
+                timeout: 8000
             }
         );
 
-        const aiTags = response.data.choices[0].message.content.trim().toLowerCase();
-        console.log(`[Groq AI Fallback] Tags generados por la IA: "${aiTags}"`);
+        let aiTags = response.data?.choices?.[0]?.message?.content?.trim().toLowerCase();
+        aiTags = aiTags ? aiTags.replace(/[`"'\n\r]/g, '').trim() : null;
+        console.log(`[Groq AI Fallback] Tags oficiales generados por IA: "${aiTags}"`);
         return aiTags;
     } catch (error) {
-        console.error('[Groq AI Fallback] Error al consultar Groq:', error.response?.data || error.message);
+        console.error('[Groq AI Fallback] Error en llamada a Groq:', error.response?.data || error.message);
         return null;
     }
+}
+
+// Consulta centralizada a través del proxy privado
+async function queryGelbooruProxy(tags) {
+    const proxyUrl = 'https://gelproxy.deraktsu.com/index.php';
+    const params = new URLSearchParams({
+        page: 'dapi',
+        s: 'post',
+        q: 'index',
+        tags: tags,
+        json: '1',
+        limit: '25',
+        user_id: '2055792',
+        api_key: '492c6a96bc04c723915e7ae476716a7b88f6f52f8d38ebce0104c655e5d4faf0a82e1fcd0c145d268190eb1e4e88024256980b7f0d4ff81fc780242f4b200c92'
+    });
+
+    const response = await axios.get(`${proxyUrl}?${params.toString()}`, {
+        headers: { 'x-proxy-token': 'Ugotto1821' },
+        timeout: 10000
+    });
+
+    return response.data?.post || [];
 }
 
 module.exports = {
@@ -85,76 +125,78 @@ module.exports = {
                     console.log(`[Command] Búsqueda solicitada por ${message.author.tag}: "${message.content}"`);
 
                     try {
-                        // Limpiar la mención del bot y los términos del comando
-                        let cleanContent = message.content
-                            .replace(/<@!?\d+>/g, '')
-                            .toLowerCase();
+                        const isNsfwChannel = message.channel.nsfw || (message.channel.parent && message.channel.parent.nsfw) || false;
+                        const requestedNsfw = /\b(porno|xxx|rule|rule34|r34|hentai|nopor|ecchi|nsfw)\b/i.test(message.content);
 
-                        let cleanQuery = cleanContent
+                        if (!isNsfwChannel && requestedNsfw) {
+                            console.log(`[Seguridad] Bloqueada petición NSFW en canal SFW: #${message.channel.name}`);
+                            return message.reply('❌ Este tipo de imágenes solo se pueden pedir en canales marcados como NSFW dx.');
+                        }
+
+                        // Limpiar texto de invocación
+                        let cleanQuery = message.content
+                            .replace(/<@!?\d+>/g, '')
                             .replace(/\b(manda|envia|busca|mandame|enviame|buscame)\b/gi, '')
                             .replace(/\b(imagen|imagenes|foto|fotos|dibujo|dibujos|de|del|un|una|algo)\b/gi, '')
+                            .replace(/\b(porno|xxx|rule|rule34|r34|hentai|nopor|ecchi|nsfw)\b/gi, '')
                             .trim();
 
-                        console.log(`[TagManager] Query limpia para procesar: "${cleanQuery}"`);
+                        console.log(`[TagManager] Query limpia a procesar: "${cleanQuery}"`);
 
-                        // 1. Intentar resolver localmente con los CSVs (0 tokens)
+                        // 1. Intentar resolver con la base de datos local CSV
                         let tagsToSearch = resolveSearchQuery(cleanQuery);
-                        console.log(`[TagManager] Tags resueltos localmente: "${tagsToSearch}"`);
+                        console.log(`[TagManager] Tags obtenidos del CSV: "${tagsToSearch}"`);
 
-                        // Configurar filtros NSFW según el canal
-                        const isNsfwChannel = message.channel.nsfw || false;
-                        const ratingFilter = isNsfwChannel ? '' : '-rating:explicit -rating:questionable';
+                        // Comprobar si el tagManager falló (devolviendo exactamente el mismo texto residual no mapeado)
+                        const isUnresolvedLocally = !tagsToSearch || tagsToSearch.trim().toLowerCase() === cleanQuery.toLowerCase();
+
+                        // 2. Si no se reconoció localmente en el CSV, recurrir a Groq de inmediato
+                        let usedAiFallback = false;
+                        if (isUnresolvedLocally) {
+                            console.log(`[TagManager] No se reconoció el personaje en el CSV local. Consultando a Groq...`);
+                            const aiTags = await askGroqForDanbooruTag(cleanQuery);
+                            if (aiTags) {
+                                tagsToSearch = aiTags;
+                                usedAiFallback = true;
+                            }
+                        }
+
+                        // Filtro de clasificación según el canal y la petición
+                        let ratingFilter = '';
+                        if (!isNsfwChannel) {
+                            ratingFilter = 'rating:general -penis -completely_nude -sex -futanari -breasts -nipples -nude';
+                        } else if (requestedNsfw) {
+                            ratingFilter = 'rating:explicit';
+                        }
 
                         let finalTags = `${tagsToSearch} ${ratingFilter} sort:random`.trim();
-                        const proxyUrl = 'https://gelproxy.deraktsu.com/index.php';
-                        
-                        let params = new URLSearchParams({
-                            page: 'dapi',
-                            s: 'post',
-                            q: 'index',
-                            tags: finalTags,
-                            json: '1',
-                            limit: '10', // Traemos un lote para la paginación con botones
-                            user_id: '2055792',
-                            api_key: '492c6a96bc04c723915e7ae476716a7b88f6f52f8d38ebce0104c655e5d4faf0a82e1fcd0c145d268190eb1e4e88024256980b7f0d4ff81fc780242f4b200c92'
-                        });
-
                         console.log(`[Gelbooru Proxy] Consultando posts con tags: "${finalTags}"`);
-                        let response = await axios.get(`${proxyUrl}?${params.toString()}`, {
-                            headers: { 'x-proxy-token': 'Ugotto1821' }
-                        });
 
-                        let posts = response.data?.post;
+                        let posts = await queryGelbooruProxy(finalTags);
 
-                        // 2. CICLO DE RESPALDO ÚNICO CON IA (Groq) si no hay resultados locales
-                        if (!posts || posts.length === 0) {
-                            console.log('[Gelbooru Proxy] No se encontraron resultados locales. Activando fallback de IA (Groq)...');
+                        // 3. Respaldo secundario: si el CSV dio tags pero devolvieron 0 posts, dar una oportunidad a Groq
+                        if ((!posts || posts.length === 0) && !usedAiFallback) {
+                            console.log('[Gelbooru Proxy] 0 resultados locales. Reintentando con Groq como fallback secundario...');
                             const aiTags = await askGroqForDanbooruTag(cleanQuery);
-                            
                             if (aiTags) {
                                 finalTags = `${aiTags} ${ratingFilter} sort:random`.trim();
-                                params.set('tags', finalTags);
-
-                                console.log(`[Gelbooru Proxy] Reintentando búsqueda con tags de IA: "${finalTags}"`);
-                                response = await axios.get(`${proxyUrl}?${params.toString()}`, {
-                                    headers: { 'x-proxy-token': 'Ugotto1821' }
-                                });
-                                posts = response.data?.post;
+                                console.log(`[Gelbooru Proxy] Reintentando con tags de IA: "${finalTags}"`);
+                                posts = await queryGelbooruProxy(finalTags);
                             }
                         }
 
                         if (!posts || posts.length === 0) {
-                            console.log('[Gelbooru Proxy] No se encontraron imágenes ni con el respaldo de IA.');
+                            console.log('[Gelbooru Proxy] No se encontraron posts en Gelbooru.');
                             return message.reply('❌ No encontré ninguna imagen con esos tags dx.');
                         }
 
-                        console.log(`[Gelbooru Proxy] Se encontraron ${posts.length} posts con éxito.`);
+                        console.log(`[Gelbooru Proxy] Se encontraron ${posts.length} posts. Construyendo galería...`);
                         let currentIndex = 0;
 
-                        // Función para construir el mensaje con embed y archivo adjunto seguro
+                        // Construcción de carga útil con Embed e imagen en memoria
                         const buildMessagePayload = async (index) => {
                             const post = posts[index];
-                            const rawUrl = post.sample_url || post.file_url || post.preview_url;
+                            const rawUrl = post.file_url || post.sample_url || post.preview_url;
                             const attachment = await fetchImageAttachment(rawUrl);
 
                             const embed = new EmbedBuilder()
@@ -189,7 +231,7 @@ module.exports = {
                         collector.on('collect', async i => {
                             if (i.user.id !== message.author.id) {
                                 return await i.reply({ 
-                                    content: `⚠️ Solo ${message.author.username} puede usar estos botones`, 
+                                    content: `⚠️ Solo ${message.author.username} puede controlar esta búsqueda.`, 
                                     flags: 64 
                                 });
                             }
@@ -206,7 +248,7 @@ module.exports = {
                                 await i.update(payload);
                             } else if (i.customId === 'exit') {
                                 collector.stop();
-                                await i.message.delete().catch(() => {});
+                                await replyMessage.delete().catch(() => {});
                             }
                         });
 
@@ -216,8 +258,8 @@ module.exports = {
                         });
 
                     } catch (error) {
-                        console.error('[Error General] En búsqueda de Gelbooru:', error);
-                        return message.reply('Hubo un error buscando la imagen dx.');
+                        console.error('[Error General] Error en búsqueda de Gelbooru:', error);
+                        return message.reply('Hubo un error al procesar la búsqueda dx.');
                     }
                 }
             }
